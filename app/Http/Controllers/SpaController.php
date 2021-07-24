@@ -186,6 +186,58 @@ class SpaController extends Controller
             $data['active'] = 0;
         }
 
+        // custom service price
+        if ($data['type'] == UpsellRock::TYPE_CUSTOM_SERVICE && $data['price'] <= 0 && empty($data['product_name'])) {
+            throw new Exception('custom service need product name & price', 500);
+        } else {
+            $data['price'] = intval($data['price'] * 100);
+            // create product
+            if (empty($data['shopify_product_id'])) {
+                info('custom service shopify_product_id is empty');
+                $product = $user->api()->rest('POST', '/admin/products.json', [
+                    'product' => [
+                        'title' => $data['product_name'],
+                        'product_type' => 'antupsellrock_generated',
+                        'body_html' => $data['description'],
+                        'images' => [
+                            [
+                                "src" => env('APP_URL') . "/images/pngs/" . $data['icon'] . ".png"
+                            ]
+                        ],
+                        'variants' => [
+                            [
+                                'price' => $data['price'] / 100
+                            ]
+                        ]
+                    ]
+                ])['body']['product'];
+
+                $data['shopify_product_id'] = [$product['id']];
+                $data['shopify_product_variant_id'] = $product['variants'][0]['id'];
+                $data['shopify_product_handle'] = $product['handle'];
+            } else {
+                // update product
+                $product = $user->api()->rest('PUT', '/admin/products/' . $upsell->shopify_product_id . '.json', [
+                    'product' => [
+                        'id' => $upsell->shopify_product_id,
+                        'title' => $data['product_name'],
+                        'body_html' => $data['description'],
+                        'images' => [
+                            [
+                                "src" => env('APP_URL') . "/images/pngs/" . $data['icon'] . ".png"
+                            ]
+                        ],
+                        'variants' => [
+                            [
+                                'id' => $upsell->shopify_product_variant_id,
+                                'price' => $data['price'] / 100
+                            ]
+                        ]
+                    ]
+                ])['body']['product'];
+            }
+        }
+
         // update conditions
         UpsellRockDisplayCondition::where('user_id', $user->id)->where('upsell_rock_id', $id)->delete();
         $new_conditions = $request->get('conditions');
@@ -273,11 +325,6 @@ class SpaController extends Controller
             $data['discount_code'] = $discount_code['code'];
         }
         $data['shopify_product_id'] = count($data['shopify_product_id']) == 1 ? $data['shopify_product_id'][0] : null;
-
-        // custom service price
-        if ($data['type'] == UpsellRock::TYPE_CUSTOM_SERVICE) {
-            $data['price'] = intval($data['price'] * 100);
-        }
 
         $upsell->update($data);
         return  UpsellRock::with('conditions')->find($id);

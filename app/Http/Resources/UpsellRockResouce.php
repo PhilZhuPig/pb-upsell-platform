@@ -37,7 +37,12 @@ class UpsellRockResouce extends JsonResource
             'amount' => $this->amount,
             'remove_upsell_when_parent_product_is_removed' => (bool)$this->remove_upsell_when_parent_product_is_removed,
             'remove_parent_product_when_upsell_product_is_added' => (bool)$this->remove_parent_product_when_upsell_product_is_added,
-            'recommended_product_count' => $this->when($this->type == 'smart-auto', $this->recommended_product_count)
+            'recommended_product_count' => $this->when($this->type == 'smart-auto', $this->recommended_product_count),
+            'icon' => $this->when($this->type == 'custom-service', $this->icon),
+            'headline' => $this->when($this->type == 'custom-service', $this->headline),
+            'product_name' => $this->when($this->type == 'custom-service', $this->product_name),
+            'description' => $this->when($this->type == 'custom-service', $this->description),
+            'price' => $this->when($this->type == 'custom-service', $this->price),
         ];
     }
 }

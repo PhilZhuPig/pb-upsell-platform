@@ -241,6 +241,20 @@ function refetchUpsellProduct() {
                             })
                         }
                     })
+                } else if (upsell.type == 'custom-service') {
+                    getUpsellProduct(upsell.handle).then(p => {
+                        var variants = [];
+                        if (upsell.variant > 0) {
+                            p.variants.forEach(pv => {
+                                if (upsell.variant === pv.id) {
+                                    variants.push(pv);
+                                }
+                            })
+                        }
+                        p.variants = variants;
+                        upsell['shopify_product'] = p;
+                        console.log(upsell);
+                    });
                 }
             });
             if (smartAutoUpsells.length > 0) {
