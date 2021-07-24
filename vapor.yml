@@ -1,0 +1,30 @@
+id: 22517
+name: pb-upsell-platform
+environments:
+    production:
+        domain: 'upsell.pb-apps.com'
+        storage: 'pb-fsb-bgs'
+        memory: 1024
+        queue-memory: 1024
+        cli-memory: 512
+        runtime: 'php-7.4:al2'
+        database: 'pb-pdd-db'
+        cache: 'pb-pdd-cache'
+        build:
+            - 'COMPOSER_MIRROR_PATH_REPOS=1 composer install --no-dev'
+            - 'php artisan event:cache'
+            - 'npm ci && npm run prod && rm -rf node_modules'
+    staging:
+        storage: 'pb-fsb-bgs'
+        memory: 1024
+        queue-memory: 1024
+        cli-memory: 512
+        runtime: 'php-7.4:al2'
+        database: 'pb-pdd-db'
+        cache: 'pb-pdd-cache'
+        build:
+            - 'COMPOSER_MIRROR_PATH_REPOS=1 composer install'
+            - 'php artisan event:cache'
+            - 'npm ci && npm run dev && rm -rf node_modules'
+        deploy:
+            - 'php artisan migrate'
