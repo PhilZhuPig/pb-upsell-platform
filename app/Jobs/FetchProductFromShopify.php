@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\UpsellRockProduct;
+use App\Models\UpsellRockVariant;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -78,6 +79,19 @@ class FetchProductFromShopify implements ShouldQueue
                 'shopify_response' => $product
             ]);
             $upsell_product->increment('times');
+
+            // update or create variant
+            foreach ($variants as $variant) {
+                $upsell_variant = UpsellRockVariant::updateOrCreate([
+                    'product_id' => $variant['product_id'],
+                    'variant_id' => $variant['id'],
+
+                ], [
+                    'price' => $variant['price'] * 100,
+                    'shopify_response' => $variant
+                ]);
+                $upsell_variant->increment('times');
+            }
         }
         if (count($products) >= 50) {
             FetchProductFromShopify::dispatch($this->user, $next_id);

@@ -278,12 +278,12 @@ function cancel() {
     // default
     var close_action = upsellRockSetting.close_action;
     if (close_action == "") {
-        addVariantToCart(g_variant).then(res => {
+        submitOriginalCart().then(res => {
             var iframe = document.getElementById('ant-upsell-rock-iframe');
             iframe.style.display = "none";
         });
     } else if (close_action == 'redirect_to_cart') {
-        addVariantToCart(g_variant).then(res => {
+        submitOriginalCart().then(res => {
             var iframe = document.getElementById('ant-upsell-rock-iframe');
             iframe.style.display = "none";
             if (upsellWithDiscount) {
@@ -293,7 +293,7 @@ function cancel() {
             }
         });
     } else if (close_action == 'redirect_to_checkout') {
-        addVariantToCart(g_variant).then(res => {
+        submitOriginalCart().then(res => {
             var iframe = document.getElementById('ant-upsell-rock-iframe');
             iframe.style.display = "none";
             if (upsellWithDiscount) {
@@ -303,7 +303,7 @@ function cancel() {
             }
         });
     } else if (close_action == 'close') {
-        addVariantToCart(g_variant).then(res => {
+        submitOriginalCart().then(res => {
             var iframe = document.getElementById('ant-upsell-rock-iframe');
             iframe.style.display = "none";
         });
@@ -315,12 +315,12 @@ function proceed() {
     // default
     var continue_action = upsellRockSetting.continue_action;
     if (continue_action == "") {
-        addVariantToCart(g_variant).then(res => {
+        submitOriginalCart().then(res => {
             var iframe = document.getElementById('ant-upsell-rock-iframe');
             iframe.style.display = "none";
         });
     } else if (continue_action == 'redirect_to_cart') {
-        addVariantToCart(g_variant).then(res => {
+        submitOriginalCart().then(res => {
             var iframe = document.getElementById('ant-upsell-rock-iframe');
             iframe.style.display = "none";
             if (upsellWithDiscount) {
@@ -330,7 +330,7 @@ function proceed() {
             }
         });
     } else if (continue_action == 'redirect_to_checkout') {
-        addVariantToCart(g_variant).then(res => {
+        submitOriginalCart().then(res => {
             var iframe = document.getElementById('ant-upsell-rock-iframe');
             iframe.style.display = "none";
             if (upsellWithDiscount) {
@@ -340,11 +340,23 @@ function proceed() {
             }
         });
     } else if (continue_action == 'close') {
-        addVariantToCart(g_variant).then(res => {
+        submitOriginalCart().then(res => {
             var iframe = document.getElementById('ant-upsell-rock-iframe');
             iframe.style.display = "none";
         });
     }
+}
+
+async function submitOriginalCart() {
+    let addToCartForm = document.querySelector('form[action="/cart/add"]');
+    let formData = new FormData(addToCartForm);
+
+    var res = await fetch('/cart/add.js', {
+        method: 'POST',
+        body: formData
+    });
+    var json = await res.json();
+    return json;
 }
 
 function addClick(product, variant) {

@@ -21,6 +21,7 @@ class CreateUpsellRockDisplayConditionsTable extends Migration
             $table->unsignedBigInteger('collection_id')->nullable();
             $table->unsignedBigInteger('product_id')->nullable();
             $table->unsignedBigInteger('product_variant_id')->nullable();
+            $table->unsignedInteger('variant_price')->nullable();
             $table->timestamps();
         });
     }

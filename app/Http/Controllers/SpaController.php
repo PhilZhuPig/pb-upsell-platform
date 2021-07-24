@@ -13,6 +13,7 @@ use App\Models\UpsellRockPriceRule;
 use App\Models\UpsellRockProduct;
 use App\Models\UpsellRockSetting;
 use App\Models\UpsellRockTrack;
+use App\Models\UpsellRockVariant;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -142,7 +143,15 @@ class SpaController extends Controller
 
     public function upsell(Request $request, $id)
     {
-        return UpsellRock::with('conditions')->find($id);
+        $upsellRock = UpsellRock::find($id);
+        if ($upsellRock->display_for_type == UpsellRock::DISPLAY_FOR_TYPE_SPECIFIC_COLLECTIONS) {
+            $upsellRock['conditions'] = [
+                UpsellRockDisplayCondition::where('upsell_rock_id', $id)->first()
+            ];
+        } else {
+            $upsellRock['conditions'] = UpsellRockDisplayCondition::where('upsell_rock_id', $id)->get();
+        }
+        return $upsellRock;
     }
 
     public function disable_upsell(Request $request)
@@ -244,18 +253,44 @@ class SpaController extends Controller
         UpsellRockDisplayCondition::where('user_id', $user->id)->where('upsell_rock_id', $id)->delete();
         $new_conditions = $request->get('conditions');
         foreach ($new_conditions as $condition) {
-            // build the hit table
-            if (isset($condition['collection_id']) && $condition['collection_id'] > 0) {
-                FetchCpvFromShopify::dispatch($user, $condition['collection_id']);
+            // build the collection hit table
+            if ($condition['type'] == 'specific-collections' && $condition['collection_id'] > 0) {
+                $products = $user->api()->rest(
+                    'GET',
+                    "/admin/collections/" . $condition['collection_id'] . "/products.json",
+                    [
+                        'limit' => 250
+                    ]
+                )['body']['products'];
+
+                if (gettype($products) === 'string') {
+                    throw new Exception("can not get collection's products", 500);
+                }
+                foreach ($products as $product) {
+                    $vs = UpsellRockVariant::where('product_id', $product['id'])->get();
+                    foreach ($vs as $variant) {
+                        UpsellRockDisplayCondition::create([
+                            'user_id' => $user->id,
+                            'upsell_rock_id' => $id,
+                            'type' => $condition['type'],
+                            'collection_id' => $condition['collection_id'],
+                            'product_id' => $product['id'],
+                            'product_variant_id' => $variant->variant_id,
+                            'variant_price' => $variant->price
+                        ]);
+                    }
+                }
+            } else if ($condition['type'] == 'specific-products' && $condition['product_id'] > 0) {
+                $variant = UpsellRockVariant::where('variant_id', $condition['product_variant_id'])->first();
+                UpsellRockDisplayCondition::create([
+                    'user_id' => $user->id,
+                    'upsell_rock_id' => $id,
+                    'type' => $condition['type'],
+                    'product_id' => isset($condition['product_id']) ? $condition['product_id'] : null,
+                    'product_variant_id' => isset($condition['product_variant_id']) ? $condition['product_variant_id'] : null,
+                    'variant_price' => $variant ? $variant->price : null
+                ]);
             }
-            UpsellRockDisplayCondition::create([
-                'user_id' => $user->id,
-                'upsell_rock_id' => $id,
-                'type' => $condition['type'],
-                'collection_id' => isset($condition['collection_id']) ? $condition['collection_id'] : null,
-                'product_id' => isset($condition['product_id']) ? $condition['product_id'] : null,
-                'product_variant_id' => isset($condition['product_variant_id']) ? $condition['product_variant_id'] : null
-            ]);
         }
         unset($data['conditions']);
         if ($data['display_for_type'] === UpsellRock::DISPLAY_FOR_TYPE_ALL) {
@@ -329,7 +364,17 @@ class SpaController extends Controller
         $data['shopify_product_id'] = count($data['shopify_product_id']) == 1 ? $data['shopify_product_id'][0] : null;
 
         $upsell->update($data);
-        return  UpsellRock::with('conditions')->find($id);
+
+        // return current upsell
+        $upsellRock = UpsellRock::find($id);
+        if ($upsellRock->display_for_type == UpsellRock::DISPLAY_FOR_TYPE_SPECIFIC_COLLECTIONS) {
+            $upsellRock['conditions'] = [
+                UpsellRockDisplayCondition::where('upsell_rock_id', $id)->first()
+            ];
+        } else {
+            $upsellRock['conditions'] = UpsellRockDisplayCondition::where('upsell_rock_id', $id)->get();
+        }
+        return $upsellRock;
     }
 
     function generateRandomString($length = 6)

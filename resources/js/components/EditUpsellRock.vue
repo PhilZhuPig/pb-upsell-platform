@@ -1205,11 +1205,8 @@ export default {
       }
     },
     displayForTypeChanged() {
-      if (this.form.display_for_type === this.upsell.display_for_type) {
-        this.form.conditions = this.upsell.conditions;
-      } else {
-        this.form.conditions = [];
-      }
+      console.log("displayForTypeChanged");
+      this.form.conditions = [];
     },
     removeCondition(product_id, variant_id) {
       console.log("removeCondition:p_id=" + product_id + " v_id:" + variant_id);
