@@ -206,7 +206,8 @@ class SpaController extends Controller
                         ],
                         'variants' => [
                             [
-                                'price' => $data['price'] / 100
+                                'price' => $data['price'] / 100,
+                                'option1' => $data['headline'],
                             ]
                         ]
                     ]
@@ -230,6 +231,7 @@ class SpaController extends Controller
                         'variants' => [
                             [
                                 'id' => $upsell->shopify_product_variant_id,
+                                'option1' => $data['headline'],
                                 'price' => $data['price'] / 100
                             ]
                         ]

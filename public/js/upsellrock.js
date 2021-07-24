@@ -379,6 +379,16 @@ function addClick(product, variant) {
             if (select) {
                 select.disabled = true;
             }
+            // add animation to image product
+            var image = contentDocument.getElementById('image-' + product);
+            var aminationHtml = '<span id="animation-' + product + '" class="flex h-3 w-3 absolute" style="top:-5px;right:-5px;">\
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" ></span>\
+                                    <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500">\
+                                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>\
+                                    </span>\
+                                </span>\
+                                ';
+            image.innerHTML += aminationHtml;
         })
     });
 }
@@ -408,6 +418,9 @@ function removeClick(product, variant) {
         if (select) {
             select.disabled = false;
         }
+        // remove animation
+        var animation = contentDocument.getElementById('animation-' + product);
+        animation.parentNode.removeChild(animation);
     })
 }
 
@@ -540,13 +553,13 @@ function buildPopupWithHtml() {
     upsells.forEach((upsell, index) => {
         if (upsell.shopify_product) {
             upsellProductsHtml += '\
-            <div class="ml-9 border-l border-gray-300 flex relative px-4 pb-2 '+ (index === 0 ? 'pt-4' : 'pt-2') + '">\
+            <div class="ml-9 border-l border-gray-300 flex relative px-4 '+ (index === (upsells.length - 1) ? 'pb-6 ' : 'pb-4 ') + (index === 0 ? 'pt-6' : 'pt-4') + '">\
                 <div class="absolute rounded-xl border-b border-gray-300" style="left:-1px;top:-20px;height:60px;width:40px;"></div>\
-                <div style="width:64px;height:64px;z-index:10">\
+                <div id="image-'+ upsell.product + '" class="relative" style="width:64px;height:64px;z-index:10">\
                     <img class="bg-white" style="width:64px;height:64px;" src="'+ upsell.shopify_product.featured_image + '"/>\
                 </div>\
                 <div class="ml-2 flex-1 flex flex-col justify-between">\
-                    <div class="text-gray-800">'+ upsell.shopify_product.title + '</div>\
+                    <div class="text-gray-800">'+ (upsell.type === 'custom-service' ? upsell.headline : upsell.shopify_product.title) + '</div>\
                     '+ (upsell.apply_discount ? buildDiscountPrice(upsell) : buildNormalPrice(upsell)) + '\
                     '+ (upsell.short_description.length > 0 ? '<div class="text-gray-500 text-sm font-light">' + upsell.short_description + '</div>' : '') + '\
                     '+ ((upsell.variants && upsell.variants.length > 0) ? '<div class="w-auto">\
@@ -585,8 +598,10 @@ function buildPopupWithHtml() {
                                         <div class="relative">\
                                             <img id="product-image" src="'+ currentProduct.featured_image + '" class="object-cover" style="width:64px;height:64px;">\
                                             <span class="flex h-3 w-3 absolute" style="top:-5px;right:-5px;">\
-                                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75" ></span>\
-                                                <span class="relative inline-flex rounded-full h-3 w-3 bg-purple-500"></span>\
+                                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" ></span>\
+                                                <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500">\
+                                                    <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>\
+                                                </span>\
                                             </span>\
                                         </div>\
                                         <div class="ml-3 flex flex-col justify-between py-1">\
