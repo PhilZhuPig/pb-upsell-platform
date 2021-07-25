@@ -266,6 +266,40 @@
         </div>
       </div>
 
+      <!-- App sessions -->
+      <div class="flex flex-col rounded shadow bg-white p-6 mt-6">
+        <div class="flex items-center">
+          <div class="text-gray-500">
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </div>
+          <div class="flex-1 font-medium ml-4">Sessions</div>
+        </div>
+        <div
+          class="font-light text-gray-500 text-sm mt-4"
+        >Your plan has {{getPlanSessionCount()}} session usage per month, session count will be reset to 0 at very first day of the month.</div>
+        <div
+          :class="`grid ${user.plan_id>0?'grid-cols-3':'grid-cols-4'} mt-3 rounded border border-gray-300`"
+        >
+          <plan-free :plan_id="user.plan_id" :sessions="sessions"></plan-free>
+          <plan-2000 :plan_id="user.plan_id" :sessions="sessions"></plan-2000>
+          <plan-5000 :plan_id="user.plan_id" :sessions="sessions"></plan-5000>
+          <plan-unlimited :plan_id="user.plan_id" :sessions="sessions"></plan-unlimited>
+        </div>
+      </div>
+
       <!-- App clicks -->
       <div class="flex flex-col rounded shadow bg-white p-6 mt-6">
         <div class="flex items-center">
@@ -419,8 +453,20 @@ use([
   LegendComponent
 ]);
 
+import PlanFree from "./PlanFree.vue";
+import Plan2000 from "./Plan2000.vue";
+import Plan5000 from "./Plan5000.vue";
+import PlanUnlimited from "./PlanUnlimited.vue";
+
 export default {
-  components: { DatePicker, VChart },
+  components: {
+    DatePicker,
+    VChart,
+    PlanFree,
+    Plan2000,
+    Plan5000,
+    PlanUnlimited
+  },
   data() {
     return {
       views_range: [],
@@ -452,6 +498,7 @@ export default {
       user: state => state.upsellrock.user,
       currencies: state => state.upsellrock.currencies,
       views: state => state.upsellrock.views,
+      sessions: state => state.upsellrock.sessions,
       statistics: state => state.upsellrock.statistics
     }),
     shopCurrencySymbol() {
@@ -480,6 +527,7 @@ export default {
     }
 
     this.rangeChanged();
+    this.getSessions();
   },
   methods: {
     rangeChanged() {
@@ -532,6 +580,23 @@ export default {
             this.option.series[0].data.push(parseInt(view.cc));
           });
         });
+    },
+    getSessions() {
+      axios.get("/spa/sessions").then(res => {
+        this.$store.commit("upsellrock/SET_SESSIONS", { sessions: res.data });
+        console.log(res.data);
+      });
+    },
+    getPlanSessionCount() {
+      if (this.user.plan_id === "" || this.user.plan_id === null) {
+        return 200;
+      } else if (this.user.plan_id === 7) {
+        return 2000;
+      } else if (this.user.plan_id === 8) {
+        return 5000;
+      } else if (this.user.plan_id === 9) {
+        return "Unlimited";
+      }
     },
     gotoCCA() {
       window

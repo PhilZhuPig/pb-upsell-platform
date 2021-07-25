@@ -19,8 +19,9 @@ class CreateUpsellRockTracksTable extends Migration
             $table->string('cart_token');
             $table->string('event_type');
             $table->string('upsell_rocks');
+            $table->string('ip')->nullable();
             $table->text('data')->nullable();
-            $table->unsignedBigInteger('stats_at');
+            $table->unsignedBigInteger('stats_at')->nullable();
             $table->timestamps();
         });
     }

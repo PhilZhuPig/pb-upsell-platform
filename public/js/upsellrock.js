@@ -17,7 +17,7 @@ setTimeout(() => {
     // custom css & custom js
     var customStyle = document.createElement('style');
     customStyle.type = "text/css";
-    customStyle.textContent = "select:disabled{color:#888;background:#fefefe;}" + upsellRockSetting.custom_css;
+    customStyle.textContent = "input:disabled,select:disabled{color:#888 !important;background:#fefefe !important;}" + upsellRockSetting.custom_css;
     head.appendChild(customStyle);
     var customScript = document.createElement('script');
     customScript.textContent = upsellRockSetting.custom_js;
@@ -364,8 +364,15 @@ function addClick(product, variant) {
     // find the upsell
     var upsell = upsells.find(up => up.product == product)
     console.log(upsell);
+    // get the note
+    var note = "";
+    if (upsell.show_note_field) {
+        var iframe = document.getElementById('ant-upsell-rock-iframe');
+        var contentDocument = iframe.contentDocument;
+        note = contentDocument.getElementById('note-' + product).value;
+    }
     // add variant to cart
-    addVariantToCart(variant, 1).then(res => {
+    addVariantToCart(variant, 1, note).then(res => {
         updateUpsellRockAttribute().then(response => {
             // use discount code
             if (upsell.apply_discount) {
@@ -382,7 +389,7 @@ function addClick(product, variant) {
             add.parentNode.replaceChild(new_element, add);
             var add = contentDocument.getElementById('add-' + product);
             add.innerHTML = upsellRockSetting.added_to_cart;
-            add.style.backgroundColor = '#888888';
+            add.style.opacity = .75;
             // show the x btn for removing variant just added
             var remove = contentDocument.getElementById('remove-' + product);
             remove.classList.remove('hidden');
@@ -390,6 +397,11 @@ function addClick(product, variant) {
             var select = contentDocument.getElementById('select-' + product);
             if (select) {
                 select.disabled = true;
+            }
+            // disable note
+            var note = contentDocument.getElementById('note-' + product);
+            if (note) {
+                note.disabled = true;
             }
             // add animation to image product
             var image = contentDocument.getElementById('image-' + product);
@@ -417,7 +429,7 @@ function removeClick(product, variant) {
         var add = contentDocument.getElementById('add-' + product);
         add.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>'
             + upsellRockSetting.add_to_cart;
-        add.style.backgroundColor = upsellRockSetting.primary_color;
+        add.style.opacity = 1;
         // add event listener
         add.addEventListener('click', function () {
             addClick(product, variant);
@@ -430,20 +442,37 @@ function removeClick(product, variant) {
         if (select) {
             select.disabled = false;
         }
+        // enable note
+        var note = contentDocument.getElementById('note-' + product);
+        if (note) {
+            note.disabled = false;
+        }
         // remove animation
         var animation = contentDocument.getElementById('animation-' + product);
         animation.parentNode.removeChild(animation);
     })
 }
 
-async function addVariantToCart(variant, quantity) {
+async function addVariantToCart(variant, quantity, note = null) {
+    body = {};
+    if (note) {
+        body = {
+            quantity: quantity,
+            id: variant,
+            properties: {
+                'note': note
+            }
+        }
+    } else {
+        body = {
+            quantity: quantity,
+            id: variant,
+        }
+    }
     var res = await fetch('/cart/add.js', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            quantity: quantity,
-            id: variant,
-        })
+        body: JSON.stringify(body)
     });
     var json = await res.json();
     return json;
@@ -543,6 +572,11 @@ function buildDiscountPrice(upsell) {
     return html;
 }
 
+function buildNoteFieldHtml(upsell) {
+    var html = '<input type="text" style="border:1px solid #ccc;color:#333;" id="note-' + upsell.product + '" class="mt-1 px-3 py-2 block w-44 text-sm bg-white rounded-sm">'
+    return html;
+}
+
 function buildPopupWithHtml() {
     // check max popup session views
     var sessionViews = parseInt(window.localStorage.getItem('sessionViews'));
@@ -574,6 +608,7 @@ function buildPopupWithHtml() {
                     <div class="text-gray-800">'+ (upsell.type === 'custom-service' ? upsell.headline : upsell.shopify_product.title) + '</div>\
                     '+ (upsell.apply_discount ? buildDiscountPrice(upsell) : buildNormalPrice(upsell)) + '\
                     '+ (upsell.short_description.length > 0 ? '<div class="text-gray-500 text-sm font-light">' + upsell.short_description + '</div>' : '') + '\
+                    '+ (upsell.show_note_field ? buildNoteFieldHtml(upsell) : '') + '\
                     '+ ((upsell.variants && upsell.variants.length > 0) ? '<div class="w-auto">\
                         <select id="select-'+ upsell.product + '" data-product="' + upsell.product + '" value="' + upsell.variants[0] + '" class="mt-1 block w-auto py-2 px-3 border border-gray-300 bg-white focus:outline-none focus:ring-gray-700 focus:border-gray-700 sm:text-sm"">\
                             '+ buildSelectVariantsHtml(upsell) + '\

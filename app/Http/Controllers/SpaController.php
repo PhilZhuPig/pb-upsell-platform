@@ -198,7 +198,7 @@ class SpaController extends Controller
         // custom service price
         if ($data['type'] == UpsellRock::TYPE_CUSTOM_SERVICE && $data['price'] <= 0 && empty($data['product_name'])) {
             throw new Exception('custom service need product name & price', 500);
-        } else {
+        } else if ($data['type'] == UpsellRock::TYPE_CUSTOM_SERVICE) {
             $data['price'] = intval($data['price'] * 100);
             // create product
             if (empty($data['shopify_product_id'])) {
@@ -486,6 +486,17 @@ class SpaController extends Controller
             'transactions_count' => $transactions_count,
             'sales' => $sales
         ];
+    }
+
+    public function sessions(Request $request)
+    {
+        $user = Auth::user();
+        $sessions = UpsellRockTrack::select(DB::raw('cart_token as session, count(cart_token) as session_count'))
+            ->where('user_id', $user->id)
+            ->where('created_at', '>=', date('Y-m-01 00:00:00'))
+            ->orderByDesc('session_count')
+            ->groupBy('session')->get()->toArray();
+        return $sessions;
     }
 
     public function views(Request $request)

@@ -13,6 +13,6 @@ class UpsellRockDisplayCondition extends Model
 
     public function upsell()
     {
-        return $this->belongsTo(UpsellRock::class);
+        return $this->belongsTo(UpsellRock::class, 'upsell_rock_id');
     }
 }

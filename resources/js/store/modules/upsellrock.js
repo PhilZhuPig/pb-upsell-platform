@@ -10,6 +10,7 @@ var state = {
     smart_collections: [],
     local_collections: [],
     views: [],
+    sessions: [],
     statistics: {}
 }
 
@@ -53,6 +54,9 @@ var mutations = {
     },
     SET_VIEWS(state, { views }) {
         state.views = views;
+    },
+    SET_SESSIONS(state, { sessions }) {
+        state.sessions = sessions;
     },
     SET_STATISTICS(state, { statistics }) {
         state.statistics = statistics

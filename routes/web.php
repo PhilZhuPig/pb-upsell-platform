@@ -42,6 +42,7 @@ Route::put('/spa/setting', [SpaController::class, "updateSetting"])->middleware(
 
 
 Route::get('/spa/views', [SpaController::class, "views"])->middleware(['verify.shopify']);
+Route::get('/spa/sessions', [SpaController::class, "sessions"])->middleware(['verify.shopify']);
 Route::get('/spa/statistics', [SpaController::class, "statistics"])->middleware(['verify.shopify']);
 Route::get('/spa/upsell_with_tracks', [SpaController::class, "upsellWithTracks"])->middleware(['verify.shopify']);
 
