@@ -38,7 +38,7 @@ class CreateUpsellRocksTable extends Migration
             $table->string('short_description')->default('')->comment('用户添加的简短说明');
             $table->boolean('show_note_field')->default(false)->comment('给买家填写的输入框');
             $table->boolean('hide_upsell_product_already_in_cart')->default(false)->comment('字面意思');
-            $table->boolean('match_product_quantity')->default(true)->comment('true:去掉用户原本要添加的数量');
+            $table->boolean('match_parent_quantity')->default(true)->comment('true:和parent产品数量一致');
             $table->boolean('enable_quantity_selector')->default(true)->comment('数量选择器');
             $table->string('price_type')->default('all')->comment('all, range');
             $table->string('minimum_price')->nullable()->comment('when price_type is range,当商品价格大于该值显示upsell');

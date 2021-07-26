@@ -1,6 +1,6 @@
 console.log('%c 🐜 ant upsell rock is ready! ', 'background: #222; color: #bada55');
 // fetch the cart
-fetch('/cart.js').then(res => { return res.json(); }).then(json => { cartInfo = json; console.log(json); });
+fetch('/cart.js').then(res => { return res.json(); }).then(json => { cartInfo = json; modiCartInfo = json; console.log(json); });
 // add iframe
 var iframe = document.createElement('iframe');
 setTimeout(() => {
@@ -36,6 +36,22 @@ if (!sessionViews && upsellRockSetting.max_popup_session_views > 0) {
 } else if (upsellRockSetting.max_popup_session_views == 0) {
     window.localStorage.removeItem('sessionViews');
 }
+// set local currency
+var upsellRockLocalCurrency = window.localStorage.getItem('upsellRockLocalCurrency');
+if (!upsellRockLocalCurrency) {
+    fetch(upsellRockBaseUrl + "/ip?shop=" + upsellRockShopDomain).then(response => {
+        return response.json();
+    }).then(json => {
+        if (json.geoplugin_currencyCode) {
+            upsellRockLocalCurrency = json.geoplugin_currencyCode;
+            window.localStorage.setItem('upsellRockLocalCurrency', json.geoplugin_currencyCode)
+        } else {
+            upsellRockLocalCurrency = shopCurrency;
+            window.localStorage.setItem('upsellRockLocalCurrency', shopCurrency)
+        }
+    })
+}
+
 
 var g_variant = 0;
 updateGVariant();
@@ -86,7 +102,16 @@ function updateGVariant() {
 }
 
 function getCurrencySymbol(currency) {
-    var hitCurrency = currencies.find(c => c.currency === currency);
+    var toC = currency;
+    // 是否启用了自动转换, 是否启用了Ant Currency Converter
+    var antiCurrencyWidget = window.localStorage.getItem('antiCurrencyWidget');
+    if (upsellRockSetting.auto_conversion && !antiCurrencyWidget && upsellRockLocalCurrency) {
+        toC = upsellRockLocalCurrency
+    }
+    if (upsellRockSetting.auto_conversion && antiCurrencyWidget) {
+        toC = antiCurrencyWidget
+    }
+    var hitCurrency = currencies.find(c => c.currency === toC);
     if (hitCurrency) {
         return hitCurrency.currency_symbol
     }
@@ -121,7 +146,7 @@ function trackView() {
     fetch(upsellRockBaseUrl + '/track', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+        'body': JSON.stringify({
             'shop': upsellRockShopDomain,
             'cart_token': cartInfo.token,
             'event_type': 'view',
@@ -140,7 +165,7 @@ function trackAddToCart(upsell_id, variant_id, parent_product, quantity) {
     fetch(upsellRockBaseUrl + '/track', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+        'body': JSON.stringify({
             'shop': upsellRockShopDomain,
             'cart_token': cartInfo.token,
             'event_type': 'add_to_cart',
@@ -163,7 +188,7 @@ function trackRemoveFromCart(upsell_id) {
     fetch(upsellRockBaseUrl + '/track', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+        'body': JSON.stringify({
             'shop': upsellRockShopDomain,
             'cart_token': cartInfo.token,
             'event_type': 'remove_from_cart',
@@ -353,17 +378,14 @@ async function submitOriginalCart() {
 
     var res = await fetch('/cart/add.js', {
         method: 'POST',
-        body: formData
+        'body': formData
     });
     var json = await res.json();
     return json;
 }
 
-function addClick(product, variant) {
+function addClick(upsell, product, variant) {
     console.log('product=' + product + " variant=" + variant);
-    // find the upsell
-    var upsell = upsells.find(up => up.product == product)
-    console.log(upsell);
     // get the note
     var note = "";
     if (upsell.show_note_field) {
@@ -371,8 +393,34 @@ function addClick(product, variant) {
         var contentDocument = iframe.contentDocument;
         note = contentDocument.getElementById('note-' + product).value;
     }
-    // add variant to cart
-    addVariantToCart(variant, 1, note).then(res => {
+    var quantity = 1;
+    if (upsell.enable_quantity_selector) {
+        var iframe = document.getElementById('ant-upsell-rock-iframe');
+        var contentDocument = iframe.contentDocument;
+        quantity = contentDocument.getElementById('selector-' + product).value;
+    }
+    if (upsell.remove_parent_product_when_upsell_product_is_added) {
+        console.log('remove_parent_product_when_upsell_product_is_added');
+        var originalProducts = cartInfo.items.filter((item) => item.product_id === product);
+        if (originalProducts && originalProducts.length > 0) {
+            originalProducts.forEach(item => {
+                removeVariantFromCart(item.id).then(res => {
+                    afterFilterAddVariantToCart(upsell, product, variant, quantity, note);
+                });
+            })
+        } else {
+            afterFilterAddVariantToCart(upsell, product, variant, quantity, note);
+        }
+    } else {
+        afterFilterAddVariantToCart(upsell, product, variant, quantity, note);
+    }
+}
+
+function afterFilterAddVariantToCart(upsell, product, variant, quantity, note) {
+    addVariantToCart(variant, quantity, note).then(res => {
+        console.log('addVariantToCart' + JSON.stringify(res));
+
+        fetch('/cart.js').then(res => { return res.json(); }).then(json => { modiCartInfo = json; });
         updateUpsellRockAttribute().then(response => {
             // use discount code
             if (upsell.apply_discount) {
@@ -388,7 +436,11 @@ function addClick(product, variant) {
             var new_element = add.cloneNode(true);
             add.parentNode.replaceChild(new_element, add);
             var add = contentDocument.getElementById('add-' + product);
-            add.innerHTML = upsellRockSetting.added_to_cart;
+            if (upsell.is_upgrade) {
+                add.innerHTML = upsellRockSetting.upgraded;
+            } else {
+                add.innerHTML = upsellRockSetting.added_to_cart;
+            }
             add.style.opacity = .75;
             // show the x btn for removing variant just added
             var remove = contentDocument.getElementById('remove-' + product);
@@ -402,6 +454,11 @@ function addClick(product, variant) {
             var note = contentDocument.getElementById('note-' + product);
             if (note) {
                 note.disabled = true;
+            }
+            // disable selector
+            var selector = contentDocument.getElementById('selector-' + product);
+            if (selector) {
+                selector.disabled = true;
             }
             // add animation to image product
             var image = contentDocument.getElementById('image-' + product);
@@ -417,22 +474,32 @@ function addClick(product, variant) {
     });
 }
 
-function removeClick(product, variant) {
+function removeClick(upsell, product, variant) {
     console.log('addRemove product=' + product + ' variant=' + variant);
-    // find the upsell
-    var upsell = upsells.find(up => up.product == product);
-    removeVariantFromCart(variant).then(res => {
+    var quantity = 0;
+    // 查看原来购物车中的数量
+    var originalVariant = cartInfo.items.find((item) => item.product_id === product && item.variant_id === variant);
+    if (originalVariant) {
+        quantity = originalVariant.quantity
+    }
+    removeVariantFromCart(variant, quantity).then(res => {
+        fetch('/cart.js').then(res => { return res.json(); }).then(json => { modiCartInfo = json; });
         trackRemoveFromCart(upsell.id);
         // modify the style
         var iframe = document.getElementById('ant-upsell-rock-iframe');
         var contentDocument = iframe.contentDocument;
         var add = contentDocument.getElementById('add-' + product);
-        add.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>'
-            + upsellRockSetting.add_to_cart;
+        if (upsell.is_upgrade) {
+            add.innerHTML = '<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>'
+                + upsellRockSetting.upgrade;
+        } else {
+            add.innerHTML = '<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>'
+                + upsellRockSetting.add_to_cart;
+        }
         add.style.opacity = 1;
         // add event listener
         add.addEventListener('click', function () {
-            addClick(product, variant);
+            addClick(upsell, product, variant);
         });
         // hide the x btn
         var remove = contentDocument.getElementById('remove-' + product);
@@ -447,6 +514,11 @@ function removeClick(product, variant) {
         if (note) {
             note.disabled = false;
         }
+        // enable selector
+        var selector = contentDocument.getElementById('selector-' + product);
+        if (selector) {
+            selector.disabled = false;
+        }
         // remove animation
         var animation = contentDocument.getElementById('animation-' + product);
         animation.parentNode.removeChild(animation);
@@ -454,7 +526,7 @@ function removeClick(product, variant) {
 }
 
 async function addVariantToCart(variant, quantity, note = null) {
-    body = {};
+    var body = {};
     if (note) {
         body = {
             quantity: quantity,
@@ -472,7 +544,7 @@ async function addVariantToCart(variant, quantity, note = null) {
     var res = await fetch('/cart/add.js', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
+        'body': JSON.stringify(body)
     });
     var json = await res.json();
     return json;
@@ -482,7 +554,7 @@ async function removeVariantFromCart(variant, quantity = 0) {
     var res = await fetch('/cart/change.js', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+        'body': JSON.stringify({
             quantity: quantity,
             id: variant + '',
         })
@@ -495,7 +567,7 @@ async function updateUpsellRockAttribute() {
     var res = await fetch('/cart/update.js', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+        'body': JSON.stringify({
             attributes: {
                 antupsellrock_token: cartInfo.token
             }
@@ -531,6 +603,15 @@ function buildNormalPrice(upsell) {
         var variant0 = upsell.shopify_product.variants.find(v => v.id == v0);
         price = Number(variant0.price / 100).toFixed(2)
     }
+    // 是否启用了自动转换, 是否启用了Ant Currency Converter
+    var antiCurrencyWidget = window.localStorage.getItem('antiCurrencyWidget');
+    if (upsellRockSetting.auto_conversion && !antiCurrencyWidget && upsellRockLocalCurrency) {
+        price = Currency.convert(price, shopCurrency, upsellRockLocalCurrency);
+    }
+    if (upsellRockSetting.auto_conversion && antiCurrencyWidget) {
+        price = Currency.convert(price, shopCurrency, antiCurrencyWidget);
+    }
+    price = Number(price).toFixed(2);
     var html = '';
     html += '<div class="text-gray-800 text-sm font-light flex">\
                 '+ getCurrencySymbol(shopCurrency) + price + '\
@@ -564,6 +645,18 @@ function buildDiscountPrice(upsell) {
             discountPrice = Number(variant0.price / 100 - upsell.amount).toFixed(2);
         }
     }
+    // 是否启用了自动转换, 是否启用了Ant Currency Converter
+    var antiCurrencyWidget = window.localStorage.getItem('antiCurrencyWidget');
+    if (upsellRockSetting.auto_conversion && !antiCurrencyWidget && upsellRockLocalCurrency) {
+        price = Currency.convert(price, shopCurrency, upsellRockLocalCurrency);
+        discountPrice = Currency.convert(discountPrice, shopCurrency, upsellRockLocalCurrency)
+    }
+    if (upsellRockSetting.auto_conversion && antiCurrencyWidget) {
+        price = Currency.convert(price, shopCurrency, antiCurrencyWidget);
+        discountPrice = Currency.convert(discountPrice, shopCurrency, antiCurrencyWidget)
+    }
+    price = Number(price).toFixed(2);
+    discountPrice = Number(discountPrice).toFixed(2)
     html += '<div class="text-gray-800 text-sm font-light flex">\
                 <div id="normal-price-'+ upsell.product + '" class="text-gray-500 line-through">' + getCurrencySymbol(shopCurrency) + price + '</div>\
                 <div id="discount-price-'+ upsell.product + '" class="ml-1">' + getCurrencySymbol(shopCurrency) + discountPrice + '</div>\
@@ -572,10 +665,52 @@ function buildDiscountPrice(upsell) {
     return html;
 }
 
+function buildLocationPrice(price) {
+    // 是否启用了自动转换, 是否启用了Ant Currency Converter
+    var antiCurrencyWidget = window.localStorage.getItem('antiCurrencyWidget');
+    if (upsellRockSetting.auto_conversion && !antiCurrencyWidget && upsellRockLocalCurrency) {
+        price = Currency.convert(price, shopCurrency, upsellRockLocalCurrency);
+    }
+    if (upsellRockSetting.auto_conversion && antiCurrencyWidget) {
+        price = Currency.convert(price, shopCurrency, antiCurrencyWidget);
+    }
+    price = Number(price).toFixed(2);
+    return price;
+}
+
 function buildNoteFieldHtml(upsell) {
-    var html = '<input type="text" style="border:1px solid #ccc;color:#333;" id="note-' + upsell.product + '" class="mt-1 px-3 py-2 block w-44 text-sm bg-white rounded-sm">'
+    var html = '<input type="text" style="color:#333;" id="note-' + upsell.product + '" class="mt-1 px-3 py-2 block w-44 text-sm shadow-sm bg-white rounded-sm border border-gray-300 focus:border-gray-700 focus:ring-white focus:outline-none">'
     return html;
 }
+
+function buildSelectorFieldHtml(upsell) {
+    var quantity = 1;
+    if (upsell.match_parent_quantity) {
+        let addToCartForm = document.querySelector('form[action="/cart/add"]');
+        let formData = new FormData(addToCartForm);
+        console.log('formData below:');
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+            if (pair[0] === 'quantity') {
+                quantity = pair[1];
+            }
+        }
+    }
+    var html = '<input type="number" value="' + quantity + '" min="1" oninput="validity.valid||(value=\'1\')" style="color:#333;" id="selector-' + upsell.product + '" class="px-3 py-2 block w-20 text-sm shadow-sm bg-white rounded-sm border border-gray-300 focus:border-gray-700 focus:outline-none">';
+    return html;
+}
+
+function buildAddOrUpgradeBtnHtml(upsell) {
+    var add = '<div id="add-' + upsell.product + '" data-product="' + upsell.product + '" data-variant="' + (upsell.variant > 0 ? upsell.variant : upsell.variants[0]) + '" class="ml-2 flex items-center w-auto px-4 py-2 text-white text-sm font-medium rounded-sm cursor-pointer" style="background-color:' + upsellRockSetting.primary_color + '"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>' + upsellRockSetting.add_to_cart + '</div>\
+                    '
+    var upgrade = '<div id="add-' + upsell.product + '" data-product="' + upsell.product + '" data-variant="' + (upsell.variant > 0 ? upsell.variant : upsell.variants[0]) + '" class="ml-2 flex items-center w-auto px-4 py-2 text-white text-sm font-medium rounded-sm cursor-pointer" style="background-color:' + upsellRockSetting.primary_color + '"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>' + upsellRockSetting.upgrade + '</div>\
+                    '
+    if (upsell.is_upgrade) {
+        return upgrade;
+    }
+    return add;
+}
+
 
 function buildPopupWithHtml() {
     // check max popup session views
@@ -597,7 +732,9 @@ function buildPopupWithHtml() {
     var body = contentDocument.body;
     var upsellProductsHtml = '';
     upsells.forEach((upsell, index) => {
-        if (upsell.shopify_product) {
+        var upsellVariantInCart = modiCartInfo.items.find((item) => item.product_id === upsell.product)
+        console.log('upsellVariantInCart:' + upsellVariantInCart);
+        if (upsell.shopify_product && (!upsell.hide_upsell_product_already_in_cart || (upsell.hide_upsell_product_already_in_cart && !upsellVariantInCart))) {
             upsellProductsHtml += '\
             <div class="ml-9 border-l border-gray-300 flex relative px-4 '+ (index === (upsells.length - 1) ? 'pb-6 ' : 'pb-4 ') + (index === 0 ? 'pt-6' : 'pt-4') + '">\
                 <div class="absolute rounded-xl border-b border-gray-300" style="left:-1px;top:-20px;height:60px;width:40px;"></div>\
@@ -616,7 +753,8 @@ function buildPopupWithHtml() {
                     </div>' : '') + '\
                 </div>\
                 <div class="flex items-center">\
-                    <div id="add-'+ upsell.product + '" data-product="' + upsell.product + '" data-variant="' + (upsell.variant > 0 ? upsell.variant : upsell.variants[0]) + '" class="flex items-center w-auto px-4 py-2 text-white text-sm font-medium rounded-sm cursor-pointer" style="background-color:' + upsellRockSetting.primary_color + '"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>' + upsellRockSetting.add_to_cart + '</div>\
+                    '+ (upsell.enable_quantity_selector ? buildSelectorFieldHtml(upsell) : '') + '\
+                    '+ buildAddOrUpgradeBtnHtml(upsell) + '\
                     <div id="remove-'+ upsell.product + '" class="ml-2 cursor-pointer hidden"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></div>\
                 </div>\
             </div>\
@@ -653,7 +791,7 @@ function buildPopupWithHtml() {
                                         </div>\
                                         <div class="ml-3 flex flex-col justify-between py-1">\
                                             <div class="text-gray-800">'+ currentProduct.title + '</div>\
-                                            <div class="text-sm font-light text-gray-800"><span class="money anti-money">'+ getCurrencySymbol(shopCurrency) + Number(currentProduct.price / 100).toFixed(2) + '</span></div>\
+                                            <div class="text-sm font-light text-gray-800"><span class="money anti-money">'+ getCurrencySymbol(shopCurrency) + buildLocationPrice(currentProduct.price / 100) + '</span></div>\
                                         </div>\
                                     </div>\
                                     '+ upsellProductsHtml + '\
@@ -681,63 +819,67 @@ function buildPopupWithHtml() {
 
     // add-product-variant
     upsells.forEach(upsell => {
-        if (upsell.variant > 0) {
-            var add = contentDocument.getElementById('add-' + upsell.product);
-            add.addEventListener('click', function () {
-                addClick(upsell.product, upsell.variant);
-            })
-            var remove = contentDocument.getElementById('remove-' + upsell.product);
-            remove.addEventListener('click', function () {
-                removeClick(upsell.product, upsell.variant);
-            });
-        } else if (upsell.variants && upsell.variants.length > 0) {
-            var select = contentDocument.getElementById('select-' + upsell.product);
-            var add = contentDocument.getElementById('add-' + upsell.product);
-            add.addEventListener('click', function () {
-                addClick(upsell.product, upsell.variants[0]);
-            });
-            var remove = contentDocument.getElementById('remove-' + upsell.product);
-            remove.addEventListener('click', function () {
-                removeClick(upsell.product, upsell.variants[0]);
-            });
-            select.addEventListener('change', function () {
-                // rebind add event
+        var upsellVariantInCart = modiCartInfo.items.find((item) => item.product_id === upsell.product)
+        if (upsell.shopify_product && (!upsell.hide_upsell_product_already_in_cart || (upsell.hide_upsell_product_already_in_cart && !upsellVariantInCart))) {
+            if (upsell.variant > 0) {
                 var add = contentDocument.getElementById('add-' + upsell.product);
-                var new_element = add.cloneNode(true);
-                add.parentNode.replaceChild(new_element, add);
-                var add = contentDocument.getElementById('add-' + upsell.product);
-                add.dataset.variant = select.value;
                 add.addEventListener('click', function () {
-                    addClick(upsell.product, select.value);
-                });
-                // rebind remove event
+                    addClick(upsell, upsell.product, upsell.variant);
+                })
                 var remove = contentDocument.getElementById('remove-' + upsell.product);
-                var new_e = remove.cloneNode(true);
-                remove.parentNode.replaceChild(new_e, remove);
-                remove = contentDocument.getElementById('remove-' + upsell.product);
                 remove.addEventListener('click', function () {
-                    removeClick(upsell.product, select.value);
+                    removeClick(upsell, upsell.product, upsell.variant);
                 });
-                // 修改显示的价格
-                var normalPriceElement = contentDocument.getElementById('normal-price-' + upsell.product);
-                var discountPriceElement = contentDocument.getElementById('discount-price-' + upsell.product);
-                var newVariant = upsell.shopify_product.variants.find(v => v.id == select.value);
-                var newNormalPrice = newVariant.price;
-                var newDiscountPrice = 0;
-                if (upsell.amount_type === 'percentage') {
-                    newDiscountPrice = Number(newNormalPrice * (100 - upsell.amount) / 10000).toFixed(2);
-                } else {
-                    newDiscountPrice = Number(newNormalPrice / 100 - upsell.amount).toFixed(2);
-                }
-                normalPriceElement.innerHTML = getCurrencySymbol(shopCurrency) + Number(newNormalPrice / 100).toFixed(2);
-                discountPriceElement.innerHTML = getCurrencySymbol(shopCurrency) + newDiscountPrice;
-            })
+            } else if (upsell.variants && upsell.variants.length > 0) {
+                var select = contentDocument.getElementById('select-' + upsell.product);
+                var add = contentDocument.getElementById('add-' + upsell.product);
+                add.addEventListener('click', function () {
+                    addClick(upsell, upsell.product, upsell.variants[0]);
+                });
+                var remove = contentDocument.getElementById('remove-' + upsell.product);
+                remove.addEventListener('click', function () {
+                    removeClick(upsell, upsell.product, upsell.variants[0]);
+                });
+                select.addEventListener('change', function () {
+                    // rebind add event
+                    var add = contentDocument.getElementById('add-' + upsell.product);
+                    var new_element = add.cloneNode(true);
+                    add.parentNode.replaceChild(new_element, add);
+                    var add = contentDocument.getElementById('add-' + upsell.product);
+                    add.dataset.variant = select.value;
+                    add.addEventListener('click', function () {
+                        addClick(upsell, upsell.product, select.value);
+                    });
+                    // rebind remove event
+                    var remove = contentDocument.getElementById('remove-' + upsell.product);
+                    var new_e = remove.cloneNode(true);
+                    remove.parentNode.replaceChild(new_e, remove);
+                    remove = contentDocument.getElementById('remove-' + upsell.product);
+                    remove.addEventListener('click', function () {
+                        removeClick(upsell, upsell.product, select.value);
+                    });
+                    // 修改显示的价格
+                    var normalPriceElement = contentDocument.getElementById('normal-price-' + upsell.product);
+                    var discountPriceElement = contentDocument.getElementById('discount-price-' + upsell.product);
+                    var newVariant = upsell.shopify_product.variants.find(v => v.id == select.value);
+                    var newNormalPrice = newVariant.price;
+                    var newDiscountPrice = 0;
+                    if (upsell.amount_type === 'percentage') {
+                        newDiscountPrice = Number(newNormalPrice * (100 - upsell.amount) / 10000).toFixed(2);
+                    } else {
+                        newDiscountPrice = Number(newNormalPrice / 100 - upsell.amount).toFixed(2);
+                    }
+                    normalPriceElement.innerHTML = getCurrencySymbol(shopCurrency) + Number(newNormalPrice / 100).toFixed(2);
+                    discountPriceElement.innerHTML = getCurrencySymbol(shopCurrency) + newDiscountPrice;
+                })
+            }
         }
     })
 
 }
 
 var cartInfo = {};
+var modiCartInfo = {};
 (function (ns, fetch) {
     if (typeof fetch !== 'function') return;
 

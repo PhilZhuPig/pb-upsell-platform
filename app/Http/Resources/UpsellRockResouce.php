@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Models\UpsellRockTrack;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
 
 class UpsellRockResouce extends JsonResource
 {
@@ -14,6 +16,15 @@ class UpsellRockResouce extends JsonResource
      */
     public function toArray($request)
     {
+        // current upsell product has track record?
+        $variants = "";
+        if (!empty($this->shopify_product_variant_id)) {
+            $variants = $this->shopify_product_variant_id;
+        } else {
+            $variants = implode(",", json_decode($this->shopify_product_variants));
+        }
+        $hit_count = DB::select("select count(*) as cc from upsell_rock_tracks where ip=? and upsell_rocks=? and data->'$.variant_id' in (?) and event_type='add_to_cart'", [$request->ip(), $this->id . '', $variants])[0]->cc;
+        info($this->id . ' variant_id=' . $this->shopify_product_variant_id . ' hit_count=' . $hit_count);
         return [
             'id' => $this->id,
             'type' => $this->type,
@@ -26,7 +37,7 @@ class UpsellRockResouce extends JsonResource
             'short_description' => $this->short_description,
             'show_note_field' => (bool)$this->show_note_field,
             'hide_upsell_product_already_in_cart' => (bool)$this->hide_upsell_product_already_in_cart,
-            'match_product_quantity' => (bool)$this->match_product_quantity,
+            'match_parent_quantity' => (bool)$this->match_parent_quantity,
             'enable_quantity_selector' => (bool)$this->enable_quantity_selector,
             'price_type' => $this->price_type,
             'minimum_price' => $this->minimum_price,
@@ -43,6 +54,7 @@ class UpsellRockResouce extends JsonResource
             'product_name' => $this->when($this->type == 'custom-service', $this->product_name),
             'description' => $this->when($this->type == 'custom-service', $this->description),
             'price' => $this->when($this->type == 'custom-service', $this->price),
+            'is_upgrade' => $hit_count > 0 ? true : false
         ];
     }
 }

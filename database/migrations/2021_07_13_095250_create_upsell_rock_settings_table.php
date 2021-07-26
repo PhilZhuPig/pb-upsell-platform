@@ -31,6 +31,7 @@ class CreateUpsellRockSettingsTable extends Migration
             $table->string('close_action')->nullable();
             $table->string('primary_color')->default('#333333');
             $table->string('layout')->default('layout1');
+            $table->boolean('auto_conversion')->default(false);
             $table->timestamps();
         });
     }

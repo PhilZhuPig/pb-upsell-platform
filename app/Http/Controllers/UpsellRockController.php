@@ -9,6 +9,7 @@ use App\Http\Resources\UpsellRockResouce;
 use App\Models\UpsellRockTrack;
 use App\Models\UpsellRockVariant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UpsellRockController extends Controller
 {
@@ -20,6 +21,22 @@ class UpsellRockController extends Controller
         if (empty($shop) || empty($product_id) || empty($variant_id)) return [];
         $user = User::where('name', $shop)->first();
         if (!$user) return [];
+
+        // check plan sessions
+        $track_session_count = UpsellRockTrack::select(DB::raw('cart_token as session, count(cart_token) as session_count'))
+            ->where('user_id', $user->id)
+            ->where('created_at', '>=', date('Y-m-01 00:00:00'))
+            ->orderByDesc('session_count')
+            ->groupBy('session')->get()->count();
+        if (empty($user->plan_id) && $track_session_count >= 200) {
+            return [];
+        } else if ($user->plan_id == 7 && $track_session_count >= 2000) {
+            return [];
+        } else if ($user->plan_id == 8 && $track_session_count >= 5000) {
+            return [];
+        }
+
+
         $variant = UpsellRockVariant::where('variant_id', $variant_id)->first();
         if (!$variant) return [];
         $price = $variant->price;
@@ -77,5 +94,17 @@ class UpsellRockController extends Controller
             'stats_at' => $stats_at,
         ]);
         return $track;
+    }
+
+    public function ip(Request $request)
+    {
+        $shopDomain = $request->shop;
+        if (!$shopDomain) {
+            return [];
+        }
+        // $user = User::where('name', $shopDomain)->first();
+        $data = file_get_contents('http://www.geoplugin.net/json.gp?ip=' . $request->ip());
+        info("from ip=" . $request->ip() . " fetch data=" . $data);
+        return $data;
     }
 }

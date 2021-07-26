@@ -514,7 +514,7 @@ export default {
     console.log("performance mounted");
     var today = new Date();
     this.views_range.unshift(today.getTime());
-    today.setDate(today.getDate() - 7);
+    today.setDate(today.getDate() - 30);
     this.views_range.unshift(today.getTime());
 
     if (this.views.length > 0) {

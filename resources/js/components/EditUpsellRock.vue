@@ -383,9 +383,11 @@
             <label for="upsell-price" class="mt-3 block text-sm text-gray-800">Price</label>
             <div class="mt-1 flex rounded-md shadow-sm w-36">
               <input
-                type="number"
+                type="text"
+                min="0"
                 name="upsell-price"
                 id="upsell-price"
+                @change="onPriceInput"
                 v-model="form.price"
                 class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300"
               />
@@ -457,6 +459,8 @@
               <div class="mt-1 flex items-center justify-start">
                 <input
                   type="number"
+                  min="0"
+                  oninput="validity.valid||(value='1');"
                   name="discount-amount"
                   id="discount-amount"
                   class="focus:ring-indigo-500 focus:border-indigo-500 block w-20 sm:text-sm border-gray-300 rounded-md"
@@ -542,7 +546,7 @@
                   class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                 />
                 <label
-                  for="push-nothing"
+                  for="specific-collections"
                   class="ml-3 block text-sm text-gray-700"
                 >Specific collections</label>
               </div>
@@ -721,7 +725,7 @@
                   class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                 />
                 <label
-                  for="all-products"
+                  for="add-to-cart"
                   class="ml-3 block text-sm text-gray-700"
                 >Add to cart button click</label>
               </div>
@@ -729,15 +733,15 @@
                 <input
                   id="checkout"
                   name="checkout"
-                  v-model="form.triggered_on"
                   value="checkout"
                   type="radio"
+                  disabled
                   class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                 />
                 <label
-                  for="specific-products"
-                  class="ml-3 block text-sm text-gray-700"
-                >Checkout button click</label>
+                  for="checkout"
+                  class="ml-3 block text-sm text-gray-500 italic"
+                >Checkout button click (upcoming)</label>
               </div>
             </div>
           </div>
@@ -748,6 +752,7 @@
               <div
                 class="text-gray-800 transform transition-all"
                 id="additional-icon"
+                name="additional-icon"
                 @click="showAdditionalSettings"
               >
                 <svg
@@ -765,7 +770,11 @@
                   />
                 </svg>
               </div>
-              <div class="ml-3 text-sm text-gray-800">Additional settings</div>
+              <label
+                for="additional-icon"
+                class="ml-3 text-sm text-gray-800"
+                @click="showAdditionalSettings"
+              >Additional settings</label>
             </div>
             <div
               class="mt-4 flex flex-col transform transition-all ease-linear"
@@ -807,12 +816,13 @@
                       class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
                     />
                   </div>
-                  <div
+                  <label
+                    for="remove-parent-product-when-upsell-product-is-added"
                     class="ml-3 text-sm text-gray-700"
-                  >True upsell: Remove parent product when upsell product is added</div>
+                  >True upsell: Remove parent product when upsell product is added</label>
                 </div>
               </div>
-              <div class="mt-2 flex items-center">
+              <!-- <div class="mt-2 flex items-center">
                 <div class="flex items-start">
                   <div class="flex items-center h-5">
                     <input
@@ -828,7 +838,7 @@
                     class="ml-3 text-sm text-gray-700"
                   >Remove upsell product when parent product is removed</div>
                 </div>
-              </div>
+              </div>-->
               <div class="mt-2 flex items-center">
                 <div class="flex items-start">
                   <div class="flex items-center h-5">
@@ -841,7 +851,10 @@
                       class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
                     />
                   </div>
-                  <div class="ml-3 text-sm text-gray-700">Display custom note field</div>
+                  <label
+                    for="show-note-field"
+                    class="ml-3 text-sm text-gray-700"
+                  >Display custom note field</label>
                 </div>
               </div>
               <div class="mt-2 flex items-center">
@@ -856,9 +869,10 @@
                       class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
                     />
                   </div>
-                  <div
+                  <label
+                    for="hide-upsell-product-already-in-cart"
                     class="ml-3 text-sm text-gray-700"
-                  >Don't display if the product is already in the cart</div>
+                  >Don't display if the product is already in the cart</label>
                 </div>
               </div>
 
@@ -875,7 +889,10 @@
                       class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
                     />
                   </div>
-                  <div class="ml-3 text-sm text-gray-700">Match parent product's quantity</div>
+                  <label
+                    for="match-product-quantity"
+                    class="ml-3 text-sm text-gray-700"
+                  >Match parent product's quantity</label>
                 </div>
               </div>
               <div class="mt-2 flex items-center">
@@ -890,15 +907,18 @@
                       class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
                     />
                   </div>
-                  <div class="ml-3 text-sm text-gray-700">Enable quantity selector on the pop-up</div>
+                  <label
+                    for="enable-quantity-selector"
+                    class="ml-3 text-sm text-gray-700"
+                  >Enable quantity selector on the pop-up</label>
                 </div>
               </div>
 
               <div class="mt-6 text-sm font-medium text-gray-800">Displays for specified price range</div>
               <div class="mt-2 flex items-center">
                 <input
-                  id="price-type"
-                  name="price-type"
+                  id="price-type-all"
+                  name="price-type-all"
                   type="radio"
                   v-model="form.price_type"
                   value="all"
@@ -906,14 +926,14 @@
                   class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                 />
                 <label
-                  for="push-everything"
+                  for="price-type-all"
                   class="ml-3 block text-sm text-gray-700"
                 >All product prices</label>
               </div>
               <div class="mt-2 flex items-center">
                 <input
-                  id="price-type"
-                  name="price-type"
+                  id="price-type-range"
+                  name="price-type-range"
                   type="radio"
                   v-model="form.price_type"
                   value="range"
@@ -921,7 +941,7 @@
                   class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                 />
                 <label
-                  for="push-everything"
+                  for="price-type-range"
                   class="ml-3 block text-sm text-gray-700"
                 >Products in specific price range</label>
               </div>
@@ -932,8 +952,10 @@
                   <div class="mt-1 flex rounded-md shadow-sm">
                     <input
                       type="text"
+                      min="0"
                       name="minimum-price"
                       id="minimum-price"
+                      @change="onMinimumPriceInput"
                       v-model="form.minimum_price"
                       class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300"
                       placeholder="0.00"
@@ -948,8 +970,10 @@
                   <div class="mt-1 flex rounded-md shadow-sm">
                     <input
                       type="text"
+                      min="0"
                       name="maximum-price"
                       id="maximum-price"
+                      @change="onMaximumPriceInput"
                       v-model="form.maximum_price"
                       class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300"
                       placeholder="0.00"
@@ -1076,6 +1100,33 @@ export default {
     }
   },
   methods: {
+    onPriceInput() {
+      if (isNaN(Number.parseFloat(this.form.price))) {
+        this.form.price = 0;
+      } else {
+        this.form.price = Math.abs(Number.parseFloat(this.form.price)).toFixed(
+          2
+        );
+      }
+    },
+    onMinimumPriceInput() {
+      if (isNaN(Number.parseFloat(this.form.minimum_price))) {
+        this.form.minimum_price = 0;
+      } else {
+        this.form.minimum_price = Math.abs(
+          Number.parseFloat(this.form.minimum_price)
+        ).toFixed(2);
+      }
+    },
+    onMaximumPriceInput() {
+      if (isNaN(Number.parseFloat(this.form.maximum_price))) {
+        this.form.maximum_price = 0;
+      } else {
+        this.form.maximum_price = Math.abs(
+          Number.parseFloat(this.form.maximum_price)
+        ).toFixed(2);
+      }
+    },
     disableUpsell() {
       this.updating = true;
       axios.put("/spa/disable_upsell", { id: this.id }).then(res => {

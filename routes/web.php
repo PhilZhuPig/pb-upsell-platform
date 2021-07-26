@@ -78,3 +78,4 @@ Route::get('/script/{name}', function (Request $request, $name) {
 
 Route::get('/upsells', [UpsellRockController::class, 'upsells']);
 Route::post('/track', [UpsellRockController::class, 'track']);
+Route::get('/ip', [UpsellRockController::class, 'ip']);

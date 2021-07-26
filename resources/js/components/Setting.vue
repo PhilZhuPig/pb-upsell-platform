@@ -210,13 +210,13 @@
         >Select the color of the main button (Continue to Cart) on the pop-up window.</div>
         <div class="mt-2 rounded shadow bg-white p-6 flex">
           <div class="border border-gray-300 px-1 pt-1 rounded-xl">
-            <v-swatches swatches="text-advanced" v-model="setting.primary_color"></v-swatches>
+            <v-swatches swatches="text-advanced" v-model="form.primary_color"></v-swatches>
           </div>
           <input
             type="text"
             name="bg-color"
             id="bg-color"
-            v-model="setting.primary_color"
+            v-model="form.primary_color"
             class="ml-2 w-40 focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-md"
           />
         </div>
@@ -237,7 +237,7 @@
                 type="text"
                 name="title"
                 id="title"
-                v-model="setting.title"
+                v-model="form.title"
                 placeholder="Get extras for your product"
                 class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
@@ -255,7 +255,7 @@
                 type="text"
                 name="add_to_cart"
                 id="add_to_cart"
-                v-model="setting.add_to_cart"
+                v-model="form.add_to_cart"
                 placeholder="Add"
                 class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
@@ -270,7 +270,7 @@
                 type="text"
                 name="added_to_cart"
                 id="added_to_cart"
-                v-model="setting.added_to_cart"
+                v-model="form.added_to_cart"
                 placeholder="Added"
                 class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
@@ -288,7 +288,7 @@
                 type="text"
                 name="upgrade"
                 id="upgrade"
-                v-model="setting.upgrade"
+                v-model="form.upgrade"
                 placeholder="Upgrade"
                 class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
@@ -303,7 +303,7 @@
                 type="text"
                 name="upgraded"
                 id="upgraded"
-                v-model="setting.upgraded"
+                v-model="form.upgraded"
                 placeholder="Upgraded"
                 class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
@@ -321,7 +321,7 @@
                 type="text"
                 name="proceed_to_cart"
                 id="proceed_to_cart"
-                v-model="setting.proceed_to_cart"
+                v-model="form.proceed_to_cart"
                 placeholder="Continue"
                 class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
@@ -339,7 +339,7 @@
                 type="text"
                 name="back"
                 id="back"
-                v-model="setting.back"
+                v-model="form.back"
                 placeholder="Back"
                 class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
@@ -359,7 +359,7 @@
                 type="text"
                 name="cart_discount_note"
                 id="cart_discount_note"
-                v-model="setting.cart_discount_note"
+                v-model="form.cart_discount_note"
                 placeholder="Discount AMOUNT will be applied at checkout"
                 class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
@@ -385,7 +385,7 @@
               <select
                 id="continue_action"
                 name="continue_action"
-                v-model="setting.continue_action"
+                v-model="form.continue_action"
                 class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               >
                 <option value>Default</option>
@@ -403,7 +403,7 @@
               <select
                 id="close_action"
                 name="close_action"
-                v-model="setting.close_action"
+                v-model="form.close_action"
                 class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               >
                 <option value>Default</option>
@@ -431,7 +431,7 @@
                 id="custom-css"
                 name="custom-css"
                 rows="6"
-                v-model="setting.custom_css"
+                v-model="form.custom_css"
                 class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
               ></textarea>
             </div>
@@ -448,7 +448,7 @@
                 id="custom-JS"
                 name="custom-JS"
                 rows="6"
-                v-model="setting.custom_js"
+                v-model="form.custom_js"
                 class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
               ></textarea>
             </div>
@@ -460,7 +460,7 @@
       </div>
 
       <!-- Limit Pop-up Views -->
-      <div class="flex flex-col py-6 mb-40">
+      <div class="flex flex-col py-6 border-b border-gray-300">
         <div class="font-bold">Limit Pop-up Views</div>
         <div
           class="text-sm text-gray-600 font-light py-2"
@@ -503,9 +503,78 @@
                   type="number"
                   name="max_popup_session_views"
                   id="max_popup_session_views"
-                  v-model="setting.max_popup_session_views"
+                  v-model="form.max_popup_session_views"
                   class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-1/3 shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- auto conversion -->
+      <div class="flex flex-col py-6 mb-40">
+        <div class="font-bold">Currency auto conversion</div>
+        <div
+          class="text-sm text-gray-600 font-light py-2"
+        >Auto set the currency by customer's location</div>
+        <div class="mt-2 rounded shadow bg-white p-6 flex flex-col">
+          <!-- Number of pop-up views per session -->
+          <div class="flex flex-col">
+            <div class="flex flex-col space-y-4">
+              <div class="flex items-center">
+                <input
+                  id="conversion-yes"
+                  name="conversion-yes"
+                  type="radio"
+                  :value="true"
+                  v-model="form.auto_conversion"
+                  class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                />
+                <label for="conversion-yes" class="ml-3 block text-sm font-medium text-gray-700">YES</label>
+              </div>
+              <div class="flex items-center">
+                <input
+                  id="conversion-no"
+                  name="conversion-no"
+                  type="radio"
+                  :value="false"
+                  v-model="form.auto_conversion"
+                  class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                />
+                <label for="conversion-no" class="ml-3 block text-sm font-medium text-gray-700">NO</label>
+              </div>
+              <div class="flex flex-col">
+                <div class="flex">
+                  <div
+                    @click="gotoCCA"
+                    class="flex items-center px-5 py-3 rounded-sm shadow w-auto cursor-pointer border-green-700 bg-green-600 text-white text-sm font-light hover:bg-green-700"
+                  >
+                    <svg
+                      class="w-6 h-6 mr-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      />
+                    </svg>
+                    Integrate with
+                    <span
+                      class="font-base italic"
+                    >Currency Converter Ant</span>
+                  </div>
+                  <div class="flex-1"></div>
+                </div>
+                <p class="mt-2 text-sm text-gray-500 font-light">
+                  Integrate with
+                  <span class="italic">Currency Converter Ant</span> to obtain 170+ currency conversion capabilities
+                </p>
               </div>
             </div>
           </div>
@@ -545,7 +614,8 @@ export default {
   data() {
     return {
       unlimited: true,
-      updated_success: false
+      updated_success: false,
+      form: {}
     };
   },
   computed: {
@@ -560,8 +630,9 @@ export default {
   methods: {
     getSetting() {
       axios.get("/spa/setting").then(res => {
+        this.form = res.data;
         this.$store.commit("upsellrock/SET_SETTING", { setting: res.data });
-        if (this.setting.max_popup_session_views > 0) {
+        if (this.form.max_popup_session_views > 0) {
           this.unlimited = false;
         }
       });
@@ -574,12 +645,10 @@ export default {
         onCancel: this.onCancel
       });
       if (this.unlimited === true) {
-        var newSetting = Object.clone(this.setting);
-        newSetting.max_popup_session_views = 0;
-        this.$store.commit("upsellrock/SET_SETTING", { setting: newSetting });
+        this.form.max_popup_session_views = 0;
       }
       axios
-        .put("/spa/setting", this.setting)
+        .put("/spa/setting", this.form)
         .then(res => {
           this.$store.commit("upsellrock/SET_SETTING", { setting: res.data });
           loader.hide();

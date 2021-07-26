@@ -10,4 +10,8 @@ class UpsellRockSetting extends Model
     use HasFactory;
 
     protected $guarded = false;
+
+    protected $casts  = [
+        'auto_conversion' => 'boolean'
+    ];
 }
