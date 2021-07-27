@@ -24,8 +24,21 @@
         <!-- product -->
         <div class="z-10 pl-12 mt-4">
           <div class="flex">
-            <div class="image flex flex-col justify-start bg-white">
-              <img :src="item.icon" class="w-12 h-12" alt />
+            <div class="image flex flex-col justify-start bg-white border border-gray-300 rounded">
+              <svg
+                class="w-12 h-12 opacity-75"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                />
+              </svg>
             </div>
             <div class="ml-3 flex flex-col">
               <div class="text-xs font-medium text-gray-800">{{item.title}}</div>

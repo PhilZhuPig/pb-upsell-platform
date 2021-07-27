@@ -17,14 +17,6 @@ class UpsellRockResouce extends JsonResource
     public function toArray($request)
     {
         // current upsell product has track record?
-        $variants = "";
-        if (!empty($this->shopify_product_variant_id)) {
-            $variants = $this->shopify_product_variant_id;
-        } else {
-            $variants = implode(",", json_decode($this->shopify_product_variants));
-        }
-        $hit_count = DB::select("select count(*) as cc from upsell_rock_tracks where ip=? and upsell_rocks=? and data->'$.variant_id' in (?) and event_type='add_to_cart'", [$request->ip(), $this->id . '', $variants])[0]->cc;
-        info($this->id . ' variant_id=' . $this->shopify_product_variant_id . ' hit_count=' . $hit_count);
         return [
             'id' => $this->id,
             'type' => $this->type,
@@ -54,7 +46,7 @@ class UpsellRockResouce extends JsonResource
             'product_name' => $this->when($this->type == 'custom-service', $this->product_name),
             'description' => $this->when($this->type == 'custom-service', $this->description),
             'price' => $this->when($this->type == 'custom-service', $this->price),
-            'is_upgrade' => $hit_count > 0 ? true : false
+            'is_upgrade' => (bool)$this->remove_parent_product_when_upsell_product_is_added
         ];
     }
 }

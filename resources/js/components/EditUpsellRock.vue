@@ -306,9 +306,11 @@
                   <span class="italic">Shopify Product Recommendation API</span> to offer products relevant to the one customer just added to cart.
                 </div>
                 <div class="mt-1 flex">
-                  <div
-                    class="px-3 py-1 border border-gray-500 rounded text-sm text-gray-500"
-                  >Read more</div>
+                  <a
+                    href="/what-are-smart-auto-upsells-and-how-to-use-them-within-ant-upsell-rock"
+                    target="_blank"
+                    class="px-3 py-1 border border-gray-500 rounded text-sm text-gray-500 font-light"
+                  >Read more</a>
                   <div class="flex-1"></div>
                 </div>
               </div>
@@ -819,7 +821,7 @@
                   <label
                     for="remove-parent-product-when-upsell-product-is-added"
                     class="ml-3 text-sm text-gray-700"
-                  >True upsell: Remove parent product when upsell product is added</label>
+                  >True upsell(upgrade): Remove parent product when upsell product is added</label>
                 </div>
               </div>
               <!-- <div class="mt-2 flex items-center">
@@ -976,7 +978,7 @@
                       @change="onMaximumPriceInput"
                       v-model="form.maximum_price"
                       class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300"
-                      placeholder="0.00"
+                      placeholder="No limit"
                     />
                     <span
                       class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm"
@@ -1011,6 +1013,13 @@
               v-if="Object.keys(form).length>0 && form.type == 'smart-auto'"
               ref="saur"
             ></smart-auto-upsell-preview>
+
+            <custom-service-upsell-preview
+              :upsell="form"
+              class="mt-4"
+              v-if="Object.keys(form).length>0 && form.type == 'custom-service'"
+              ref="csur"
+            ></custom-service-upsell-preview>
           </div>
         </div>
       </div>
@@ -1049,6 +1058,7 @@ import ChooseDisplayForProductsModal from "./ChooseDisplayForProductsModal.vue";
 import ChooseDisplayForCollectionsModal from "./ChooseDisplayForCollectionsModal.vue";
 import ProductUpsellPreview from "./ProductUpsellPreview.vue";
 import SmartAutoUpsellPreview from "./SmartAutoUpsellPreview.vue";
+import CustomServiceUpsellPreview from "./CustomServiceUpsellPreview.vue";
 import Icons from "./Icons.vue";
 export default {
   components: {
@@ -1057,6 +1067,7 @@ export default {
     ChooseDisplayForCollectionsModal,
     ProductUpsellPreview,
     SmartAutoUpsellPreview,
+    CustomServiceUpsellPreview,
     Icons
   },
   data() {

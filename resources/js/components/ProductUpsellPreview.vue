@@ -49,7 +49,7 @@
                 v-if="upsell.apply_discount && upsell.amount_type==='fixed'"
               >{{getCurrencySymbol(shop.currency)}}{{Number(product.variants[0].price-upsell.amount).toFixed(2)}}</div>
               <div
-                class="ml-2 text-xs text-gray-700 font-light"
+                class="text-xs text-gray-700 font-light"
                 v-if="!upsell.apply_discount"
               >{{getCurrencySymbol(shop.currency)}}{{Number(product.variants[0].price).toFixed(2)}}</div>
             </div>

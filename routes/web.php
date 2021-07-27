@@ -79,3 +79,11 @@ Route::get('/script/{name}', function (Request $request, $name) {
 Route::get('/upsells', [UpsellRockController::class, 'upsells']);
 Route::post('/track', [UpsellRockController::class, 'track']);
 Route::get('/ip', [UpsellRockController::class, 'ip']);
+
+// instruction
+Route::get('/what-are-smart-auto-upsells-and-how-to-use-them-within-ant-upsell-rock', function () {
+    return view('smart-auto-description');
+});
+Route::get('/how-to', function () {
+    return view('how-to');
+});

@@ -226,6 +226,7 @@
           :class="`${show_type_list?'ml-4':''} text-xl text-gray-900 text-center font-medium py-4`"
         >Fill Up Your Ant Upsell Rock</div>
       </div>
+      <instructor></instructor>
       <product-upsell class="mt-4"></product-upsell>
       <smart-auto-upsell class="mt-4"></smart-auto-upsell>
       <custom-service class="mt-4"></custom-service>
@@ -251,12 +252,14 @@ import ProductUpsell from "./ProductUpsell.vue";
 import SmartAutoUpsell from "./SmartAutoUpsell.vue";
 import CustomService from "./CustomService.vue";
 import UpsellRockList from "./UpsellRockList.vue";
+import Instructor from "./Instructor.vue";
 export default {
   components: {
     ProductUpsell,
     SmartAutoUpsell,
     CustomService,
-    UpsellRockList
+    UpsellRockList,
+    Instructor
   },
   data() {
     return {
