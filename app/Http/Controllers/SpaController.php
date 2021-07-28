@@ -210,7 +210,7 @@ class SpaController extends Controller
                         'body_html' => $data['description'],
                         'images' => [
                             [
-                                "src" => env('APP_URL') . "/images/pngs/" . $data['icon'] . ".png"
+                                "src" => 'https://pb-fsb-bgs.s3.ap-southeast-1.amazonaws.com/icon-pngs/' . $data['icon'] . ".png"
                             ]
                         ],
                         'variants' => [
@@ -234,7 +234,7 @@ class SpaController extends Controller
                         'body_html' => $data['description'],
                         'images' => [
                             [
-                                "src" => env('APP_URL') . "/images/pngs/" . $data['icon'] . ".png"
+                                "src" => 'https://pb-fsb-bgs.s3.ap-southeast-1.amazonaws.com/icon-pngs/' . $data['icon'] . ".png"
                             ]
                         ],
                         'variants' => [

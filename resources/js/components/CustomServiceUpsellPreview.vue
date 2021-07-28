@@ -18,7 +18,11 @@
           <div
             class="w-12 h-12 text-gray-500 flex flex-col justify-start bg-white border rounded border-gray-200"
           >
-            <img class="w-12 h-12" :src="`/images/icons/${upsell.icon}.svg`" alt />
+            <img
+              class="w-12 h-12"
+              :src="`https://pb-fsb-bgs.s3.ap-southeast-1.amazonaws.com/icon-svgs/${upsell.icon}.svg`"
+              alt
+            />
           </div>
           <div class="ml-3 flex flex-col justify-center space-y-2">
             <div class="text-xs font-medium text-gray-800">{{upsell.headline}}</div>
