@@ -80,7 +80,7 @@
                 </div>
 
                 <div class="mt-2">
-                    <img src="/images/smart-step2-1.png" alt="step2-1"/>
+                    <img class="w-80" src="/images/smart-step2-1.png" alt="step2-1"/>
                 </div>
 
                 <div class="mt-4 text-xl font-bold text-gray-800">
@@ -96,7 +96,7 @@
                 </div>
 
                 <div class="mt-2">
-                    <img src="/images/smart-step2-2.png" alt="">
+                    <img class="w-80" src="/images/smart-step2-2.png" alt="">
                 </div>
 
                 <div class="mt-4 text-xl font-bold text-gray-800">
@@ -138,7 +138,7 @@
                 </div>
 
                 <div class="mt-2">
-                    <img src="/images/smart-step2-3.png" alt=""/>
+                    <img class="w-80" src="/images/smart-step2-3.png" alt=""/>
                 </div>
 
                 <div class="mt-4 text-xl font-bold text-gray-800">

@@ -39,19 +39,19 @@
             <div class="flex">
               <div
                 class="text-xs text-gray-400 font-light line-through"
-              >{{getCurrencySymbol(shop.currency)}}{{product.variants[0].price}}</div>
+              >{{getCurrencySymbol(user.currency)}}{{product.variants[0].price}}</div>
               <div
                 class="ml-2 text-xs text-gray-700 font-light"
                 v-if="upsell.apply_discount && upsell.amount_type==='percentage'"
-              >{{getCurrencySymbol(shop.currency)}}{{Number(product.variants[0].price*(100-upsell.amount)/100).toFixed(2)}}</div>
+              >{{getCurrencySymbol(user.currency)}}{{Number(product.variants[0].price*(100-upsell.amount)/100).toFixed(2)}}</div>
               <div
                 class="ml-2 text-xs text-gray-700 font-light"
                 v-if="upsell.apply_discount && upsell.amount_type==='fixed'"
-              >{{getCurrencySymbol(shop.currency)}}{{Number(product.variants[0].price-upsell.amount).toFixed(2)}}</div>
+              >{{getCurrencySymbol(user.currency)}}{{Number(product.variants[0].price-upsell.amount).toFixed(2)}}</div>
               <div
                 class="text-xs text-gray-700 font-light"
                 v-if="!upsell.apply_discount"
-              >{{getCurrencySymbol(shop.currency)}}{{Number(product.variants[0].price).toFixed(2)}}</div>
+              >{{getCurrencySymbol(user.currency)}}{{Number(product.variants[0].price).toFixed(2)}}</div>
             </div>
             <div class="mt-1 text-xs text-gray-400 font-light">{{upsell.short_description}}</div>
             <select

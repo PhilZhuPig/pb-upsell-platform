@@ -543,6 +543,7 @@ class SpaController extends Controller
             $upsell['transactions_count'] = $transactions_count;
             $upsell['sales'] = $sales;
         }
-        return $upsells;
+        $sorted = $upsells->sortByDesc('add_to_carts_count');
+        return $sorted->values()->all();
     }
 }

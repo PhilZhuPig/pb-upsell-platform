@@ -40,6 +40,7 @@ return [
     */
 
     'serve_assets' => [
+        'images/*',
         'robots.txt',
         'favicon.ico',
         'js/app.js',
