@@ -40,7 +40,20 @@ return [
     */
 
     'serve_assets' => [
-        'images/*',
+        'images/upsell-logo.svg',
+        'images/how-1.png',
+        'images/how-2.png',
+        'images/how-3.png',
+        'images/how-4.png',
+        'images/how-5.png',
+        'images/how-6.png',
+        'images/smart-step1.png',
+        'images/smart-step2-1.png',
+        'images/smart-step2-2.png',
+        'images/smart-step2-3.png',
+        'images/smart-step3.png',
+        'images/smart-step3-1.png',
+        'images/smart-step4.png',
         'robots.txt',
         'favicon.ico',
         'js/app.js',

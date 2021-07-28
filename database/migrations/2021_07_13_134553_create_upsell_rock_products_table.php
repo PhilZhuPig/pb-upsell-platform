@@ -24,6 +24,7 @@ class CreateUpsellRockProductsTable extends Migration
             $table->string('handle')->nullable();
             $table->text('image')->nullable();
             $table->text('shopify_response')->nullable();
+            $table->unsignedInteger('times')->default(0);
             $table->timestamps();
         });
     }

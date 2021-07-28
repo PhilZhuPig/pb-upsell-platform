@@ -15,6 +15,28 @@ use App\Models\User;
 // App routes
 Route::get('/', function () {
     $user = Auth::user();
+    $shopApi = $user->api()->rest('GET', '/admin/shop.json')['body']['shop'];
+
+    $currency = Currency::where('currency', $shopApi->currency)->first();
+    $money_symbol = "";
+    if ($currency) {
+        $money_symbol = $currency->currency_symbol;
+    }
+    $user->update([
+        'contact_email' => $shopApi->email,
+        'country' => $shopApi->country,
+        'country_code' => $shopApi->country_code,
+        'country_name' => $shopApi->country_name,
+        'currency' => $shopApi->currency,
+        'enabled_presentment_currencies' => json_encode($shopApi->enabled_presentment_currencies),
+        'money_format' => $shopApi->money_format,
+        'money_with_currency_format' => $shopApi->money_with_currency_format,
+        'money_in_emails_format' => $shopApi->money_in_emails_format,
+        'money_with_currency_in_emails_format' => $shopApi->money_with_currency_in_emails_format,
+        'money_format_symbol' => $money_symbol,
+        'iana_timezone' => $shopApi->iana_timezone,
+        'shopify_plan_name' => $shopApi->plan_name,
+    ]);
     AfterAuthenticateJob::dispatch($user);
     return view('spa');
 })->middleware(['verify.shopify'])->name('home');
