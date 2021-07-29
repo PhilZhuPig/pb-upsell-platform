@@ -72,19 +72,17 @@ class FetchOrderFromShopify implements ShouldQueue
                 }
             }
 
-            if (empty($cart_token)) {
-                $upsellRockOrder = UpsellRockOrder::updateOrCreate([
-                    'user_id' => $this->user->id,
-                    'shopify_id' => $order['id'],
-                ], [
-                    'currency' => $order['currency'],
-                    'total_price' => $order['total_price'],
-                    'cart_token' => $cart_token,
-                    'shopify_response' => $order
-                ]);
+            $upsellRockOrder = UpsellRockOrder::updateOrCreate([
+                'user_id' => $this->user->id,
+                'shopify_id' => $order['id'],
+            ], [
+                'currency' => $order['currency'],
+                'total_price' => $order['total_price'],
+                'cart_token' => $cart_token,
+                'shopify_response' => $order
+            ]);
 
-                $upsellRockOrder->increment('times');
-            }
+            $upsellRockOrder->increment('times');
         }
         if (count($orders) >= 50) {
             FetchOrderFromShopify::dispatch($this->user, $next_id);

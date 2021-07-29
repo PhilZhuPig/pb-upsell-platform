@@ -50,6 +50,7 @@ class CreateUpsellRocksTable extends Migration
             $table->unsignedBigInteger('shopify_price_rule_id')->nullable();
             $table->boolean('is_upgrade')->default(false)->comment('Remove parent product when upsell product is added');
             $table->boolean('remove_upsell_product_when_parent_product_is_removed')->default(false)->comment('和用户添加的商品一起删除');
+            $table->boolean('remove_parent_product_when_upsell_product_is_added')->default(false)->comment('upgrade');
             $table->boolean('use_recommended_products')->default(false)->comment('是否使用shopify推荐的商品');
             $table->unsignedInteger('recommended_product_count')->default(1)->comment('使用shopify推荐的商品数量');
 

@@ -23,7 +23,7 @@ class CreateUpsellRockPriceRulesTable extends Migration
             $table->string('target_type');
             $table->text('target_selection');
             $table->text('customer_selection');
-            $table->timestamp('starts_at');
+            $table->string('starts_at');
             $table->text('shopify_response')->nullable();
             $table->timestamps();
         });

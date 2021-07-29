@@ -165,9 +165,7 @@
         <div
           class="font-light text-gray-500 text-sm mt-4"
         >Your plan has {{getPlanSessionCount()}} session usage per month, session count will be reset to 0 at very first day of the month.</div>
-        <div
-          :class="`grid ${user.plan_id>0?'grid-cols-3':'grid-cols-4'} mt-3 rounded border border-gray-300`"
-        >
+        <div class="grid grid-cols-4 mt-3 rounded border border-gray-300">
           <plan-free :plan_id="user.plan_id" :sessions="sessions"></plan-free>
           <plan-2000 :plan_id="user.plan_id" :sessions="sessions"></plan-2000>
           <plan-5000 :plan_id="user.plan_id" :sessions="sessions"></plan-5000>

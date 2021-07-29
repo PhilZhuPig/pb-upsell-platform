@@ -6,7 +6,12 @@
         <div class="flex-1 mt-4 mb-10 text-gray-900 text-sm">{{ description}}</div>
         <div
           @click="createUpsell"
-          class="bg-green-700 text-center text-sm text-white w-20 rounded-sm border border-green-800 px-3 py-2 shadow-sm font-light cursor-pointer"
+          v-if="!creating"
+          class="bg-green-700 text-center text-sm text-white w-20 rounded-sm border border-green-800 px-3 py-2 shadow-sm font-light cursor-pointer hover:bg-green-800"
+        >Select</div>
+        <div
+          v-else
+          class="bg-green-800 text-center text-sm text-white w-20 rounded-sm border border-green-800 px-3 py-2 shadow-sm font-light cursor-pointer"
         >Select</div>
       </div>
       <div class="col-span-2 px-8 py-6 flex flex-col">
@@ -69,7 +74,8 @@ export default {
         description: "Custom description",
         icon: "",
         price: "9.99"
-      }
+      },
+      creating: false
     };
   },
   computed: {
@@ -95,7 +101,9 @@ export default {
       });
     },
     createUpsell() {
+      this.creating = true;
       axios.get("/spa/create_upsell?type=custom-service").then(res => {
+        this.creating = false;
         console.log(res.data);
         this.$router.push("/upsell/" + res.data.id + "/edit");
       });

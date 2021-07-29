@@ -6,7 +6,12 @@
         <div class="flex-1 mt-4 mb-10 text-gray-900 text-sm">{{ description}}</div>
         <div
           @click="createUpsell"
-          class="bg-green-700 text-center text-sm text-white w-20 rounded-sm border border-green-800 px-3 py-2 shadow-sm font-light cursor-pointer"
+          v-if="!creating"
+          class="bg-green-700 text-center text-sm text-white w-20 rounded-sm border border-green-800 px-3 py-2 shadow-sm font-light cursor-pointer hover:bg-green-800"
+        >Select</div>
+        <div
+          v-else
+          class="bg-green-800 text-center text-sm text-white w-20 rounded-sm border border-green-800 px-3 py-2 shadow-sm font-light cursor-pointer"
         >Select</div>
       </div>
       <div class="col-span-2 px-8 py-6 flex flex-col">
@@ -51,7 +56,7 @@
                 >{{getCurrencySymbol(shop.currency)}}{{product.variants[0].price}}</div>
                 <div
                   class="ml-2 text-xs text-gray-700 font-light"
-                >{{getCurrencySymbol(shop.currency)}}{{product.variants[0].price-2}}</div>
+                >{{getCurrencySymbol(shop.currency)}}{{Number(product.variants[0].price-2).toFixed(2)}}</div>
               </div>
               <div class="mt-1 text-xs text-gray-400 font-light">Unique offer!</div>
               <select
@@ -84,7 +89,8 @@ export default {
       description:
         "Offer existing products from your store and increase order value.",
       product: {},
-      interval: null
+      interval: null,
+      creating: false
     };
   },
   computed: {
@@ -122,7 +128,9 @@ export default {
       });
     },
     createUpsell() {
+      this.creating = true;
       axios.get("/spa/create_upsell?type=product").then(res => {
+        this.creating = false;
         console.log(res.data);
         this.$router.push("/upsell/" + res.data.id + "/edit");
       });

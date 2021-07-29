@@ -206,6 +206,7 @@ function trackRemoveFromCart(upsell_id) {
 var upsells = [];
 var upsellProducts = [];
 if (is_product) {
+    addListenerToAddToCart();
     refetchUpsellProduct();
 }
 
@@ -217,6 +218,24 @@ async function getShopfiyRecommendedProducts(upsell) {
     return json.products;
 }
 
+function addListenerToAddToCart() {
+    var formBtn = document.querySelector("form[action^='/cart/add'] button[type='submit']");
+    formBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('inject');
+        // show upsell popup
+        if (upsellFetched) {
+            buildPopupWithHtml();
+        } else {
+            refetchUpsellProduct().then(res => {
+                buildPopupWithHtml();
+            });
+        }
+    });
+}
+
+var upsellFetched = false;
 function refetchUpsellProduct() {
     var smartAutoUpsells = [];
     getShopifyProduct().then(product => {
@@ -286,14 +305,7 @@ function refetchUpsellProduct() {
                 upsells = upsells.concat(smartAutoUpsells);
                 console.log('upsells length = ' + upsells.length);
             }
-            var formBtn = document.querySelector("form[action^='/cart/add'] button[type='submit']");
-            formBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('inject');
-                // show upsell popup
-                buildPopupWithHtml();
-            });
+            upsellFetched = true;
         });
     });
 }
@@ -696,14 +708,14 @@ function buildSelectorFieldHtml(upsell) {
             }
         }
     }
-    var html = '<input type="number" value="' + quantity + '" min="1" oninput="validity.valid||(value=\'1\')" style="color:#333;" id="selector-' + upsell.product + '" class="px-3 py-2 block w-20 text-sm shadow-sm bg-white rounded-sm border border-gray-300 focus:border-gray-700 focus:outline-none">';
+    var html = '<input type="number" value="' + quantity + '" min="1" oninput="validity.valid||(value=\'1\')" style="color:#333;" id="selector-' + upsell.product + '" class="px-3 py-2 mr-1 block w-20 text-sm shadow-sm bg-white rounded-sm border border-gray-300 focus:border-gray-700 focus:outline-none">';
     return html;
 }
 
 function buildAddOrUpgradeBtnHtml(upsell) {
-    var add = '<div id="add-' + upsell.product + '" data-product="' + upsell.product + '" data-variant="' + (upsell.variant > 0 ? upsell.variant : upsell.variants[0]) + '" class="ml-2 flex items-center w-auto px-4 py-2 text-white text-sm font-medium rounded-sm cursor-pointer" style="background-color:' + upsellRockSetting.primary_color + '"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>' + upsellRockSetting.add_to_cart + '</div>\
+    var add = '<div id="add-' + upsell.product + '" data-product="' + upsell.product + '" data-variant="' + (upsell.variant > 0 ? upsell.variant : upsell.variants[0]) + '" class="flex-1 md:flex-none flex justify-center items-center w-auto px-4 py-2 text-white text-sm font-medium rounded-sm cursor-pointer" style="background-color:' + upsellRockSetting.primary_color + '"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>' + upsellRockSetting.add_to_cart + '</div>\
                     '
-    var upgrade = '<div id="add-' + upsell.product + '" data-product="' + upsell.product + '" data-variant="' + (upsell.variant > 0 ? upsell.variant : upsell.variants[0]) + '" class="ml-2 flex items-center w-auto px-4 py-2 text-white text-sm font-medium rounded-sm cursor-pointer" style="background-color:' + upsellRockSetting.primary_color + '"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>' + upsellRockSetting.upgrade + '</div>\
+    var upgrade = '<div id="add-' + upsell.product + '" data-product="' + upsell.product + '" data-variant="' + (upsell.variant > 0 ? upsell.variant : upsell.variants[0]) + '" class="flex-1 md:flex-none flex justify-center items-center w-auto px-4 py-2 text-white text-sm font-medium rounded-sm cursor-pointer" style="background-color:' + upsellRockSetting.primary_color + '"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>' + upsellRockSetting.upgrade + '</div>\
                     '
     if (upsell.is_upgrade) {
         return upgrade;
@@ -736,23 +748,25 @@ function buildPopupWithHtml() {
         console.log('upsellVariantInCart:' + upsellVariantInCart);
         if (upsell.shopify_product && (!upsell.hide_upsell_product_already_in_cart || (upsell.hide_upsell_product_already_in_cart && !upsellVariantInCart))) {
             upsellProductsHtml += '\
-            <div class="ml-9 border-l border-gray-300 flex relative px-4 '+ (index === (upsells.length - 1) ? 'pb-6 ' : 'pb-4 ') + (index === 0 ? 'pt-6' : 'pt-4') + '">\
-                <div class="absolute rounded-xl border-b border-gray-300" style="left:-1px;top:-20px;height:60px;width:40px;"></div>\
-                <div id="image-'+ upsell.product + '" class="relative" style="width:64px;height:64px;z-index:10">\
-                    <img class="bg-white" style="width:64px;height:64px;" src="'+ upsell.shopify_product.featured_image + '"/>\
+            <div class="grid sm:grid-cols-1 md:grid-cols-2">\
+                <div class="lg:ml-9 flex lg:border-l border-gray-300 relative px-4 '+ (index === (upsells.length - 1) ? 'pb-6 ' : 'pb-4 ') + (index === 0 ? 'pt-6' : 'pt-4') + '">\
+                    <div class="sm:w-0 lg:w-10 absolute rounded-xl border-b border-gray-300" style="left:-1px;top:-20px;height:60px;"></div>\
+                    <div id="image-'+ upsell.product + '" class="relative" style="width:64px;height:64px;z-index:10">\
+                        <img class="bg-white object-cover" style="width:64px;height:64px;" src="'+ upsell.shopify_product.featured_image + '"/>\
+                    </div>\
+                    <div class="ml-2 flex-1 flex flex-col justify-between">\
+                        <div class="text-gray-800">'+ (upsell.type === 'custom-service' ? upsell.headline : upsell.shopify_product.title) + '</div>\
+                        '+ (upsell.apply_discount ? buildDiscountPrice(upsell) : buildNormalPrice(upsell)) + '\
+                        '+ (upsell.short_description.length > 0 ? '<div class="text-gray-500 text-sm font-light">' + upsell.short_description + '</div>' : '') + '\
+                        '+ (upsell.show_note_field ? buildNoteFieldHtml(upsell) : '') + '\
+                        '+ ((upsell.variants && upsell.variants.length > 0) ? '<div class="w-auto">\
+                            <select id="select-'+ upsell.product + '" data-product="' + upsell.product + '" value="' + upsell.variants[0] + '" class="mt-1 block w-auto py-2 px-3 border border-gray-300 bg-white focus:outline-none focus:ring-gray-700 focus:border-gray-700 sm:text-sm"">\
+                                '+ buildSelectVariantsHtml(upsell) + '\
+                            </select>\
+                        </div>' : '') + '\
+                    </div>\
                 </div>\
-                <div class="ml-2 flex-1 flex flex-col justify-between">\
-                    <div class="text-gray-800">'+ (upsell.type === 'custom-service' ? upsell.headline : upsell.shopify_product.title) + '</div>\
-                    '+ (upsell.apply_discount ? buildDiscountPrice(upsell) : buildNormalPrice(upsell)) + '\
-                    '+ (upsell.short_description.length > 0 ? '<div class="text-gray-500 text-sm font-light">' + upsell.short_description + '</div>' : '') + '\
-                    '+ (upsell.show_note_field ? buildNoteFieldHtml(upsell) : '') + '\
-                    '+ ((upsell.variants && upsell.variants.length > 0) ? '<div class="w-auto">\
-                        <select id="select-'+ upsell.product + '" data-product="' + upsell.product + '" value="' + upsell.variants[0] + '" class="mt-1 block w-auto py-2 px-3 border border-gray-300 bg-white focus:outline-none focus:ring-gray-700 focus:border-gray-700 sm:text-sm"">\
-                            '+ buildSelectVariantsHtml(upsell) + '\
-                        </select>\
-                    </div>' : '') + '\
-                </div>\
-                <div class="flex items-center">\
+                <div class="flex justify-end items-center p-2">\
                     '+ (upsell.enable_quantity_selector ? buildSelectorFieldHtml(upsell) : '') + '\
                     '+ buildAddOrUpgradeBtnHtml(upsell) + '\
                     <div id="remove-'+ upsell.product + '" class="ml-2 cursor-pointer hidden"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></div>\
@@ -766,7 +780,7 @@ function buildPopupWithHtml() {
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">\
                 <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>\
                 <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>\
-                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full">\
+                <div class="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-3xl sm:w-full">\
                     <div class="bg-white px-4 pt-5">\
                         <div class="sm:flex sm:items-start">\
                             <div class="flex flex-col mt-0 w-full">\

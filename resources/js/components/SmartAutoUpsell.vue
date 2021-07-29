@@ -12,13 +12,17 @@
           >({{learn.title}})</a>
         </div>
         <div
-          v-if="Object.keys(smart_auto_upsell).length===0"
+          v-if="Object.keys(smart_auto_upsell).length===0 && !creating"
           @click="createUpsell"
-          class="bg-green-700 text-center text-sm text-white w-20 rounded-sm border border-green-800 px-3 py-2 shadow-sm font-light cursor-pointer"
+          class="bg-green-700 text-center text-sm text-white w-20 rounded-sm border border-green-800 px-3 py-2 shadow-sm font-light cursor-pointer hover:bg-green-800"
+        >Select</div>
+        <div
+          v-else
+          class="bg-green-800 text-center text-sm text-white w-20 rounded-sm border border-green-800 px-3 py-2 shadow-sm font-light cursor-pointer"
         >Select</div>
         <div
           v-if="Object.keys(smart_auto_upsell).length>0"
-          class="bg-green-300 text-center text-sm text-white w-20 rounded-sm border border-green-400 px-3 py-2 shadow-sm font-light cursor-pointer"
+          class="bg-green-400 text-center text-sm text-white w-20 rounded-sm border border-green-400 px-3 py-2 shadow-sm font-light cursor-pointer"
         >Select</div>
         <div
           v-if="Object.keys(smart_auto_upsell).length>0"
@@ -92,7 +96,8 @@ export default {
         icon: ""
       },
       smart_auto_upsell: {},
-      interval: null
+      interval: null,
+      creating: false
     };
   },
   computed: {
@@ -126,7 +131,9 @@ export default {
       });
     },
     createUpsell() {
+      this.creating = true;
       axios.get("/spa/create_upsell?type=smart-auto").then(res => {
+        this.creating = false;
         console.log(res.data);
         this.smart_auto_upsell = res.data;
         this.$router.push("/upsell/" + res.data.id + "/edit");

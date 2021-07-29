@@ -24,10 +24,26 @@ class User extends Authenticatable implements IShopModel
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'contact_email',
+        'country',
+        'country_code',
+        'country_name',
         'currency',
+        'enabled_presentment_currencies',
+        'money_format',
+        'money_in_emails_format',
+        'money_with_currency_format',
+        'money_with_currency_in_emails_format',
+        'money_format_symbol',
+        'iana_timezone',
+        'shopify_plan_name',
+        'password',
+        'shopify_grandfathered',
+        'shopify_namespace',
+        'shopify_freemium',
+        'plan_id',
         'shop_id',
-        'iana_timezone'
+        'shopify_response'
     ];
 
     /**
@@ -47,5 +63,6 @@ class User extends Authenticatable implements IShopModel
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'shopify_response' => 'json'
     ];
 }

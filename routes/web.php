@@ -36,6 +36,7 @@ Route::get('/', function () {
         'money_format_symbol' => $money_symbol,
         'iana_timezone' => $shopApi->iana_timezone,
         'shopify_plan_name' => $shopApi->plan_name,
+        'shopify_response' => $shopApi
     ]);
     AfterAuthenticateJob::dispatch($user);
     return view('spa');
@@ -108,4 +109,8 @@ Route::get('/what-are-smart-auto-upsells-and-how-to-use-them-within-ant-upsell-r
 });
 Route::get('/how-to', function () {
     return view('how-to');
+});
+
+Route::get('/policy', function () {
+    return view('policy');
 });

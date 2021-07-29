@@ -112,7 +112,7 @@
       <div class="mt-4 flex justify-center items-center">
         <div
           @click="show_type_list = true"
-          class="bg-green-700 text-center text-sm text-white w-auto rounded-sm border border-green-800 px-3 py-2 shadow-sm font-light cursor-pointer"
+          class="bg-green-700 text-center text-sm text-white w-auto rounded-sm border border-green-800 px-3 py-2 shadow-sm font-light cursor-pointer hover:bg-green-800"
         >New Upsell</div>
       </div>
     </div>

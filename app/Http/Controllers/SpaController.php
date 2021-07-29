@@ -30,12 +30,6 @@ class SpaController extends Controller
     {
         $user = Auth::user();
         $shop = $user->api()->rest('GET', '/admin/shop.json')['body']['shop'];
-        // update user currency
-        $user->update([
-            'currency' => $shop['currency'],
-            'shop_id' => $shop['id'],
-            'iana_timezone' => $shop['iana_timezone'],
-        ]);
         return json_encode($shop);
     }
 
@@ -537,7 +531,7 @@ class SpaController extends Controller
             $arr_tokens = array_map(function ($t) {
                 return $t->cart_token;
             }, $cart_tokens);
-            $transactions = UpsellRockOrder::whereIn('cart_token', $arr_tokens)->get();
+            $transactions = UpsellRockOrder::whereNotNull('cart_token')->whereIn('cart_token', $arr_tokens)->get();
             $transactions_count = count($transactions);
             $sales = $transactions->sum('total_price');
             $upsell['transactions_count'] = $transactions_count;

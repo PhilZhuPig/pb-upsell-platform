@@ -448,7 +448,7 @@
                 </div>
                 <p class="mt-2 text-sm text-gray-500 font-light">
                   Integrate with
-                  <span class="italic">Currency Converter Ant</span> to obtain 170+ currency conversion capabilities
+                  <span class="ml-1 italic">Currency Converter Ant</span> to obtain 170+ currency conversion capabilities
                 </p>
               </div>
             </div>

@@ -12,7 +12,7 @@
     </div>
     <div class="flex flex-col items-center py-6 text-center border-r border-gray-300" v-else>
       <div class="font-medium text-2xl">2000 sessions</div>
-      <div class="font-light text-gray-500">$19.9 / month</div>
+      <div class="font-light text-gray-500">$19.99 / month</div>
       <a
         :href="`/billing/7?shop=${user.name}`"
         class="mt-1 font-light text-white text-sm px-3 py-2 rounded-sm border border-green-700 bg-green-600 hover:bg-green-700"
