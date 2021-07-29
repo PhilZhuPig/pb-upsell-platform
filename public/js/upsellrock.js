@@ -1,6 +1,6 @@
 console.log('%c 🐜 ant upsell rock is ready! ', 'background: #222; color: #bada55');
 // fetch the cart
-fetch('/cart.js').then(res => { return res.json(); }).then(json => { cartInfo = json; modiCartInfo = json; console.log(json); });
+fetch('/cart.js').then(res => { return res.json(); }).then(json => { cartInfo = json; modiCartInfo = json; });
 // add iframe
 var iframe = document.createElement('iframe');
 setTimeout(() => {
@@ -55,29 +55,6 @@ if (!upsellRockLocalCurrency) {
 
 var g_variant = 0;
 updateGVariant();
-
-var interval = setInterval(() => {
-    var search = window.location.search;
-    if (search) {
-        search = search.replace("?", "");
-        var kvs = search.split('&');
-        kvs.forEach(kv => {
-            if (kv.includes('variant=')) {
-                var new_variant = kv.split('=')[1];
-                if (new_variant != g_variant) {
-                    g_variant = new_variant;
-                    // reload upsells
-                    if (Object.keys(currentProduct).length > 0 && g_variant > 0) {
-                        getUpsellRocks(currentProduct.id, g_variant).then(res => {
-                            refetchUpsellProduct();
-                        });
-                    }
-                }
-            }
-        })
-    }
-    console.log('g_variant=' + g_variant);
-}, 1000);
 
 if (!is_product) {
     clearInterval(interval);
@@ -207,7 +184,7 @@ var upsells = [];
 var upsellProducts = [];
 if (is_product) {
     addListenerToAddToCart();
-    refetchUpsellProduct();
+    getShopifyProduct();
 }
 
 async function getShopfiyRecommendedProducts(upsell) {
@@ -218,6 +195,108 @@ async function getShopfiyRecommendedProducts(upsell) {
     return json.products;
 }
 
+var upsellFetched = false;
+async function refetchUpsellProduct(shouldBuildHtml = true) {
+    var product = currentProduct;
+    if (Object.keys(currentProduct).length === 0) {
+        product = await getShopifyProduct();
+    }
+    updateGVariant();
+    upsells = await getUpsellRocks(product.id, g_variant == 0 ? product.variants[0].id : g_variant);
+    upsellFetched = true;
+
+    // Promise.all([])
+    var promises = [];
+    upsells.forEach((upsell, index) => {
+        if (upsell.type == 'product') {
+            promises.push(getUpsellProduct(upsell.handle))
+        } else if (upsell.type == 'smart-auto') {
+            smartAutoUpsellIndex = index;
+            promises.push(getShopfiyRecommendedProducts(upsell))
+        } else if (upsell.type == 'custom-service') {
+            promises.push(getUpsellProduct(upsell.handle));
+        }
+    });
+    var smartAutoUpsells = [];
+    var smartAutoUpsellIndex = 0;
+    Promise.all(promises).then(vs => {
+        values = vs;
+        // handle type product & custom-service
+        vs.forEach((product, index) => {
+            var type = upsells[index].type;
+            if (type == 'product') {
+                addShopifyProductToUpsell(upsells[index], product);
+            }
+            if (type == 'custom-service') {
+                addCustomProductToUpsell(upsells[index], product);
+            }
+            if (type == 'smart-auto') {
+                buildNewUpsellsForSmartAuto(upsells[index], product)
+            }
+        });
+        if (smartAutoUpsells.length > 0) {
+            smartAutoUpsells.forEach(smartAutoUpsell => {
+                upsells.splice(smartAutoUpsellIndex, 0, smartAutoUpsell)
+            })
+        }
+        // upsells sort
+        buildPopupWithHtml();
+    });
+
+    return upsells;
+}
+
+function addShopifyProductToUpsell(upsell, p) {
+    var variants = [];
+    if (upsell.variants) {
+        upsell.variants.forEach(v => {
+            p.variants.forEach(pv => {
+                if (v === pv.id) {
+                    variants.push(pv);
+                }
+            });
+        });
+    }
+    if (upsell.variant > 0) {
+        p.variants.forEach(pv => {
+            if (upsell.variant === pv.id) {
+                variants.push(pv);
+            }
+        });
+    }
+    p.variants = variants;
+    upsell['shopify_product'] = p;
+}
+
+function addCustomProductToUpsell(upsell, p) {
+    var variants = [];
+    if (upsell.variant > 0) {
+        p.variants.forEach(pv => {
+            if (upsell.variant === pv.id) {
+                variants.push(pv);
+            }
+        });
+    }
+    p.variants = variants;
+    upsell['shopify_product'] = p;
+}
+
+function buildNewUpsellsForSmartAuto(upsell, ps) {
+    ps.forEach(p => {
+        var newUpsell = Object.clone(upsell);
+        newUpsell['shopify_product'] = p;
+        if (p.variants.length > 1) {
+            newUpsell['variants'] = p.variants.map(v => v.id);
+            newUpsell['variant'] = 0;
+        } else if (p.variants.length == 1) {
+            newUpsell['variant'] = p.variants[0].id;
+            newUpsell['variants'] = [];
+        }
+        // 扩展upsells
+        smartAutoUpsells.push(newUpsell);
+    });
+}
+
 function addListenerToAddToCart() {
     var formBtn = document.querySelector("form[action^='/cart/add'] button[type='submit']");
     formBtn.addEventListener('click', function (e) {
@@ -225,88 +304,7 @@ function addListenerToAddToCart() {
         e.stopPropagation();
         console.log('inject');
         // show upsell popup
-        if (upsellFetched) {
-            buildPopupWithHtml();
-        } else {
-            refetchUpsellProduct().then(res => {
-                buildPopupWithHtml();
-            });
-        }
-    });
-}
-
-var upsellFetched = false;
-function refetchUpsellProduct() {
-    var smartAutoUpsells = [];
-    getShopifyProduct().then(product => {
-        getUpsellRocks(product.id, g_variant == 0 ? product.variants[0].id : g_variant).then(upsells => {
-            console.log(upsells);
-            upsells.forEach(upsell => {
-                // add product object to upsell
-                if (upsell.type == 'product') {
-                    getUpsellProduct(upsell.handle).then(p => {
-                        var variants = [];
-                        if (upsell.variants) {
-                            upsell.variants.forEach(v => {
-                                p.variants.forEach(pv => {
-                                    if (v === pv.id) {
-                                        variants.push(pv);
-                                    }
-                                })
-                            })
-                        }
-                        if (upsell.variant > 0) {
-                            p.variants.forEach(pv => {
-                                if (upsell.variant === pv.id) {
-                                    variants.push(pv);
-                                }
-                            })
-                        }
-                        p.variants = variants;
-                        upsell['shopify_product'] = p;
-                        console.log(upsell);
-                    });
-                } else if (upsell.type == 'smart-auto') { // add recommended products to upsell
-                    getShopfiyRecommendedProducts(upsell).then(ps => {
-                        if (ps.length > 0) {
-                            // insert shopify_product, variant, variants to upsell
-                            ps.forEach(p => {
-                                var newUpsell = Object.clone(upsell);
-                                newUpsell['shopify_product'] = p;
-                                if (p.variants.length > 1) {
-                                    newUpsell['variants'] = p.variants.map(v => v.id);
-                                    newUpsell['variant'] = 0;
-                                } else if (p.variants.length == 1) {
-                                    newUpsell['variant'] = p.variants[0].id;
-                                    newUpsell['variants'] = [];
-                                }
-                                // 扩展upsells
-                                smartAutoUpsells.push(newUpsell);
-                            })
-                        }
-                    })
-                } else if (upsell.type == 'custom-service') {
-                    getUpsellProduct(upsell.handle).then(p => {
-                        var variants = [];
-                        if (upsell.variant > 0) {
-                            p.variants.forEach(pv => {
-                                if (upsell.variant === pv.id) {
-                                    variants.push(pv);
-                                }
-                            })
-                        }
-                        p.variants = variants;
-                        upsell['shopify_product'] = p;
-                        console.log(upsell);
-                    });
-                }
-            });
-            if (smartAutoUpsells.length > 0) {
-                upsells = upsells.concat(smartAutoUpsells);
-                console.log('upsells length = ' + upsells.length);
-            }
-            upsellFetched = true;
-        });
+        refetchUpsellProduct();
     });
 }
 
