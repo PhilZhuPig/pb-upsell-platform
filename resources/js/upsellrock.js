@@ -56,10 +56,6 @@ if (!upsellRockLocalCurrency) {
 var g_variant = 0;
 updateGVariant();
 
-if (!is_product) {
-    clearInterval(interval);
-}
-
 var antiCurrencyWidget = window.localStorage.getItem('antiCurrencyWidget');
 
 function updateGVariant() {
