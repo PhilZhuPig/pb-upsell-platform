@@ -17,7 +17,7 @@
           class="bg-green-700 text-center text-sm text-white w-20 rounded-sm border border-green-800 px-3 py-2 shadow-sm font-light cursor-pointer hover:bg-green-800"
         >Select</div>
         <div
-          v-else
+          v-if="Object.keys(smart_auto_upsell).length===0 && creating"
           class="bg-green-800 text-center text-sm text-white w-20 rounded-sm border border-green-800 px-3 py-2 shadow-sm font-light cursor-pointer"
         >Select</div>
         <div

@@ -500,6 +500,7 @@ export default {
   },
   mounted() {
     console.log("setting mounted");
+    this.form = this.setting;
     this.getSetting();
   },
   methods: {
