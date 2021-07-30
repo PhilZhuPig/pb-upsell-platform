@@ -36,7 +36,8 @@ Route::get('/', function () {
         'money_format_symbol' => $money_symbol,
         'iana_timezone' => $shopApi->iana_timezone,
         'shopify_plan_name' => $shopApi->plan_name,
-        'shopify_response' => $shopApi
+        'shopify_response' => $shopApi,
+        'shop_id' => $shopApi->id
     ]);
     AfterAuthenticateJob::dispatch($user);
     return view('spa');

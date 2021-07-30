@@ -216,7 +216,6 @@ async function refetchUpsellProduct(shouldBuildHtml = true) {
     var smartAutoUpsells = [];
     var smartAutoUpsellIndex = 0;
     Promise.all(promises).then(vs => {
-        values = vs;
         // handle type product & custom-service
         vs.forEach((product, index) => {
             var type = upsells[index].type;
@@ -236,6 +235,7 @@ async function refetchUpsellProduct(shouldBuildHtml = true) {
             })
         }
         // upsells sort
+        upsells = upsells.sort((a, b) => a.order - b.order);
         buildPopupWithHtml();
     });
 
