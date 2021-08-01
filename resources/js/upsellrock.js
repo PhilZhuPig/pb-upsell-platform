@@ -201,6 +201,16 @@ async function refetchUpsellProduct(shouldBuildHtml = true) {
     upsells = await getUpsellRocks(product.id, g_variant == 0 ? product.variants[0].id : g_variant);
     upsellFetched = true;
 
+    // 如果没有拿到upsells, make the default action
+    if (upsells.length === 0) {
+        var formBtn = document.querySelector("form[action^='/cart/add'] button[type='submit']");
+        var newFormBtn = formBtn.cloneNode(true);
+        formBtn.parentNode.replaceChild(newFormBtn, formBtn);
+        var formBtn = document.querySelector("form[action^='/cart/add'] button[type='submit']");
+        formBtn.click();
+        return;
+    }
+
     // Promise.all([])
     var promises = [];
     upsells.forEach((upsell, index) => {

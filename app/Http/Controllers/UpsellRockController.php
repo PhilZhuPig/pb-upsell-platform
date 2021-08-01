@@ -53,7 +53,7 @@ class UpsellRockController extends Controller
         $ids = array_flip($ids);
         $ids = array_flip($ids);
         $ids = array_values($ids);
-        $upsells = UpsellRock::find($ids);
+        $upsells = UpsellRock::where('active', 1)->find($ids);
         $filtered_ids = [];
         foreach ($upsells as $upsell) {
             $mini_hit = false;
@@ -72,7 +72,7 @@ class UpsellRockController extends Controller
                 array_push($filtered_ids, $upsell->id);
             }
         }
-        return UpsellRockResouce::collection(UpsellRock::orderBy('order')->find($filtered_ids));
+        return UpsellRockResouce::collection(UpsellRock::where('active', 1)->orderBy('order')->find($filtered_ids));
     }
 
     public function track(Request $request)
