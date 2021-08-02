@@ -304,7 +304,7 @@ function buildNewUpsellsForSmartAuto(upsell, ps) {
 }
 
 function addListenerToAddToCart() {
-    var formBtn = document.querySelector("form[action^='/cart/add'] button[type='submit']");
+    var formBtn = document.querySelector("form[action^='/cart/add'] [type='submit']");
     formBtn.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
