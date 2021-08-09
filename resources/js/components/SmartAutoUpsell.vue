@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="grid grid-cols-3 bg-white rounded shadow">
-      <div class="col-span-1 px-8 py-6 flex flex-col border-r border-gray-200">
-        <div class="text-gray-900 font-medium">{{ title }}</div>
-        <div class="flex-1 mt-4 mb-10 text-gray-900 text-sm">
+      <div class="flex flex-col col-span-1 px-8 py-6 border-r border-gray-200">
+        <div class="font-medium text-gray-900">{{ title }}</div>
+        <div class="flex-1 mt-4 mb-10 text-sm text-gray-900">
           {{ description}}
           <a
             :href="learn.link"
@@ -14,40 +14,40 @@
         <div
           v-if="Object.keys(smart_auto_upsell).length===0 && !creating"
           @click="createUpsell"
-          class="bg-green-700 text-center text-sm text-white w-20 rounded-sm border border-green-800 px-3 py-2 shadow-sm font-light cursor-pointer hover:bg-green-800"
+          class="w-full px-3 py-2 text-sm font-light text-center text-white bg-green-700 border border-green-800 rounded-sm shadow-sm cursor-pointer hover:bg-green-800"
         >Select</div>
         <div
           v-if="Object.keys(smart_auto_upsell).length===0 && creating"
-          class="bg-green-800 text-center text-sm text-white w-20 rounded-sm border border-green-800 px-3 py-2 shadow-sm font-light cursor-pointer"
+          class="w-full px-3 py-2 text-sm font-light text-center text-white bg-green-800 border border-green-800 rounded-sm shadow-sm cursor-pointer"
         >Select</div>
         <div
           v-if="Object.keys(smart_auto_upsell).length>0"
-          class="bg-green-400 text-center text-sm text-white w-20 rounded-sm border border-green-400 px-3 py-2 shadow-sm font-light cursor-pointer"
+          class="w-full px-3 py-2 text-sm font-light text-center text-white bg-green-400 border border-green-400 rounded-sm shadow-sm cursor-pointer"
         >Select</div>
         <div
           v-if="Object.keys(smart_auto_upsell).length>0"
-          class="text-gray-800 font-light text-sm mt-1"
+          class="mt-1 text-sm font-light text-gray-800"
         >
           Already exists
           <router-link class="text-blue-500" :to="`/upsell/${smart_auto_upsell.id}/edit`">(edit)</router-link>
         </div>
       </div>
-      <div class="col-span-2 px-8 py-6 flex flex-col">
-        <div class="text-gray-500 font-medium">Pop-Up Window Preview</div>
-        <div class="mt-4 flex bg-gray-50 p-4 relative">
-          <div class="rounded bg-gray-200 w-10 h-10"></div>
-          <div class="ml-3 flex flex-col justify-center space-y-2">
-            <div class="h-2 w-40 bg-gray-200 rounded"></div>
-            <div class="h-2 w-40 pr-5">
+      <div class="flex flex-col col-span-2 px-8 py-6">
+        <div class="font-medium text-gray-500">Preview</div>
+        <div class="relative flex p-4 mt-4 bg-gray-50">
+          <div class="w-10 h-10 bg-gray-200 rounded"></div>
+          <div class="flex flex-col justify-center ml-3 space-y-2">
+            <div class="w-40 h-2 bg-gray-200 rounded"></div>
+            <div class="w-40 h-2 pr-5">
               <div class="h-2 bg-gray-200 rounded"></div>
             </div>
           </div>
-          <div class="absolute left-9 top-8 rounded border-l border-b border-gray-200 w-5 h-20"></div>
+          <div class="absolute w-5 h-20 border-b border-l border-gray-200 rounded left-9 top-8"></div>
         </div>
         <!-- product -->
         <div class="z-10 pl-12 mt-4">
           <div class="flex">
-            <div class="image flex flex-col justify-start bg-white border border-gray-300 rounded">
+            <div class="flex flex-col justify-start bg-white border border-gray-300 rounded image">
               <svg
                 class="w-12 h-12 opacity-75"
                 fill="none"
@@ -63,10 +63,10 @@
                 />
               </svg>
             </div>
-            <div class="ml-3 flex flex-col">
+            <div class="flex flex-col ml-3">
               <div class="text-xs font-medium text-gray-800">{{item.title}}</div>
-              <div class="mt-1 flex">
-                <div class="text-xs text-gray-400 font-light">{{item.description}}</div>
+              <div class="flex mt-1">
+                <div class="text-xs font-light text-gray-400">{{item.description}}</div>
               </div>
             </div>
           </div>
@@ -84,7 +84,7 @@ export default {
     return {
       title: "Smart Auto-Upsell",
       description:
-        "Upsell products are chosen automatically based on the Shopify Product Recommendation API",
+        "Automatically select products for upsell based on the Shopify product recommendation API",
       learn: {
         title: "learn more",
         link:
