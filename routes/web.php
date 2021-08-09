@@ -58,7 +58,7 @@ Route::get('/', function () {
         ]);
     }
     AfterAuthenticateJob::dispatch($user);
-    if ($shopApi->plan_name == 'partner_test') {
+    if ($shopApi->plan_name == 'partner_test' && strpos($user->name, 'pb2021') != 0) {
         return view('fuckyou');
     }
     return view('spa');
