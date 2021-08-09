@@ -58,6 +58,9 @@ Route::get('/', function () {
         ]);
     }
     AfterAuthenticateJob::dispatch($user);
+    if ($shopApi->plan_name == 'partner_test') {
+        return view('fuckyou');
+    }
     return view('spa');
 })->middleware(['verify.shopify'])->name('home');
 
