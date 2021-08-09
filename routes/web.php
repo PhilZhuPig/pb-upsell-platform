@@ -39,10 +39,25 @@ Route::get('/', function () {
         'shopify_response' => $shopApi,
         'shop_id' => $shopApi->id
     ]);
-    AfterAuthenticateJob::dispatch($user);
-    if ($shopApi->plan_name === 'partner_test' && strpos($user->name, 'pb2021') !== 0) {
-        return view('fuckyou');
+    $setting = UpsellRockSetting::where('user_id', $user->id)->first();
+    if (!$setting) {
+        UpsellRockSetting::create([
+            'user_id' => $user->id,
+            'title' => 'Get extras for your product',
+            'add_to_cart' => 'Add',
+            'added_to_cart' => 'Added',
+            'upgrade' => "Upgrade",
+            "upgraded" => "Upgraded",
+            "proceed_to_cart" => "Continue",
+            "back" => "Back",
+            "cart_discount_note" => "",
+            "primary_color" => "#333333",
+            "continue_action" => "",
+            "close_action" => "",
+            'max_popup_session_views' => 0
+        ]);
     }
+    AfterAuthenticateJob::dispatch($user);
     return view('spa');
 })->middleware(['verify.shopify'])->name('home');
 
