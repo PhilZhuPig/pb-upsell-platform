@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'namespace' => env('SHOPIFY_APP_NAMESPACE', 'upsell-rock'),
+    'namespace' => env('SHOPIFY_APP_NAMESPACE', 'ant-rack'),
 
     /*
     |--------------------------------------------------------------------------
@@ -131,7 +131,7 @@ return [
     |
     */
 
-    'app_name' => env('SHOPIFY_APP_NAME', 'Ant Upsell Rock'),
+    'app_name' => env('SHOPIFY_APP_NAME', 'Ant Rack'),
 
     /*
     |--------------------------------------------------------------------------
@@ -155,7 +155,7 @@ return [
     |
     */
 
-    'api_key' => env('SHOPIFY_API_KEY', 'ab9258eb01c02cef22c8a83747fbbe59'),
+    'api_key' => env('SHOPIFY_API_KEY', '766f1cb56184b915aa366783059b6aca'),
     // 'api_key' => env('SHOPIFY_API_KEY', '111c28539ecdc8dd24f1723b36fef5cd'), // local
 
     /*
@@ -167,7 +167,7 @@ return [
     |
     */
 
-    'api_secret' => env('SHOPIFY_API_SECRET', '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'),
+    'api_secret' => env('SHOPIFY_API_SECRET', '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'),
     // 'api_secret' => env('SHOPIFY_API_SECRET', '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'), //local
 
     /*
@@ -324,18 +324,18 @@ return [
             'topic' => 'APP_UNINSTALLED',
             'address' => env('APP_URL') . '/webhook/app-uninstalled'
         ],
-        // [
-        //     'topic' => 'shop/redact',
-        //     'address' => env('APP_URL') . '/webhook/shop-redact'
-        // ],
-        // [
-        //     'topic' => 'customers/redact',
-        //     'address' => env('APP_URL') . '/webhook/customers-redact'
-        // ],
-        // [
-        //     'topic' => 'customers/data_request',
-        //     'address' => env('APP_URL') . '/webhook/customers-data-request'
-        // ],
+        [
+            'topic' => 'shop/redact',
+            'address' => env('APP_URL') . '/webhook/shop-redact'
+        ],
+        [
+            'topic' => 'customers/redact',
+            'address' => env('APP_URL') . '/webhook/customers-redact'
+        ],
+        [
+            'topic' => 'customers/data_request',
+            'address' => env('APP_URL') . '/webhook/customers-data-request'
+        ],
     ],
 
     /*

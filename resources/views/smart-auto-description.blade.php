@@ -4,18 +4,18 @@
         <meta charset="utf-8">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>💡What are smart auto upsells and how to use them within ant upsell rock</title>
+        <title>💡What are smart auto upsells and how to use them within Ant Rack</title>
         <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     </head>
 
     <body>
         <div class="grid grid-cols-7 p-6">
-            <div class="lg:col-start-3 lg:col-span-3 sm:col-span-7 flex flex-col">
-                <div class="text-3xl font-bold mt-8 mb-4">
-                    What are the Smart Auto-Upsells and how to use them - Ant Upsell Rock
+            <div class="flex flex-col lg:col-start-3 lg:col-span-3 sm:col-span-7">
+                <div class="mt-8 mb-4 text-3xl font-bold">
+                    What are the Smart Auto-Upsells and how to use them - Ant Rack
                 </div>
 
-                <div class="mt-4 p-6 bg-gray-100 rounded flex items-start">
+                <div class="flex items-start p-6 mt-4 bg-gray-100 rounded">
                     <div class="text-xl">👉</div>
                     <div class="ml-3 text-gray-600"> Everything about our most advanced and fully auto-pilot upselling feature.</div>
                 </div>
@@ -28,7 +28,7 @@
                     Basically, it's a fully automated upsell system that will allow you to enable <span class="font-bold">relevant upsells</span> for all products in your store.
                 </div>
 
-                <div class="mt-4 p-6 bg-gray-100 rounded flex items-start">
+                <div class="flex items-start p-6 mt-4 bg-gray-100 rounded">
                     <div class="text-xl">💡</div>
                     <div class="ml-3 text-gray-600">
                         How? It's getting the most relevant product from the Shopify Product Recommendations API. Shopify’s AI algorithm uses the store’s data to provide smarter recommendations based on product descriptions and customer behavior.
@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="mt-2 text-gray-700">
-                    Smart Auto-Upsell should be the second one in the list. Click on <span class="px-3 py-2 w-20 rounded-sm bg-green-700 border border-green-800 text-white font-light text-sm">Select</span> to set it up.
+                    Smart Auto-Upsell should be the second one in the list. Click on <span class="w-20 px-3 py-2 text-sm font-light text-white bg-green-700 border border-green-800 rounded-sm">Select</span> to set it up.
                 </div>
 
                 <div class="mt-2">
@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="mt-4 text-gray-700">
-                    Alternatively, you can get to this overview by clicking on the <span class="px-3 py-2 w-20 rounded-sm bg-green-700 border border-green-800 text-white font-light text-sm">New Upsell</span> button.
+                    Alternatively, you can get to this overview by clicking on the <span class="w-20 px-3 py-2 text-sm font-light text-white bg-green-700 border border-green-800 rounded-sm">New Upsell</span> button.
                 </div>
 
                 <div class="mt-4 text-xl font-bold text-gray-800">
@@ -64,19 +64,19 @@
                 </div>
 
                 <div class="mt-4 text-gray-700">
-                    At the top of the upsell settings you can enter <span class="bg-gray-100 px-3 py-1 rounded text-red-500 text-sm font-light">Upsell Name</span> which is used for your internal reference only. You can also leave as is and use the predefined one.
+                    At the top of the upsell settings you can enter <span class="px-3 py-1 text-sm font-light text-red-500 bg-gray-100 rounded">Upsell Name</span> which is used for your internal reference only. You can also leave as is and use the predefined one.
                 </div>
 
                 <div class="mt-4 text-gray-700">
-                    Below the name there is <span class="bg-gray-100 px-3 py-1 rounded text-red-500 text-sm font-light">Description</span> field that will appear below the product on the pop-up. Typically you can use it to motivate customers to add the product to their cart.
+                    Below the name there is <span class="px-3 py-1 text-sm font-light text-red-500 bg-gray-100 rounded">Description</span> field that will appear below the product on the pop-up. Typically you can use it to motivate customers to add the product to their cart.
                 </div>
 
                 <div class="mt-4 text-gray-700">
-                    Below description you can find <span class="bg-gray-100 px-3 py-1 rounded text-red-500 text-sm font-light">Product count</span> field, where you can define a number of upsell products to be displayed on the pop-up window.
+                    Below description you can find <span class="px-3 py-1 text-sm font-light text-red-500 bg-gray-100 rounded">Product count</span> field, where you can define a number of upsell products to be displayed on the pop-up window.
                 </div>
 
                 <div class="mt-4 text-gray-700">
-                    There is also an option to <span class="bg-gray-100 px-3 py-1 rounded text-red-500 text-sm font-light">Apply discount</span> if you want the smart upsells to be discounted.
+                    There is also an option to <span class="px-3 py-1 text-sm font-light text-red-500 bg-gray-100 rounded">Apply discount</span> if you want the smart upsells to be discounted.
                 </div>
 
                 <div class="mt-2">
@@ -88,7 +88,7 @@
                 </div>
 
                 <div class="mt-4 text-gray-700">
-                    In the section called <span class="bg-gray-100 px-3 py-1 rounded text-red-500 text-sm font-light">Display for</span> you need to select when you want this upsell to be displayed.
+                    In the section called <span class="px-3 py-1 text-sm font-light text-red-500 bg-gray-100 rounded">Display for</span> you need to select when you want this upsell to be displayed.
                 </div>
 
                 <div class="mt-4 text-gray-700">
@@ -104,14 +104,14 @@
                 </div>
 
                 <div class="mt-4 text-gray-700">
-                    Under targeting section there are more settings which can help you better customize your Smart Upsell offer. You can display them by clicking on <span class="bg-gray-100 px-3 py-1 rounded text-red-500 text-sm font-light">Additional settings</span>.
+                    Under targeting section there are more settings which can help you better customize your Smart Upsell offer. You can display them by clicking on <span class="px-3 py-1 text-sm font-light text-red-500 bg-gray-100 rounded">Additional settings</span>.
                 </div>
 
                 <div class="mt-4 text-gray-700">
-                    You can control the upsell position on the pop-up in case of multiple upsells by configurating the <span class="bg-gray-100 px-3 py-1 rounded text-red-500 text-sm font-light">Upsell position</span>.
+                    You can control the upsell position on the pop-up in case of multiple upsells by configurating the <span class="px-3 py-1 text-sm font-light text-red-500 bg-gray-100 rounded">Upsell position</span>.
                 </div>
 
-                <div class="mt-4 flex p-6 bg-gray-100 rounded">
+                <div class="flex p-6 mt-4 bg-gray-100 rounded">
                     <div class="text-xl">
                         💡
                     </div>
@@ -121,10 +121,10 @@
                 </div>
 
                 <div class="mt-4 text-gray-700">
-                    In the <span class="bg-gray-100 px-3 py-1 rounded text-red-500 text-sm font-light">Display for specified price range</span> you can set the price limit when the upsell should appear.
+                    In the <span class="px-3 py-1 text-sm font-light text-red-500 bg-gray-100 rounded">Display for specified price range</span> you can set the price limit when the upsell should appear.
                 </div>
 
-                <div class="mt-4 flex p-6 bg-gray-100 rounded">
+                <div class="flex p-6 mt-4 bg-gray-100 rounded">
                     <div class="text-xl">
                         💡
                     </div>
@@ -146,18 +146,18 @@
                 </div>
 
                 <div class="mt-4 text-gray-700">
-                    Now just click on the <span class="px-3 py-2 w-20 rounded bg-green-700 text-white font-light text-sm">Save</span> button at the right-bottom part of the page. And that's it, your upsell offer is now live. Congratulations!
+                    Now just click on the <span class="w-20 px-3 py-2 text-sm font-light text-white bg-green-700 rounded">Save</span> button at the right-bottom part of the page. And that's it, your upsell offer is now live. Congratulations!
                 </div>
 
                 <div class="mt-2">
                     <img src="/images/smart-step3.png" alt="">
                 </div>
 
-                <div class="mt-4 flex p-6 bg-gray-100 rounded">
+                <div class="flex p-6 mt-4 bg-gray-100 rounded">
                     <div class="text-xl">
                         💡
                     </div>
-                    <div class="ml-3 text-gray-600 flex flex-col">
+                    <div class="flex flex-col ml-3 text-gray-600">
                         To make sure your actived the offer. the list page will display the status of all your upsells
                         <div class="mt-2">
                             <img src="/images/smart-step3-1.png" alt="">
@@ -174,7 +174,7 @@
                 </div>
 
                 <div class="mt-4 text-gray-700">
-                    As a last step we recommend to go on your site and check the upsell pop-up yourself. Simply go to any product page based on your targeting settings, wait a couple of seconds till it's fully loaded and click on the <span class="bg-gray-100 px-3 py-1 rounded text-red-500 text-sm font-light">Add to Cart</span> button.
+                    As a last step we recommend to go on your site and check the upsell pop-up yourself. Simply go to any product page based on your targeting settings, wait a couple of seconds till it's fully loaded and click on the <span class="px-3 py-1 text-sm font-light text-red-500 bg-gray-100 rounded">Add to Cart</span> button.
                 </div>
 
                 <div class="mt-4 text-gray-700">
@@ -185,14 +185,14 @@
                     <img src="/images/smart-step4.png" alt="">
                 </div>
 
-                <div class="mt-4 flex p-6 bg-gray-100 rounded">
+                <div class="flex p-6 mt-4 bg-gray-100 rounded">
                     <div class="text-xl">
                         ❤️
                     </div>
-                    <div class="ml-3 text-gray-600 flex flex-col">
-                        <div class="text-gray-800 font-bold"> Happy upselling.</div>
+                    <div class="flex flex-col ml-3 text-gray-600">
+                        <div class="font-bold text-gray-800"> Happy upselling.</div>
                         <div class="text-gray-700">
-                            <span class="text-gray-600 italic">Your</span> <a class="text-blue-500 underline italic" target="_blank" href="https://apps.shopify.com/partners/9069">PB Apps</a>
+                            <span class="italic text-gray-600">Your</span> <a class="italic text-blue-500 underline" target="_blank" href="https://apps.shopify.com/partners/9069">PB Apps</a>
                         </div>
                     </div>
                 </div>

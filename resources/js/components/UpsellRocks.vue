@@ -2,37 +2,37 @@
   <div>
     <!-- navs -->
     <nav class="bg-gray-800">
-      <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+      <div class="px-2 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="relative flex items-center justify-between h-16">
-          <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-            <div class="flex-shrink-0 flex items-center">
-              <img class="h-8 w-auto" src="/images/upsell-logo.svg" alt />
+          <div class="flex items-center justify-center flex-1 sm:items-stretch sm:justify-start">
+            <div class="flex items-center flex-shrink-0">
+              <img class="w-auto h-8" src="/images/upsell-logo.svg" alt />
             </div>
             <div class="hidden sm:block sm:ml-6">
               <div class="flex space-x-4">
                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                 <!-- <router-link
                   to="/"
-                  class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-sm font-medium"
+                  class="block px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
                   aria-current="page"
                 >Dashboard</router-link>-->
                 <router-link
                   to="/"
-                  class="bg-gray-900 text-white block px-3 py-2 rounded-md text-sm font-medium"
+                  class="block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-md"
                   aria-current="page"
-                >Ant Upsell Rocks</router-link>
+                >Dashboard</router-link>
                 <router-link
                   to="/setting"
-                  class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-sm font-medium"
+                  class="block px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
                   aria-current="page"
                 >Setting</router-link>
                 <router-link
                   to="/performance"
-                  class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-sm font-medium"
+                  class="block px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
                   aria-current="page"
                 >Performance</router-link>
                 <div
-                  class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
+                  class="block px-3 py-2 text-sm font-medium text-gray-300 rounded-md cursor-pointer hover:bg-gray-700 hover:text-white"
                   aria-current="page"
                   @click="gotoCCA"
                 >Add 170+ Currencies to your shop</div>
@@ -47,26 +47,26 @@
           <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
           <!-- <router-link
             to="/"
-            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            class="block px-3 py-2 text-base font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
             aria-current="page"
           >Dashboard</router-link>-->
           <router-link
             to="/"
-            class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+            class="block px-3 py-2 text-base font-medium text-white bg-gray-900 rounded-md"
             aria-current="page"
-          >Ant Upsell Rocks</router-link>
+          >Dashboard</router-link>
           <router-link
             to="/setting"
-            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            class="block px-3 py-2 text-base font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
             aria-current="page"
           >Setting</router-link>
           <router-link
             to="/performance"
-            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            class="block px-3 py-2 text-base font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
             aria-current="page"
           >Performance</router-link>
           <div
-            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium cursor-pointer"
+            class="block px-3 py-2 text-base font-medium text-gray-300 rounded-md cursor-pointer hover:bg-gray-700 hover:text-white"
             aria-current="page"
             @click="gotoCCA"
           >Add 170+ Currencies to your shop</div>
@@ -75,7 +75,7 @@
     </nav>
     <!-- end navs -->
     <!-- content -->
-    <div class="max-w-6xl mx-auto py-6 sm:px-6 lg:px-8" v-if="upsells.length===0 || show_type_list">
+    <div class="max-w-6xl py-6 mx-auto sm:px-6 lg:px-8" v-if="upsells.length===0 || show_type_list">
       <div class="flex justify-start">
         <div
           class="flex items-center text-gray-500"
@@ -84,7 +84,7 @@
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6"
+            class="w-6 h-6"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -99,20 +99,20 @@
         </div>
         <div
           :class="`${show_type_list?'ml-4':''} text-xl text-gray-900 text-center font-medium py-4`"
-        >Fill Up Your Ant Upsell Rock</div>
+        >Fill Up Your Ant Rack</div>
       </div>
       <instructor></instructor>
       <product-upsell class="mt-4"></product-upsell>
       <smart-auto-upsell class="mt-4"></smart-auto-upsell>
       <custom-service class="mt-4"></custom-service>
     </div>
-    <div class="max-w-6xl mx-auto py-6 sm:px-6 lg:px-8" v-else>
+    <div class="max-w-6xl py-6 mx-auto sm:px-6 lg:px-8" v-else>
       <upsell-rock-list></upsell-rock-list>
       <!-- new upsell -->
-      <div class="mt-4 flex justify-center items-center">
+      <div class="flex items-center justify-center mt-4">
         <div
           @click="show_type_list = true"
-          class="bg-green-700 text-center text-sm text-white w-auto rounded-sm border border-green-800 px-3 py-2 shadow-sm font-light cursor-pointer hover:bg-green-800"
+          class="w-auto px-3 py-2 text-sm font-light text-center text-white bg-green-700 border border-green-800 rounded-sm shadow-sm cursor-pointer hover:bg-green-800"
         >New Upsell</div>
       </div>
     </div>

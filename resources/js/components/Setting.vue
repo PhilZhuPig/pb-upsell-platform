@@ -2,37 +2,37 @@
   <div>
     <!-- navs -->
     <nav class="bg-gray-800">
-      <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+      <div class="px-2 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="relative flex items-center justify-between h-16">
-          <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-            <div class="flex-shrink-0 flex items-center">
-              <img class="h-8 w-auto" src="/images/upsell-logo.svg" alt />
+          <div class="flex items-center justify-center flex-1 sm:items-stretch sm:justify-start">
+            <div class="flex items-center flex-shrink-0">
+              <img class="w-auto h-8" src="/images/upsell-logo.svg" alt />
             </div>
             <div class="hidden sm:block sm:ml-6">
               <div class="flex space-x-4">
                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                 <!-- <router-link
                   to="/"
-                  class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-sm font-medium"
+                  class="block px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
                   aria-current="page"
                 >Dashboard</router-link>-->
                 <router-link
                   to="/"
-                  class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-sm font-medium"
+                  class="block px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
                   aria-current="page"
-                >Ant Upsell Rocks</router-link>
+                >Dashboard</router-link>
                 <router-link
                   to="/setting"
-                  class="bg-gray-900 text-white block px-3 py-2 rounded-md text-sm font-medium"
+                  class="block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-md"
                   aria-current="page"
                 >Setting</router-link>
                 <router-link
                   to="/performance"
-                  class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-sm font-medium"
+                  class="block px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
                   aria-current="page"
                 >Performance</router-link>
                 <div
-                  class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
+                  class="block px-3 py-2 text-sm font-medium text-gray-300 rounded-md cursor-pointer hover:bg-gray-700 hover:text-white"
                   aria-current="page"
                   @click="gotoCCA"
                 >Add 170+ Currencies to your shop</div>
@@ -47,26 +47,26 @@
           <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
           <!-- <router-link
             to="/"
-            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            class="block px-3 py-2 text-base font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
             aria-current="page"
           >Dashboard</router-link>-->
           <router-link
             to="/"
-            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            class="block px-3 py-2 text-base font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
             aria-current="page"
-          >Ant Upsell Rocks</router-link>
+          >Dashboard</router-link>
           <router-link
             to="/setting"
-            class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+            class="block px-3 py-2 text-base font-medium text-white bg-gray-900 rounded-md"
             aria-current="page"
           >Setting</router-link>
           <router-link
             to="/performance"
-            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            class="block px-3 py-2 text-base font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
             aria-current="page"
           >Performance</router-link>
           <div
-            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium cursor-pointer"
+            class="block px-3 py-2 text-base font-medium text-gray-300 rounded-md cursor-pointer hover:bg-gray-700 hover:text-white"
             aria-current="page"
             @click="gotoCCA"
           >Add 170+ Currencies to your shop</div>
@@ -76,15 +76,15 @@
     <!-- end navs -->
 
     <!-- content -->
-    <div class="max-w-6xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div class="max-w-6xl py-6 mx-auto sm:px-6 lg:px-8">
       <!-- color -->
       <div class="flex flex-col pb-6 border-b border-gray-300">
         <div class="font-bold">Color</div>
         <div
-          class="text-sm text-gray-600 font-light py-2"
+          class="py-2 text-sm font-light text-gray-600"
         >Select the color of the main button (Continue to Cart) on the pop-up window.</div>
-        <div class="mt-2 rounded shadow bg-white p-6 flex">
-          <div class="border border-gray-300 px-1 pt-1 rounded-xl">
+        <div class="flex p-6 mt-2 bg-white rounded shadow">
+          <div class="px-1 pt-1 border border-gray-300 rounded-xl">
             <v-swatches swatches="text-advanced" v-model="form.primary_color"></v-swatches>
           </div>
           <input
@@ -92,7 +92,7 @@
             name="bg-color"
             id="bg-color"
             v-model="form.primary_color"
-            class="ml-2 w-40 focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-md"
+            class="block w-40 ml-2 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
       </div>
@@ -101,9 +101,9 @@
       <div class="flex flex-col py-6 border-b border-gray-300">
         <div class="font-bold">Custom Wording & Translation</div>
         <div
-          class="text-sm text-gray-600 font-light py-2"
+          class="py-2 text-sm font-light text-gray-600"
         >Customize or translate the wording of the pop-up window.</div>
-        <div class="mt-2 rounded shadow bg-white p-6 flex flex-col">
+        <div class="flex flex-col p-6 mt-2 bg-white rounded shadow">
           <!-- title -->
           <div class="flex flex-col">
             <div class="text-sm text-gray-800">Title (max. 50 chars)</div>
@@ -114,11 +114,11 @@
                 id="title"
                 v-model="form.title"
                 placeholder="Get extras for your product"
-                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
             <div
-              class="mt-1 text-sm text-gray-500 font-light"
+              class="mt-1 text-sm font-light text-gray-500"
             >Title that appears on the top of the pop-up window.</div>
           </div>
 
@@ -132,7 +132,7 @@
                 id="add_to_cart"
                 v-model="form.add_to_cart"
                 placeholder="Add"
-                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
           </div>
@@ -147,11 +147,11 @@
                 id="added_to_cart"
                 v-model="form.added_to_cart"
                 placeholder="Added"
-                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
             <div
-              class="mt-1 text-sm text-gray-500 font-light"
+              class="mt-1 text-sm font-light text-gray-500"
             >Appears when upsell product is added to cart.</div>
           </div>
 
@@ -165,7 +165,7 @@
                 id="upgrade"
                 v-model="form.upgrade"
                 placeholder="Upgrade"
-                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
           </div>
@@ -180,11 +180,11 @@
                 id="upgraded"
                 v-model="form.upgraded"
                 placeholder="Upgraded"
-                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
             <div
-              class="mt-1 text-sm text-gray-500 font-light"
+              class="mt-1 text-sm font-light text-gray-500"
             >Appears when upgrade product is added to cart.</div>
           </div>
 
@@ -198,11 +198,11 @@
                 id="proceed_to_cart"
                 v-model="form.proceed_to_cart"
                 placeholder="Continue"
-                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
             <div
-              class="mt-1 text-sm text-gray-500 font-light"
+              class="mt-1 text-sm font-light text-gray-500"
             >Bottom button on the pop-up window which leads customer to the cart or checkout page.</div>
           </div>
 
@@ -216,11 +216,11 @@
                 id="back"
                 v-model="form.back"
                 placeholder="Back"
-                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
             <div
-              class="mt-1 text-sm text-gray-500 font-light"
+              class="mt-1 text-sm font-light text-gray-500"
             >Back button displayed on the product offer detail page.</div>
           </div>
 
@@ -236,11 +236,11 @@
                 id="cart_discount_note"
                 v-model="form.cart_discount_note"
                 placeholder="Discount AMOUNT will be applied at checkout"
-                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
             <div
-              class="mt-1 text-sm text-gray-500 font-light"
+              class="mt-1 text-sm font-light text-gray-500"
             >Discount info displayed on the cart page.</div>
           </div>
         </div>
@@ -250,9 +250,9 @@
       <div class="flex flex-col py-6 border-b border-gray-300">
         <div class="font-bold">Button Action Settings</div>
         <div
-          class="text-sm text-gray-600 font-light py-2"
+          class="py-2 text-sm font-light text-gray-600"
         >Customize the click behavior of the buttons on the pop-up.</div>
-        <div class="mt-2 rounded shadow bg-white p-6 flex flex-col">
+        <div class="flex flex-col p-6 mt-2 bg-white rounded shadow">
           <!-- contiue button action -->
           <div class="flex flex-col">
             <div class="text-sm text-gray-800">Continue button action</div>
@@ -261,7 +261,7 @@
                 id="continue_action"
                 name="continue_action"
                 v-model="form.continue_action"
-                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                class="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               >
                 <option value>Default</option>
                 <option value="redirect_to_cart">Redirect to cart</option>
@@ -272,14 +272,14 @@
           </div>
 
           <!-- contiue button action -->
-          <div class="mt-4 flex flex-col">
+          <div class="flex flex-col mt-4">
             <div class="text-sm text-gray-800">Close (x) button action</div>
             <div class="mt-1">
               <select
                 id="close_action"
                 name="close_action"
                 v-model="form.close_action"
-                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                class="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               >
                 <option value>Default</option>
                 <option value="redirect_to_cart">Redirect to cart</option>
@@ -295,9 +295,9 @@
       <div class="flex flex-col py-6 border-b border-gray-300">
         <div class="font-bold">Custom Appearance</div>
         <div
-          class="text-sm text-gray-600 font-light py-2"
+          class="py-2 text-sm font-light text-gray-600"
         >Override our styles to make the pop-up match the rest of your site.</div>
-        <div class="mt-2 rounded shadow bg-white p-6 flex flex-col">
+        <div class="flex flex-col p-6 mt-2 bg-white rounded shadow">
           <!-- custom css -->
           <div class="flex flex-col">
             <div class="text-sm text-gray-800">Custom CSS</div>
@@ -307,16 +307,16 @@
                 name="custom-css"
                 rows="6"
                 v-model="form.custom_css"
-                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                class="block w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               ></textarea>
             </div>
             <div
-              class="mt-1 text-sm text-gray-500 font-light"
+              class="mt-1 text-sm font-light text-gray-500"
             >Your custom CSS that will be used for the pop-up window.</div>
           </div>
 
           <!-- custom js -->
-          <div class="mt-4 flex flex-col">
+          <div class="flex flex-col mt-4">
             <div class="text-sm text-gray-800">Custom JS</div>
             <div class="mt-1">
               <textarea
@@ -324,11 +324,11 @@
                 name="custom-JS"
                 rows="6"
                 v-model="form.custom_js"
-                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                class="block w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               ></textarea>
             </div>
             <div
-              class="mt-1 text-sm text-gray-500 font-light"
+              class="mt-1 text-sm font-light text-gray-500"
             >Your custom Javascript that will be used for the pop-up window.</div>
           </div>
         </div>
@@ -338,13 +338,13 @@
       <div class="flex flex-col py-6 border-b border-gray-300">
         <div class="font-bold">Limit Pop-up Views</div>
         <div
-          class="text-sm text-gray-600 font-light py-2"
+          class="py-2 text-sm font-light text-gray-600"
         >Set the maximum number of pop-up views per one browsing session.</div>
-        <div class="mt-2 rounded shadow bg-white p-6 flex flex-col">
+        <div class="flex flex-col p-6 mt-2 bg-white rounded shadow">
           <!-- Number of pop-up views per session -->
           <div class="flex flex-col">
             <div class="text-sm text-gray-800">Number of pop-up views per session</div>
-            <div class="mt-4 flex flex-col space-y-4">
+            <div class="flex flex-col mt-4 space-y-4">
               <div class="flex items-center">
                 <input
                   id="unlimited-session"
@@ -352,11 +352,11 @@
                   type="radio"
                   :value="true"
                   v-model="unlimited"
-                  class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                  class="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
                 />
                 <label
                   for="unlimited-session"
-                  class="ml-3 block text-sm font-medium text-gray-700"
+                  class="block ml-3 text-sm font-medium text-gray-700"
                 >Unlimited</label>
               </div>
               <div class="flex items-center">
@@ -366,11 +366,11 @@
                   type="radio"
                   :value="false"
                   v-model="unlimited"
-                  class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                  class="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
                 />
                 <label
                   for="unlimited-session"
-                  class="ml-3 block text-sm font-medium text-gray-700"
+                  class="block ml-3 text-sm font-medium text-gray-700"
                 >Maximum number</label>
               </div>
               <div class="flex items-center" v-if="!unlimited">
@@ -379,7 +379,7 @@
                   name="max_popup_session_views"
                   id="max_popup_session_views"
                   v-model="form.max_popup_session_views"
-                  class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-1/3 shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  class="block w-1/3 mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
             </div>
@@ -391,9 +391,9 @@
       <div class="flex flex-col py-6 mb-40">
         <div class="font-bold">Currency auto conversion</div>
         <div
-          class="text-sm text-gray-600 font-light py-2"
+          class="py-2 text-sm font-light text-gray-600"
         >Auto set the currency by customer's location</div>
-        <div class="mt-2 rounded shadow bg-white p-6 flex flex-col">
+        <div class="flex flex-col p-6 mt-2 bg-white rounded shadow">
           <!-- Number of pop-up views per session -->
           <div class="flex flex-col">
             <div class="flex flex-col space-y-4">
@@ -404,9 +404,9 @@
                   type="radio"
                   :value="true"
                   v-model="form.auto_conversion"
-                  class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                  class="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
                 />
-                <label for="conversion-yes" class="ml-3 block text-sm font-medium text-gray-700">YES</label>
+                <label for="conversion-yes" class="block ml-3 text-sm font-medium text-gray-700">YES</label>
               </div>
               <div class="flex items-center">
                 <input
@@ -415,15 +415,15 @@
                   type="radio"
                   :value="false"
                   v-model="form.auto_conversion"
-                  class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                  class="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
                 />
-                <label for="conversion-no" class="ml-3 block text-sm font-medium text-gray-700">NO</label>
+                <label for="conversion-no" class="block ml-3 text-sm font-medium text-gray-700">NO</label>
               </div>
               <div class="flex flex-col">
                 <div class="flex">
                   <div
                     @click="gotoCCA"
-                    class="flex items-center px-5 py-3 rounded-sm shadow w-auto cursor-pointer border-green-700 bg-green-600 text-white text-sm font-light hover:bg-green-700"
+                    class="flex items-center w-auto px-5 py-3 text-sm font-light text-white bg-green-600 border-green-700 rounded-sm shadow cursor-pointer hover:bg-green-700"
                   >
                     <svg
                       class="w-6 h-6 mr-3"
@@ -441,12 +441,12 @@
                     </svg>
                     Integrate with
                     <span
-                      class="font-base italic"
+                      class="italic font-base"
                     >Currency Converter Ant</span>
                   </div>
                   <div class="flex-1"></div>
                 </div>
-                <p class="mt-2 text-sm text-gray-500 font-light">
+                <p class="mt-2 text-sm font-light text-gray-500">
                   Integrate with
                   <span class="ml-1 italic">Currency Converter Ant</span> to obtain 170+ currency conversion capabilities
                 </p>
@@ -459,16 +459,16 @@
     <!-- end content -->
 
     <!-- footer -->
-    <footer class="fixed bottom-0 left-0 w-full h-16 bg-gray-50 border-t-2 border-gray-300">
-      <div class="px-4 py-3 bg-gray-50 flex justify-end">
+    <footer class="fixed bottom-0 left-0 w-full h-16 border-t-2 border-gray-300 bg-gray-50">
+      <div class="flex justify-end px-4 py-3 bg-gray-50">
         <div class="flex items-center justify-end">
           <div
             v-if="updated_success"
-            class="flex-1 mr-4 text-gray-700 text-sm justify-center items-center"
+            class="items-center justify-center flex-1 mr-4 text-sm text-gray-700"
           >updated!</div>
           <div
             @click.prevent="updateSetting"
-            class="inline-flex cursor-pointer justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600"
+            class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-green-700 border border-transparent rounded-md shadow-sm cursor-pointer hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600"
           >Save</div>
         </div>
       </div>

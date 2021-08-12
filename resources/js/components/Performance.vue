@@ -2,37 +2,37 @@
   <div>
     <!-- navs -->
     <nav class="bg-gray-800">
-      <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+      <div class="px-2 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="relative flex items-center justify-between h-16">
-          <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-            <div class="flex-shrink-0 flex items-center">
-              <img class="h-8 w-auto" src="/images/upsell-logo.svg" alt />
+          <div class="flex items-center justify-center flex-1 sm:items-stretch sm:justify-start">
+            <div class="flex items-center flex-shrink-0">
+              <img class="w-auto h-8" src="/images/upsell-logo.svg" alt />
             </div>
             <div class="hidden sm:block sm:ml-6">
               <div class="flex space-x-4">
                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                 <!-- <router-link
                   to="/"
-                  class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-sm font-medium"
+                  class="block px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
                   aria-current="page"
                 >Dashboard</router-link>-->
                 <router-link
                   to="/"
-                  class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-sm font-medium"
+                  class="block px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
                   aria-current="page"
-                >Ant Upsell Rocks</router-link>
+                >Dashboard</router-link>
                 <router-link
                   to="/setting"
-                  class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-sm font-medium"
+                  class="block px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
                   aria-current="page"
                 >Setting</router-link>
                 <router-link
                   to="/performance"
-                  class="bg-gray-900 text-white block px-3 py-2 rounded-md text-sm font-medium"
+                  class="block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-md"
                   aria-current="page"
                 >Performance</router-link>
                 <div
-                  class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
+                  class="block px-3 py-2 text-sm font-medium text-gray-300 rounded-md cursor-pointer hover:bg-gray-700 hover:text-white"
                   aria-current="page"
                   @click="gotoCCA"
                 >Add 170+ Currencies to your shop</div>
@@ -47,26 +47,26 @@
           <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
           <!-- <router-link
             to="/"
-            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            class="block px-3 py-2 text-base font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
             aria-current="page"
           >Dashboard</router-link>-->
           <router-link
             to="/"
-            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            class="block px-3 py-2 text-base font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
             aria-current="page"
-          >Ant Upsell Rocks</router-link>
+          >Dashboard</router-link>
           <router-link
             to="/setting"
-            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            class="block px-3 py-2 text-base font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
             aria-current="page"
           >Setting</router-link>
           <router-link
             to="/performance"
-            class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+            class="block px-3 py-2 text-base font-medium text-white bg-gray-900 rounded-md"
             aria-current="page"
           >Performance</router-link>
           <div
-            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium cursor-pointer"
+            class="block px-3 py-2 text-base font-medium text-gray-300 rounded-md cursor-pointer hover:bg-gray-700 hover:text-white"
             aria-current="page"
             @click="gotoCCA"
           >Add 170+ Currencies to your shop</div>
@@ -76,11 +76,11 @@
     <!-- end navs -->
 
     <!-- content -->
-    <div class="max-w-6xl mx-auto py-6 sm:px-6 lg:px-8">
-      <div class="text-3xl pb-6 font-bold w-full">Performance</div>
+    <div class="max-w-6xl py-6 mx-auto sm:px-6 lg:px-8">
+      <div class="w-full pb-6 text-3xl font-bold">Performance</div>
 
       <!-- app statistics -->
-      <div class="flex flex-col rounded shadow bg-white p-6">
+      <div class="flex flex-col p-6 bg-white rounded shadow">
         <div class="flex items-center">
           <div class="text-gray-500">
             <svg
@@ -98,7 +98,7 @@
               />
             </svg>
           </div>
-          <div class="flex-1 font-medium ml-4">App statistics</div>
+          <div class="flex-1 ml-4 font-medium">App statistics</div>
           <div class="ml-2">
             <date-picker
               v-model="views_range"
@@ -111,30 +111,30 @@
           </div>
         </div>
         <div
-          class="font-light text-gray-500 text-sm mt-4"
+          class="mt-4 text-sm font-light text-gray-500"
         >See how many store visitors interacted with your upsell rock</div>
-        <div class="grid grid-cols-5 mt-3 rounded border border-gray-300">
+        <div class="grid grid-cols-5 mt-3 border border-gray-300 rounded">
           <div class="flex flex-col py-6 text-center border-r border-gray-300">
-            <div class="font-medium text-2xl">{{statistics.views_count}}</div>
+            <div class="text-2xl font-medium">{{statistics.views_count}}</div>
             <div class="font-light text-gray-500">Total Views</div>
           </div>
           <div class="flex flex-col py-6 text-center border-r border-gray-300">
-            <div class="font-medium text-2xl">{{statistics.add_to_carts_count}}</div>
+            <div class="text-2xl font-medium">{{statistics.add_to_carts_count}}</div>
             <div class="font-light text-gray-500">Add to carts</div>
           </div>
           <div class="flex flex-col py-6 text-center border-r border-gray-300">
-            <div class="font-medium text-2xl">{{statistics.transactions_count}}</div>
+            <div class="text-2xl font-medium">{{statistics.transactions_count}}</div>
             <div class="font-light text-gray-500">Transactions</div>
           </div>
           <div class="flex flex-col py-6 text-center border-r border-gray-300">
             <div
-              class="font-medium text-2xl"
+              class="text-2xl font-medium"
             >{{ shopCurrencySymbol }} {{ Number(statistics.sales).toFixed(2)}}</div>
             <div class="font-light text-gray-500">Sales</div>
           </div>
           <div class="flex flex-col py-6 text-center">
             <div
-              class="font-medium text-2xl"
+              class="text-2xl font-medium"
             >{{statistics.transactions_count * 100 / (statistics.views_count==0?(statistics.views_count+1):statistics.views_count)}}%</div>
             <div class="font-light text-gray-500">Take Rate</div>
           </div>
@@ -142,7 +142,7 @@
       </div>
 
       <!-- App sessions -->
-      <div class="flex flex-col rounded shadow bg-white p-6 mt-6">
+      <div class="flex flex-col p-6 mt-6 bg-white rounded shadow">
         <div class="flex items-center">
           <div class="text-gray-500">
             <svg
@@ -160,12 +160,12 @@
               />
             </svg>
           </div>
-          <div class="flex-1 font-medium ml-4">Sessions</div>
+          <div class="flex-1 ml-4 font-medium">Sessions</div>
         </div>
         <div
-          class="font-light text-gray-500 text-sm mt-4"
+          class="mt-4 text-sm font-light text-gray-500"
         >Your plan has {{getPlanSessionCount()}} session usage per month, session count will be reset to 0 at very first day of the month.</div>
-        <div class="grid grid-cols-4 mt-3 rounded border border-gray-300">
+        <div class="grid grid-cols-4 mt-3 border border-gray-300 rounded">
           <plan-free :plan_id="user.plan_id" :sessions="sessions"></plan-free>
           <plan-2000 :plan_id="user.plan_id" :sessions="sessions"></plan-2000>
           <plan-5000 :plan_id="user.plan_id" :sessions="sessions"></plan-5000>
@@ -174,7 +174,7 @@
       </div>
 
       <!-- App clicks -->
-      <div class="flex flex-col rounded shadow bg-white p-6 mt-6">
+      <div class="flex flex-col p-6 mt-6 bg-white rounded shadow">
         <div class="flex items-center">
           <div class="text-gray-500">
             <svg
@@ -192,10 +192,10 @@
               />
             </svg>
           </div>
-          <div class="flex-1 font-medium ml-4">App views</div>
+          <div class="flex-1 ml-4 font-medium">App views</div>
         </div>
         <div
-          class="font-light text-gray-500 text-sm mt-4"
+          class="mt-4 text-sm font-light text-gray-500"
         >See how many store visitors viewed your upsell rock</div>
         <div class="mt-4">
           <v-chart class="chart" :option="option" v-if="option.xAxis.data.length>0" />
@@ -203,7 +203,7 @@
       </div>
 
       <!-- upsells statistics -->
-      <div class="felx flex-col rounded shadow bg-white p-6 mt-6">
+      <div class="flex-col p-6 mt-6 bg-white rounded shadow felx">
         <div class="flex items-center">
           <div class="text-gray-500">
             <svg
@@ -221,7 +221,7 @@
               />
             </svg>
           </div>
-          <div class="flex-1 font-medium ml-4">Upsells overview</div>
+          <div class="flex-1 ml-4 font-medium">Upsells overview</div>
         </div>
         <div class="mt-4 mb-10">
           <table class="min-w-full divide-y divide-gray-200">
@@ -229,27 +229,27 @@
               <tr>
                 <th
                   scope="col"
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                 >Name</th>
                 <th
                   scope="col"
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                 >Views</th>
                 <th
                   scope="col"
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                 >Add to Carts</th>
                 <th
                   scope="col"
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                 >Transactions</th>
                 <th
                   scope="col"
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                 >sales</th>
                 <th
                   scope="col"
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                 >Take rate</th>
                 <th scope="col" class="relative px-6 py-3">
                   <span class="sr-only">Edit</span>
@@ -284,7 +284,7 @@
                     class="text-sm text-gray-900"
                   >{{ upsell.transactions_count * 100 / (upsell.views_count + 1) }}%</div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                   <router-link
                     :to="`/upsell/${upsell.id}/edit`"
                     class="text-indigo-600 hover:text-indigo-900"
