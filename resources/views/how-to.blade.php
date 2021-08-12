@@ -226,7 +226,7 @@
                 <div class="flex mt-4 text-gray-700">
                     <div class="">1.</div>
                     <div class="flex flex-col ml-3">
-                        <div>First of all, make sure your offer is active by going to the <span class="px-3 py-1 text-sm font-light text-red-500 bg-gray-100 rounded">Ant Upsell Rocks</span> page. Find your offer in the list and make sure that the <strong>STATUS</strong> of the offer is <span class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">Active</span> (in green color). If it's <span class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">Draft</span>, simply click on the offer and enable it by clicking on <span class="w-20 px-3 py-2 text-sm font-light text-white bg-green-700 border border-green-800 rounded-sm">Active</span> button.</div>
+                        <div>First of all, make sure your offer is active by going to the <span class="px-3 py-1 text-sm font-light text-red-500 bg-gray-100 rounded">Dashboard</span> page. Find your offer in the list and make sure that the <strong>STATUS</strong> of the offer is <span class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">Active</span> (in green color). If it's <span class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">Draft</span>, simply click on the offer and enable it by clicking on <span class="w-20 px-3 py-2 text-sm font-light text-white bg-green-700 border border-green-800 rounded-sm">Active</span> button.</div>
                         <div class="mt-4">
                             <img class="w-80" src="/images/how-6.png">
                         </div>

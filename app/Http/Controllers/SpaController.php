@@ -301,7 +301,7 @@ class SpaController extends Controller
             if ($data['type'] == UpsellRock::TYPE_SMART_AUTO) {
                 $collection_ids = UpsellRockCollection::select('shopify_id')->where('user_id', $user->id)->get()->pluck('shopify_id')->toArray();
                 $form = [
-                    "title" => "ANTUPSELLROCK-" . $this->generateRandomString(),
+                    "title" => "ANT-RACK-" . $this->generateRandomString(),
                     "target_type" => "line_item",
                     "target_selection" => "entitled",
                     "allocation_method" => "each",
@@ -313,7 +313,7 @@ class SpaController extends Controller
                 ];
             } else if ($data['type'] == 'product') {
                 $form = [
-                    "title" => "ANTUPSELLROCK-" . $this->generateRandomString(),
+                    "title" => "ANT-RACK-" . $this->generateRandomString(),
                     "target_type" => "line_item",
                     "target_selection" => "entitled",
                     "allocation_method" => "each",
