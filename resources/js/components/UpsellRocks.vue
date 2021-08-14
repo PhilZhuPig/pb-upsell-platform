@@ -75,10 +75,73 @@
     </nav>
     <!-- end navs -->
     <!-- content -->
+    <div class="max-w-6xl py-6 mx-auto sm:px-6 lg:px-8" v-if="Object.keys(statistics).length>0">
+      <!-- app statistics -->
+      <div class="flex flex-col p-6 bg-white rounded shadow">
+        <div class="flex items-center">
+          <div class="text-gray-500">
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+              />
+            </svg>
+          </div>
+          <div class="flex-1 ml-4 font-medium">App statistics</div>
+          <div class="ml-2">
+            <date-picker
+              v-model="views_range"
+              value-type="timestamp"
+              type="date"
+              range
+              placeholder="Select date range "
+              @change="getStatistics"
+            ></date-picker>
+          </div>
+        </div>
+        <div
+          class="mt-4 text-sm font-light text-gray-500"
+        >See how many store visitors interacted with your upsells</div>
+        <div class="grid grid-cols-5 mt-3 border border-gray-300 rounded">
+          <div class="flex flex-col py-6 text-center border-r border-gray-300">
+            <div class="text-2xl font-medium">{{statistics.views_count}}</div>
+            <div class="font-light text-gray-500">Total Views</div>
+          </div>
+          <div class="flex flex-col py-6 text-center border-r border-gray-300">
+            <div class="text-2xl font-medium">{{statistics.add_to_carts_count}}</div>
+            <div class="font-light text-gray-500">Add to carts</div>
+          </div>
+          <div class="flex flex-col py-6 text-center border-r border-gray-300">
+            <div class="text-2xl font-medium">{{statistics.transactions_count}}</div>
+            <div class="font-light text-gray-500">Transactions</div>
+          </div>
+          <div class="flex flex-col py-6 text-center border-r border-gray-300">
+            <div
+              class="text-2xl font-medium"
+            >{{ shopCurrencySymbol }} {{ Number(statistics.sales).toFixed(2)}}</div>
+            <div class="font-light text-gray-500">Sales</div>
+          </div>
+          <div class="flex flex-col py-6 text-center">
+            <div
+              class="text-2xl font-medium"
+            >{{statistics.transactions_count * 100 / (statistics.views_count==0?(statistics.views_count+1):statistics.views_count)}}%</div>
+            <div class="font-light text-gray-500">Take Rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="max-w-6xl py-6 mx-auto sm:px-6 lg:px-8" v-if="upsells.length===0 || show_type_list">
       <div class="flex justify-start">
         <div
-          class="flex items-center text-gray-500"
+          class="flex items-center text-gray-500 cursor-pointer"
           v-if="show_type_list"
           @click="show_type_list = false"
         >
@@ -102,9 +165,11 @@
         >Fill Up Your Ant Rack</div>
       </div>
       <instructor></instructor>
-      <product-upsell class="mt-4"></product-upsell>
-      <smart-auto-upsell class="mt-4"></smart-auto-upsell>
-      <custom-service class="mt-4"></custom-service>
+      <div class="grid grid-cols-1 gap-5 mt-4 sm:grid-cols-3">
+        <product-upsell></product-upsell>
+        <smart-auto-upsell></smart-auto-upsell>
+        <custom-service></custom-service>
+      </div>
     </div>
     <div class="max-w-6xl py-6 mx-auto sm:px-6 lg:px-8" v-else>
       <upsell-rock-list></upsell-rock-list>
@@ -128,8 +193,13 @@ import SmartAutoUpsell from "./SmartAutoUpsell.vue";
 import CustomService from "./CustomService.vue";
 import UpsellRockList from "./UpsellRockList.vue";
 import Instructor from "./Instructor.vue";
+
+import DatePicker from "vue2-datepicker";
+import "vue2-datepicker/index.css";
+
 export default {
   components: {
+    DatePicker,
     ProductUpsell,
     SmartAutoUpsell,
     CustomService,
@@ -138,6 +208,8 @@ export default {
   },
   data() {
     return {
+      views_range: [],
+      statistics: {},
       interval: null,
       loaded: false,
       show_type_list: false
@@ -154,10 +226,17 @@ export default {
   },
   mounted() {
     console.log("upsell mounted");
+    // views range
+    var today = new Date();
+    this.views_range.unshift(today.getTime());
+    today.setDate(today.getDate() - 30);
+    this.views_range.unshift(today.getTime());
+
     console.log("token=" + window.sessionToken);
     this.interval = setInterval(() => {
       if (!this.loaded && window.sessionToken != null) {
         this.loaded = true;
+        this.getStatistics();
         this.getUpsells();
         this.getUser();
         this.getShop();
@@ -172,6 +251,18 @@ export default {
     }, 100);
   },
   methods: {
+    getStatistics() {
+      axios
+        .get(
+          "/spa/statistics?start=" +
+            this.views_range[0] +
+            "&end=" +
+            this.views_range[1]
+        )
+        .then(res => {
+          this.statistics = res.data;
+        });
+    },
     getUpsells() {
       axios.get("/spa/upsells").then(res => {
         this.$store.commit("upsellrock/SET_UPSELLS", { upsells: res.data });

@@ -67,7 +67,7 @@ class FetchOrderFromShopify implements ShouldQueue
             // cart_token
             $cart_token = "";
             foreach ($order['note_attributes'] as $attr) {
-                if ($attr['name'] == 'antupsellrock_token') {
+                if ($attr['name'] == 'ant_rack_token') {
                     $cart_token = $attr['value'];
                 }
             }

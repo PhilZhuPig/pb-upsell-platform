@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="grid grid-cols-3 bg-white rounded shadow">
-      <div class="flex flex-col col-span-1 px-8 py-6 border-r border-gray-200">
+    <div class="bg-white rounded shadow">
+      <div class="flex flex-col px-8 py-6">
         <div class="font-medium text-gray-900">{{ title }}</div>
         <div class="flex-1 mt-4 mb-10 text-sm text-gray-900">
           {{ description}}
@@ -32,7 +32,7 @@
           <router-link class="text-blue-500" :to="`/upsell/${smart_auto_upsell.id}/edit`">(edit)</router-link>
         </div>
       </div>
-      <div class="flex flex-col col-span-2 px-8 py-6">
+      <!-- <div class="flex flex-col col-span-2 px-8 py-6">
         <div class="font-medium text-gray-500">Preview</div>
         <div class="relative flex p-4 mt-4 bg-gray-50">
           <div class="w-10 h-10 bg-gray-200 rounded"></div>
@@ -44,7 +44,6 @@
           </div>
           <div class="absolute w-5 h-20 border-b border-l border-gray-200 rounded left-9 top-8"></div>
         </div>
-        <!-- product -->
         <div class="z-10 pl-12 mt-4">
           <div class="flex">
             <div class="flex flex-col justify-start bg-white border border-gray-300 rounded image">
@@ -71,7 +70,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div>-->
     </div>
   </div>
 </template>

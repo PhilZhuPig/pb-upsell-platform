@@ -597,7 +597,7 @@ async function updateUpsellRockAttribute() {
         headers: { "Content-Type": "application/json" },
         'body': JSON.stringify({
             attributes: {
-                antupsellrock_token: cartInfo.token
+                ant_rack_token: cartInfo.token
             }
         })
     });
@@ -641,7 +641,7 @@ function buildNormalPrice(upsell) {
     }
     price = Number(price).toFixed(2);
     var html = '';
-    html += '<div id="normal-price-'+upsell.product+'" class="text-gray-800 text-sm font-light flex">\
+    html += '<div id="normal-price-' + upsell.product + '" class="text-gray-800 text-sm font-light flex">\
                 '+ getCurrencySymbol(shopCurrency) + price + '\
             </div>\
             '
@@ -900,7 +900,7 @@ function buildPopupWithHtml() {
                         newDiscountPrice = Number(newNormalPrice / 100 - upsell.amount).toFixed(2);
                     }
                     normalPriceElement.innerHTML = getCurrencySymbol(shopCurrency) + Number(newNormalPrice / 100).toFixed(2);
-                    if(discountPriceElement) {
+                    if (discountPriceElement) {
                         discountPriceElement.innerHTML = getCurrencySymbol(shopCurrency) + newDiscountPrice;
                     }
                 })

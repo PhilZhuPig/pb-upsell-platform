@@ -196,7 +196,7 @@
         </div>
         <div
           class="mt-4 text-sm font-light text-gray-500"
-        >See how many store visitors viewed your upsell rock</div>
+        >See how many store visitors viewed your upsells</div>
         <div class="mt-4">
           <v-chart class="chart" :option="option" v-if="option.xAxis.data.length>0" />
         </div>

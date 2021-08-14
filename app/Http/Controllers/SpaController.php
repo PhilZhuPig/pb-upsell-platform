@@ -465,11 +465,13 @@ class SpaController extends Controller
             ->where('event_type', 'add_to_cart')->count();
 
         $transactions_count = UpsellRockOrder::where('user_id', $user->id)
+            ->where('cart_token', '<>', "")
             ->where('created_at', '>=', $start)
             ->where('created_at', '<=', $end)
             ->count();
 
         $sales = UpsellRockOrder::where('user_id', $user->id)
+            ->where('cart_token', '<>', "")
             ->where('created_at', '>=', $start)
             ->where('created_at', '<=', $end)
             ->sum('total_price');
@@ -531,7 +533,7 @@ class SpaController extends Controller
             $arr_tokens = array_map(function ($t) {
                 return $t->cart_token;
             }, $cart_tokens);
-            $transactions = UpsellRockOrder::whereNotNull('cart_token')->whereIn('cart_token', $arr_tokens)->get();
+            $transactions = UpsellRockOrder::where('cart_token', '<>', "")->whereIn('cart_token', $arr_tokens)->get();
             $transactions_count = count($transactions);
             $sales = $transactions->sum('total_price');
             $upsell['transactions_count'] = $transactions_count;
