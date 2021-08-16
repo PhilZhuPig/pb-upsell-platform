@@ -5,6 +5,7 @@ use App\Http\Controllers\UpsellRockController;
 use App\Jobs\AfterAuthenticateJob;
 use App\Models\Currency;
 use App\Models\ShopifyCurrency;
+use App\Models\UpsellRock;
 use App\Models\UpsellRockSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -100,6 +101,12 @@ Route::get('/script/{name}', function (Request $request, $name) {
     if (!$user) {
         return '';
     }
+
+    $count = UpsellRock::where('user_id', $user->id)->where('active', 1)->count();
+    if ($count == 0) {
+        return "";
+    }
+
     $script = file_get_contents(env('APP_URL') . "/js/" . $name);
 
     $upsellRockBaseUrl = env('APP_URL');

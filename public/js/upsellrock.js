@@ -56,10 +56,6 @@ if (!upsellRockLocalCurrency) {
 var g_variant = 0;
 updateGVariant();
 
-if (!is_product) {
-    clearInterval(interval);
-}
-
 var antiCurrencyWidget = window.localStorage.getItem('antiCurrencyWidget');
 
 function updateGVariant() {
@@ -183,9 +179,9 @@ function trackRemoveFromCart(upsell_id) {
 var upsells = [];
 var upsellProducts = [];
 if (is_product) {
-    addListenerToAddToCart();
     getShopifyProduct();
 }
+addListenerToAddToCart();
 
 async function getShopfiyRecommendedProducts(upsell) {
     var res = await fetch('/recommendations/products.json?product_id=' + currentProduct.id + '&limit=' + upsell.recommended_product_count);
@@ -205,6 +201,16 @@ async function refetchUpsellProduct(shouldBuildHtml = true) {
     upsells = await getUpsellRocks(product.id, g_variant == 0 ? product.variants[0].id : g_variant);
     upsellFetched = true;
 
+    // 如果没有拿到upsells, make the default action
+    if (upsells.length === 0) {
+        var formBtn = document.querySelector("form[action^='/cart/add'] button[type='submit']");
+        var newFormBtn = formBtn.cloneNode(true);
+        formBtn.parentNode.replaceChild(newFormBtn, formBtn);
+        var formBtn = document.querySelector("form[action^='/cart/add'] button[type='submit']");
+        formBtn.click();
+        return;
+    }
+
     // Promise.all([])
     var promises = [];
     upsells.forEach((upsell, index) => {
@@ -220,7 +226,6 @@ async function refetchUpsellProduct(shouldBuildHtml = true) {
     var smartAutoUpsells = [];
     var smartAutoUpsellIndex = 0;
     Promise.all(promises).then(vs => {
-        values = vs;
         // handle type product & custom-service
         vs.forEach((product, index) => {
             var type = upsells[index].type;
@@ -240,6 +245,7 @@ async function refetchUpsellProduct(shouldBuildHtml = true) {
             })
         }
         // upsells sort
+        upsells = upsells.sort((a, b) => a.order - b.order);
         buildPopupWithHtml();
     });
 
@@ -298,14 +304,22 @@ function buildNewUpsellsForSmartAuto(upsell, ps) {
 }
 
 function addListenerToAddToCart() {
-    var formBtn = document.querySelector("form[action^='/cart/add'] button[type='submit']");
-    formBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('inject');
-        // show upsell popup
-        refetchUpsellProduct();
-    });
+    var formBtn = document.querySelector("form[action^='/cart/add'] [type='submit']");
+    if (formBtn) {
+        var newFormBtn = formBtn.cloneNode(true);
+        newFormBtn.classList.remove('candy');
+        newFormBtn.classList.remove('candy-cloned')
+        newFormBtn.classList.add('ant');
+        newFormBtn.classList.add('ant-upsell-rock-cloned');
+        formBtn.parentNode.replaceChild(newFormBtn, formBtn);
+        newFormBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('inject');
+            // show upsell popup
+            refetchUpsellProduct();
+        });
+    }
 }
 
 function cancel() {
@@ -313,10 +327,9 @@ function cancel() {
     // default
     var close_action = upsellRockSetting.close_action;
     if (close_action == "") {
-        submitOriginalCart().then(res => {
-            var iframe = document.getElementById('ant-upsell-rock-iframe');
-            iframe.style.display = "none";
-        });
+        pretendClickAddToCart();
+        var iframe = document.getElementById('ant-upsell-rock-iframe');
+        iframe.style.display = "none";
     } else if (close_action == 'redirect_to_cart') {
         submitOriginalCart().then(res => {
             var iframe = document.getElementById('ant-upsell-rock-iframe');
@@ -338,10 +351,8 @@ function cancel() {
             }
         });
     } else if (close_action == 'close') {
-        submitOriginalCart().then(res => {
-            var iframe = document.getElementById('ant-upsell-rock-iframe');
-            iframe.style.display = "none";
-        });
+        var iframe = document.getElementById('ant-upsell-rock-iframe');
+        iframe.style.display = "none";
     }
 }
 
@@ -350,10 +361,9 @@ function proceed() {
     // default
     var continue_action = upsellRockSetting.continue_action;
     if (continue_action == "") {
-        submitOriginalCart().then(res => {
-            var iframe = document.getElementById('ant-upsell-rock-iframe');
-            iframe.style.display = "none";
-        });
+        pretendClickAddToCart();
+        var iframe = document.getElementById('ant-upsell-rock-iframe');
+        iframe.style.display = "none";
     } else if (continue_action == 'redirect_to_cart') {
         submitOriginalCart().then(res => {
             var iframe = document.getElementById('ant-upsell-rock-iframe');
@@ -375,10 +385,18 @@ function proceed() {
             }
         });
     } else if (continue_action == 'close') {
-        submitOriginalCart().then(res => {
-            var iframe = document.getElementById('ant-upsell-rock-iframe');
-            iframe.style.display = "none";
-        });
+        var iframe = document.getElementById('ant-upsell-rock-iframe');
+        iframe.style.display = "none";
+    }
+}
+
+function pretendClickAddToCart() {
+    var formBtn = document.querySelector("form[action^='/cart/add'] [type='submit']");
+    if (formBtn) {
+        var newFormBtn = formBtn.cloneNode(true);
+        formBtn.parentNode.replaceChild(newFormBtn, formBtn);
+        newFormBtn.click();
+        addListenerToAddToCart();
     }
 }
 
@@ -579,7 +597,7 @@ async function updateUpsellRockAttribute() {
         headers: { "Content-Type": "application/json" },
         'body': JSON.stringify({
             attributes: {
-                antupsellrock_token: cartInfo.token
+                ant_rack_token: cartInfo.token
             }
         })
     });
@@ -623,7 +641,7 @@ function buildNormalPrice(upsell) {
     }
     price = Number(price).toFixed(2);
     var html = '';
-    html += '<div class="text-gray-800 text-sm font-light flex">\
+    html += '<div id="normal-price-' + upsell.product + '" class="text-gray-800 text-sm font-light flex">\
                 '+ getCurrencySymbol(shopCurrency) + price + '\
             </div>\
             '
@@ -882,7 +900,9 @@ function buildPopupWithHtml() {
                         newDiscountPrice = Number(newNormalPrice / 100 - upsell.amount).toFixed(2);
                     }
                     normalPriceElement.innerHTML = getCurrencySymbol(shopCurrency) + Number(newNormalPrice / 100).toFixed(2);
-                    discountPriceElement.innerHTML = getCurrencySymbol(shopCurrency) + newDiscountPrice;
+                    if (discountPriceElement) {
+                        discountPriceElement.innerHTML = getCurrencySymbol(shopCurrency) + newDiscountPrice;
+                    }
                 })
             }
         }
