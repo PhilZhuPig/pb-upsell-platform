@@ -18,7 +18,7 @@
         >Select</div>
         <div
           v-if="Object.keys(smart_auto_upsell).length===0 && creating"
-          class="flex items-center w-full px-3 py-2 text-sm font-light text-center text-white bg-green-800 border border-green-800 rounded-sm shadow-sm cursor-pointer"
+          class="flex items-center justify-center w-full px-3 py-2 text-sm font-light text-center text-white bg-green-800 border border-green-800 rounded-sm shadow-sm cursor-pointer"
         >
           <svg
             class="w-4 h-4 mr-2 animate-spin"
