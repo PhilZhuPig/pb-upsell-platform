@@ -4,18 +4,18 @@
       class="flex flex-col items-center py-6 text-center border-r border-gray-300"
       v-if="plan_id==='' || plan_id===null || plan_id === 6"
     >
-      <div class="font-medium text-2xl">{{ sessions.length }} / {{getPlanSessionCount()}}</div>
+      <div class="text-2xl font-medium">{{ sessions.length }} / {{getPlanSessionCount()}}</div>
       <div class="font-light text-gray-500">Sessions usage</div>
       <div
-        class="mt-1 font-light w-auto px-3 py-2 text-sm rounded-sm bg-gray-300 text-gray-600"
+        class="w-auto px-3 py-2 mt-1 text-sm font-light text-gray-600 bg-gray-300 rounded-sm"
       >Your plan</div>
     </div>
     <div class="flex flex-col items-center py-6 text-center border-r border-gray-300" v-else>
-      <div class="font-medium text-2xl">200 sessions</div>
+      <div class="text-2xl font-medium">200 sessions</div>
       <div class="font-light text-gray-500">FREE</div>
       <a
         :href="`/billing/6?shop=${user.name}`"
-        class="mt-1 font-light text-white text-sm px-3 py-2 rounded-sm border border-gray-700 bg-gray-600 hover:bg-gray-700"
+        class="px-3 py-2 mt-1 text-sm font-light text-white bg-gray-600 border border-gray-700 rounded-sm hover:bg-gray-700"
       >Downgrade</a>
     </div>
   </div>
@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     getPlanSessionCount() {
-      if (this.plan_id === "" || this.plan_id === null) {
+      if (this.plan_id == "" || this.plan_id == null || this.plan_id == 6) {
         return 200;
       } else if (this.plan_id === 7) {
         return 2000;

@@ -404,6 +404,7 @@ class SpaController extends Controller
         }
         $upsell = UpsellRock::create([
             'user_id' => $user->id,
+            'active' => 0,
             'type' => $type,
             'name' => $this->getUpsellName($type, $type_upsell_count + 1),
             'apply_discount' => 0,
