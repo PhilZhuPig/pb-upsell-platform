@@ -461,7 +461,11 @@ export default {
       });
     },
     getPlanSessionCount() {
-      if (this.user.plan_id === "" || this.user.plan_id === null) {
+      if (
+        this.user.plan_id === "" ||
+        this.user.plan_id === null ||
+        this.user.plan_id === 6
+      ) {
         return 200;
       } else if (this.user.plan_id === 7) {
         return 2000;
