@@ -131,7 +131,7 @@ class SpaController extends Controller
     public function upsells()
     {
         $user = Auth::user();
-        $upsells = UpsellRock::with('conditions')->where('user_id', $user->id)->get();
+        $upsells = UpsellRock::with('conditions')->where('user_id', $user->id)->orderByDesc('active')->get();
         return $upsells;
     }
 
