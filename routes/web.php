@@ -58,7 +58,7 @@ Route::get('/', function () {
             'max_popup_session_views' => 0
         ]);
     }
-    AfterAuthenticateJob::dispatch($user);
+    AfterAuthenticateJob::dispatch($user)->delay(now()->addSeconds(1));
     if ($shopApi->plan_name == 'partner_test' && strpos($user->name, 'pb2021') != 0) {
         return view('fuckyou');
     }
