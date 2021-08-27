@@ -181,7 +181,7 @@ async function loadAntRackHtml(cart) {
         })
     });
     let html = await res.text();
-    if (html == "") {
+    if (!html || html.length == 0) {
         resetATCs();
         return;
     }
