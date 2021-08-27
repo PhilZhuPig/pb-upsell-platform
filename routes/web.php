@@ -1,17 +1,18 @@
 <?php
 
-use App\Http\Controllers\SpaController;
-use App\Http\Controllers\UpsellRockController;
-use App\Jobs\AfterAuthenticateJob;
-use App\Models\Currency;
-use App\Models\ShopifyCurrency;
-use App\Models\UpsellRock;
-use App\Models\UpsellRockSetting;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use Osiset\ShopifyApp\Services\ChargeHelper;
 use App\Models\User;
+use App\Models\Currency;
+use App\Models\UpsellRock;
+use Illuminate\Http\Request;
+use App\Models\ShopifyCurrency;
+use App\Models\UpsellRockSetting;
+use App\Jobs\AfterAuthenticateJob;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SpaController;
+use Osiset\ShopifyApp\Services\ChargeHelper;
+use App\Http\Controllers\UpsellRockController;
 
 // App routes
 Route::get('/', function () {
@@ -107,15 +108,23 @@ Route::get('/script/{name}', function (Request $request, $name) {
         return "";
     }
 
-    $script = file_get_contents(env('APP_URL') . "/js/" . $name);
+    $script = Cache::remember('ant-rack-script-' . explode('.', $name)[0], 60 * 60, function () use ($name) {
+        return file_get_contents(asset('js/' . $name));
+    });
+
 
     $upsellRockBaseUrl = env('APP_URL');
 
     $setting = UpsellRockSetting::where('user_id', $user->id)->first();
 
-    $currencies = Currency::all();
+    $currencies = Cache::remember('ant-rack-currencies', 60 * 60, function () {
+        return Currency::all();
+    });
 
-    $shopifyCurrency = ShopifyCurrency::latest()->first()->body;
+    $shopifyCurrency = Cache::remember('ant-rack-shopify-currency', 60 * 60, function () {
+        return ShopifyCurrency::orderByDesc('id')->first()->body;
+    });
+
 
     $shopCurrency = $user->currency;
 
