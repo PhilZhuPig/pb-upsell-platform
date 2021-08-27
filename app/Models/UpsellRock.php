@@ -35,12 +35,18 @@ class UpsellRock extends Model
         'remove_upsell_product_when_parent_product_is_removed' => 'boolean',
         'show_note_field' => 'boolean',
         'use_recommended_products' => 'boolean',
-        'match_product_quantity' => 'boolean',
-        'remove_parent_product_when_upsell_product_is_added' => 'boolean'
+        'remove_parent_product_when_upsell_product_is_added' => 'boolean',
+        'apply_discount' => 'boolean',
+        'match_parent_quantity' => 'boolean'
     ];
 
     public function conditions()
     {
         return $this->hasMany(UpsellRockDisplayCondition::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(UpsellRockProduct::class, 'shopify_product_id', 'shopify_product_id');
     }
 }

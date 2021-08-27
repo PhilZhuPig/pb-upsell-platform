@@ -120,7 +120,7 @@ class SpaController extends Controller
                         [
                             "column" => "type",
                             "relation" => "not_equals",
-                            "condition" => "antupsellrock_generated"
+                            "condition" => "antrack_generated"
                         ]
                     ]
                 ]
@@ -200,7 +200,7 @@ class SpaController extends Controller
                 $product = $user->api()->rest('POST', '/admin/products.json', [
                     'product' => [
                         'title' => $data['product_name'],
-                        'product_type' => 'antupsellrock_generated',
+                        'product_type' => 'antrack_generated',
                         'body_html' => $data['description'],
                         'images' => [
                             [
@@ -215,6 +215,36 @@ class SpaController extends Controller
                         ]
                     ]
                 ])['body']['product'];
+
+                // create or update upsell rock product
+                $variants = $product['variants'];
+                $ids = [];
+                foreach ($variants as $variant) {
+                    array_push($ids, $variant->id);
+                    $upsell_variant = UpsellRockVariant::updateOrCreate([
+                        'product_id' => $variant['product_id'],
+                        'variant_id' => $variant['id'],
+
+                    ], [
+                        'price' => $variant['price'] * 100,
+                        'shopify_response' => $variant
+                    ]);
+                    $upsell_variant->increment('times');
+                }
+                $upsell_product = UpsellRockProduct::updateOrCreate([
+                    'user_id' => $user->id,
+                    'shopify_product_id' => $product['id'],
+                ], [
+                    'shopify_collection_id' => isset($product['collection_id']) ? $product['collection_id'] : 0,
+                    'shopify_product_variants' => implode(",", $ids),
+                    'title' => $product['title'],
+                    'type' => $product['product_type'],
+                    'status' => $product['status'],
+                    'handle' => $product['handle'],
+                    'image' => empty($product['image']) ? null : $product['image']['src'],
+                    'shopify_response' => $product
+                ]);
+                $upsell_product->increment('times');
 
                 $data['shopify_product_id'] = [$product['id']];
                 $data['shopify_product_variant_id'] = $product['variants'][0]['id'];

@@ -1,4 +1,4 @@
-const mix = require('laravel-mix');
+const mix = require("laravel-mix");
 
 /*
  |--------------------------------------------------------------------------
@@ -21,22 +21,21 @@ if (mix.inProduction()) {
             }
         }
     });
-    mix.js('resources/js/app.js', 'public/js')
-        .js('resources/js/upsellrock.js', 'public/js')
+    mix.js("resources/js/app.js", "public/js")
+        .js("resources/js/ant-rack.js", "public/js")
+        .js("resources/js/ant-rack-app.js", "public/js")
         .vue()
         .postCss("resources/css/app.css", "public/css", [
             require("tailwindcss"),
-            require('autoprefixer'),
+            require("autoprefixer")
         ]);
-
 } else {
-
-    mix.js('resources/js/app.js', 'public/js')
-        .copy("resources/js/upsellrock.js", "public/js")
+    mix.js("resources/js/app.js", "public/js")
+        .js("resources/js/ant-rack.js", "public/js")
+        .js("resources/js/ant-rack-app.js", "public/js")
         .vue()
         .postCss("resources/css/app.css", "public/css", [
             require("tailwindcss"),
-            require('autoprefixer'),
-        ])
-        .version();
+            require("autoprefixer")
+        ]);
 }

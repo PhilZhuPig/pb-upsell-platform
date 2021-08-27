@@ -1,17 +1,20 @@
 module.exports = {
+    important: "#ant-rack-app",
+    mode: "jit",
+    corePlugins: {
+        preflight: false
+    },
     purge: [
-        './resources/**/*.blade.php',
-        './resources/**/*.js',
-        './resources/**/*.vue',
+        "./resources/**/*.blade.php",
+        "./resources/**/*.js",
+        "./resources/**/*.vue"
     ],
     darkMode: false, // or 'media' or 'class'
     theme: {
-        extend: {},
+        extend: {}
     },
     variants: {
-        extend: {},
+        extend: {}
     },
-    plugins: [
-        require('@tailwindcss/forms'),
-    ],
-}
+    plugins: [require("@tailwindcss/forms")]
+};

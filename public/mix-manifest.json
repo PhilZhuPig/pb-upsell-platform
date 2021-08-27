@@ -1,5 +1,6 @@
 {
-    "/js/app.js": "/js/app.js?id=39ffbbfe623342af49cd",
-    "/css/app.css": "/css/app.css?id=611e5ed62a4f9f84f36f",
-    "/js/upsellrock.js": "/js/upsellrock.js?id=a9ddce2b13285e571238"
+    "/js/app.js": "/js/app.js",
+    "/js/ant-rack.js": "/js/ant-rack.js",
+    "/js/ant-rack-app.js": "/js/ant-rack-app.js",
+    "/css/app.css": "/css/app.css"
 }

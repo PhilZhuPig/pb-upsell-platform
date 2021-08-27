@@ -969,18 +969,16 @@
                                 <div class="flex items-start">
                                     <div class="flex items-center h-5">
                                         <input
-                                            id="match-product-quantity"
-                                            name="match-product-quantity"
+                                            id="match-parent-quantity"
+                                            name="match-parent-quantity"
                                             type="checkbox"
                                             @change="showForm"
-                                            v-model="
-                                                form.match_product_quantity
-                                            "
+                                            v-model="form.match_parent_quantity"
                                             class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                                         />
                                     </div>
                                     <label
-                                        for="match-product-quantity"
+                                        for="match-parent-quantity"
                                         class="ml-3 text-sm text-gray-700"
                                         >Match parent product's quantity</label
                                     >

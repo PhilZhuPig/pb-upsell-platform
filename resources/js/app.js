@@ -1,54 +1,52 @@
-require('./bootstrap');
+require("./bootstrap");
 
-window.Vue = require('vue').default;
-window.Vapor = require('laravel-vapor');
+window.Vue = require("vue").default;
+window.Vapor = require("laravel-vapor");
 
-import VueLoading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
+import VueLoading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 Vue.use(VueLoading);
 
-import VueRouter from 'vue-router'
-Vue.use(VueRouter)
+import VueRouter from "vue-router";
+Vue.use(VueRouter);
 
-import store from "./store"
+import store from "./store";
 
-import UpsellRocks from "./components/UpsellRocks.vue"
-import EditUpsellRock from "./components/EditUpsellRock.vue"
-import Setting from "./components/Setting.vue"
-import Performance from "./components/Performance.vue"
-
+import UpsellRocks from "./components/UpsellRocks.vue";
+import EditUpsellRock from "./components/EditUpsellRock.vue";
+import Setting from "./components/Setting.vue";
+import Performance from "./components/Performance.vue";
 
 const routes = [
-
     {
-        path: '/',
+        path: "/",
         component: UpsellRocks,
-        name: 'UpsellRocks'
+        name: "UpsellRocks"
     },
     {
-        path: '/upsell/:id/edit',
+        path: "/upsell/:id/edit",
         component: EditUpsellRock,
-        name: 'EditUpsellRock'
+        name: "EditUpsellRock"
     },
     {
-        path: '/setting',
+        path: "/setting",
         component: Setting,
-        name: 'Setting'
+        name: "Setting"
     },
     {
-        path: '/performance',
+        path: "/performance",
         component: Performance,
-        name: 'Performance'
+        name: "Performance"
     }
-]
+];
 
 const router = new VueRouter({
-    mode: 'history',
+    mode: "history",
     routes
-})
+});
 
 const app = new Vue({
-    el: '#app',
+    el: "#ant-rack-app",
     router,
-    store,
+    store
 });

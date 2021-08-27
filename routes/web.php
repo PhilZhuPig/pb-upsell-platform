@@ -121,8 +121,13 @@ Route::get('/script/{name}', function (Request $request, $name) {
 
     $shopId = $user->shop_id;
 
+    $antRackCssUrl = asset('css/app.css');
+    $antRackJsUrl = asset('js/ant-rack-app.js');
+
     return $shopifyCurrency . "\r\nvar currencies=" . $currencies . ";\r\n" .
         "var shopCurrency='" . $shopCurrency . "';\r\n" .
+        "var antRackCssUrl='" . $antRackCssUrl . "';\r\n" .
+        "var antRackJsUrl='" . $antRackJsUrl . "';\r\n" .
         "var shopId='" . $shopId . "';\r\n" .
         "var upsellRockSetting=" . $setting . ";\r\n" . "var upsellRockShopDomain='" . $shop . "';\r\n" .
         "var upsellRockBaseUrl='" . $upsellRockBaseUrl . "';\r\n" . $script;
@@ -131,6 +136,7 @@ Route::get('/script/{name}', function (Request $request, $name) {
 Route::get('/upsells', [UpsellRockController::class, 'upsells']);
 Route::post('/track', [UpsellRockController::class, 'track']);
 Route::get('/ip', [UpsellRockController::class, 'ip']);
+Route::post('/ant_rack', [UpsellRockController::class, 'antRack']);
 
 // instruction
 Route::get('/what-are-smart-auto-upsells-and-how-to-use-them-within-ant-upsell-rock', function () {

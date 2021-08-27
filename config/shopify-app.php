@@ -156,7 +156,7 @@ return [
     */
 
     'api_key' => env('SHOPIFY_API_KEY', '766f1cb56184b915aa366783059b6aca'),
-    // 'api_key' => env('SHOPIFY_API_KEY', '111c28539ecdc8dd24f1723b36fef5cd'), // local
+    // 'api_key' => env('SHOPIFY_API_KEY', 'fee8dc1b98df4f4d9a052c50da1d0a65'), // local
 
     /*
     |--------------------------------------------------------------------------
@@ -168,7 +168,7 @@ return [
     */
 
     'api_secret' => env('SHOPIFY_API_SECRET', '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'),
-    // 'api_secret' => env('SHOPIFY_API_SECRET', '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'), //local
+    // 'api_secret' => env('SHOPIFY_API_SECRET', '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'), //local
 
     /*
     |--------------------------------------------------------------------------
@@ -325,17 +325,21 @@ return [
             'address' => env('APP_URL') . '/webhook/app-uninstalled'
         ],
         [
-            'topic' => 'shop/redact',
-            'address' => env('APP_URL') . '/webhook/shop-redact'
+            'topic' => 'PRODUCTS_CREATE',
+            'address' => env('APP_URL') . '/webhook/products-create'
         ],
         [
-            'topic' => 'customers/redact',
-            'address' => env('APP_URL') . '/webhook/customers-redact'
+            'topic' => 'PRODUCTS_UPDATE',
+            'address' => env('APP_URL') . '/webhook/products-update'
         ],
         [
-            'topic' => 'customers/data_request',
-            'address' => env('APP_URL') . '/webhook/customers-data-request'
+            'topic' => 'PRODUCTS_DELETE',
+            'address' => env('APP_URL') . '/webhook/products-delete'
         ],
+        [
+            'topic' => 'ORDERS_CREATE',
+            'address' => env('APP_URL') . '/webhook/orders-create'
+        ]
     ],
 
     /*
@@ -349,7 +353,7 @@ return [
 
     'scripttags' => [
         [
-            'src' => env('SHOPIFY_SCRIPTTAG_1_SRC', env('APP_URL') . '/script/upsellrock.js'),
+            'src' => env('SHOPIFY_SCRIPTTAG_1_SRC', env('APP_URL') . '/script/ant-rack.js'),
             'event' => env('SHOPIFY_SCRIPTTAG_1_EVENT', 'onload'),
             'display_scope' => env('SHOPIFY_SCRIPTTAG_1_DISPLAY_SCOPE', 'online_store')
         ],
