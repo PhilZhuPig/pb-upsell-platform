@@ -181,7 +181,8 @@ async function loadAntRackHtml(cart) {
         })
     });
     let html = await res.text();
-    if (!html) {
+    if (html == "") {
+        resetATCs();
         return;
     }
     antRackApp.innerHTML = html;
@@ -247,6 +248,18 @@ async function loadAntRackHtml(cart) {
         var upsells = JSON.parse(document.getElementById("upsells").innerText);
         trackView(cart.token, upsells, "load");
     }, 500);
+}
+
+function resetATCs() {
+    var newATCs = document.querySelectorAll(".ant-rack.ant-rack-cloned");
+    newATCs.forEach(atc => {
+        atc.style.display = "none";
+    });
+
+    var originalATCs = document.querySelectorAll(".ant-rack.ant-rack-original");
+    originalATCs.forEach(atc => {
+        atc.style.display = "";
+    });
 }
 
 function trackView(token, upsells, event_type) {
