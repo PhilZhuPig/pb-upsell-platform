@@ -2668,10 +2668,25 @@ __webpack_require__.r(__webpack_exports__);
     this.currencies = JSON.parse(document.getElementById("currencies").innerText);
     this.cart = JSON.parse(document.getElementById("cart").innerText);
     this.upsells = JSON.parse(document.getElementById("upsells").innerText);
+
+    if (this.upsells.length == 0) {
+      resetATCs();
+    }
+
     this.currentProduct = JSON.parse(document.getElementById("current-product").innerText);
     console.log("upsells", this.upsells);
   },
   methods: {
+    resetATCs: function resetATCs() {
+      var newATCs = document.querySelectorAll(".ant-rack.ant-rack-cloned");
+      newATCs.forEach(function (atc) {
+        atc.style.display = "none";
+      });
+      var originalATCs = document.querySelectorAll(".ant-rack.ant-rack-original");
+      originalATCs.forEach(function (atc) {
+        atc.style.display = "";
+      });
+    },
     addCurrentVariantToCart: function addCurrentVariantToCart() {
       var addToCartForm = document.querySelector('form[action="/cart/add"]');
       var formData = new FormData(addToCartForm);

@@ -1047,15 +1047,18 @@ function _loadAntRackHtml() {
 
           case 10:
             html = _context2.sent;
+            console.log("html", html);
 
             if (html) {
-              _context2.next = 13;
+              _context2.next = 16;
               break;
             }
 
+            console.log("html is none");
+            resetATCs();
             return _context2.abrupt("return");
 
-          case 13:
+          case 16:
             antRackApp.innerHTML = html; //close event
 
             setTimeout(function () {
@@ -1113,7 +1116,7 @@ function _loadAntRackHtml() {
               trackView(cart.token, upsells, "load");
             }, 500);
 
-          case 15:
+          case 18:
           case "end":
             return _context2.stop();
         }
@@ -1121,6 +1124,17 @@ function _loadAntRackHtml() {
     }, _callee2);
   }));
   return _loadAntRackHtml.apply(this, arguments);
+}
+
+function resetATCs() {
+  var newATCs = document.querySelectorAll(".ant-rack.ant-rack-cloned");
+  newATCs.forEach(function (atc) {
+    atc.style.display = "none";
+  });
+  var originalATCs = document.querySelectorAll(".ant-rack.ant-rack-original");
+  originalATCs.forEach(function (atc) {
+    atc.style.display = "";
+  });
 }
 
 function trackView(token, upsells, event_type) {
