@@ -152,6 +152,7 @@ if (isProductsPage) {
         .then(json => {
             localStorage.setItem("ant-rack-token", json.token);
             loadAntRackHtml(json);
+            updateAntRackAttribute(json);
         });
     // get recommendations
     getCurrentProduct().then(product => {
@@ -475,4 +476,19 @@ async function getShopifyRecommendedProducts(pid) {
     div.innerText = JSON.stringify(allRecommendedProducts);
     div.style.display = "none";
     document.body.append(div);
+}
+
+
+async function updateAntRackAttribute(cart) {
+    var res = await fetch('/cart/update.js', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        'body': JSON.stringify({
+            attributes: {
+                antrack_token: cart.token
+            }
+        })
+    });
+    var json = await res.json();
+    return json;
 }
