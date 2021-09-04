@@ -5,7 +5,7 @@ antRackApp.style = "z-index:2147483647";
 document.body.append(antRackApp);
 
 // check if the page is products page
-var isProductsPage = location.pathname.startsWith("/products");
+var isProductsPage = location.pathname.includes("/products/");
 
 // local currency
 var antRackLocalCurrency = window.localStorage.getItem(

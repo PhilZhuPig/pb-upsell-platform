@@ -60,9 +60,9 @@ Route::get('/', function () {
         ]);
     }
     AfterAuthenticateJob::dispatch($user)->delay(now()->addSeconds(1));
-    if ($shopApi->plan_name == 'partner_test' && strpos($user->name, 'pb2021') != 0) {
-        return view('fuckyou');
-    }
+    // if ($shopApi->plan_name == 'partner_test' && strpos($user->name, 'pb2021') != 0) {
+    //     return view('fuckyou');
+    // }
     return view('spa');
 })->middleware(['verify.shopify'])->name('home');
 
