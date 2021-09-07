@@ -130,7 +130,7 @@ Route::get('/script/{name}', function (Request $request, $name) {
 
     $shopId = $user->shop_id;
 
-    $antRackCssUrl = asset('css/app.css');
+    $antRackCssUrl = asset('css/ant-rack.css');
     $antRackJsUrl = asset('js/ant-rack-app.js');
 
     return $shopifyCurrency . "\r\nvar currencies=" . $currencies . ";\r\n" .

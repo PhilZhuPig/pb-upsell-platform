@@ -37,5 +37,9 @@ if (mix.inProduction()) {
         .postCss("resources/css/app.css", "public/css", [
             require("tailwindcss"),
             require("autoprefixer")
+        ])
+        .postCss("resources/css/ant-rack.css", "public/css", [
+            require("tailwindcss"),
+            require("autoprefixer")
         ]);
 }
