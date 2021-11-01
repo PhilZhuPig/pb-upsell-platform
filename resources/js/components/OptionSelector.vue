@@ -11,7 +11,7 @@
                     ? 'bg-gray-100 text-gray-500'
                     : 'bg-white text-gray-800'
             ]"
-            class="relative w-full border border-gray-300 shadow-sm pl-3 pr-10 py-2 text-left cursor-default sm:text-sm"
+            class="relative w-full border border-gray-300 shadow-sm pl-[12px] pr-[40px] py-[8px] text-left cursor-default sm:text-[14px] sm:leading-[20px]"
             aria-haspopup="listbox"
             aria-expanded="true"
             aria-labelledby="listbox-label"
@@ -19,16 +19,16 @@
             @click="btnClick"
         >
             <span class="flex items-center">
-                <span class="ml-3 block truncate">
+                <span class="ml-[12px] block truncate">
                     {{ selectedVariant.title }}
                 </span>
             </span>
             <span
-                class="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
+                class="ml-[12px] absolute inset-y-0 right-0 flex items-center pr-[8px] pointer-events-none"
             >
                 <!-- Heroicon name: solid/selector -->
                 <svg
-                    class="h-5 w-5 text-gray-400"
+                    class="h-[20px] w-[20px] text-gray-400"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                     fill="currentColor"
@@ -54,7 +54,7 @@
         To: "opacity-0"
     -->
         <ul
-            class="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm"
+            class="absolute z-10 mt-[4px] w-full bg-white shadow-lg max-h-[224px] py-[4px] text-[16px] leading-[24px] ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-[14px] sm:leading-[20px]"
             tabindex="-1"
             role="listbox"
             aria-labelledby="listbox-label"
@@ -68,7 +68,7 @@
       -->
             <li
                 class="
-                    text-gray-700 cursor-default select-none relative py-2 pl-3 pr-9
+                    text-gray-700 cursor-default select-none relative py-[8px] pl-[12px] pr-[36px]
                 "
                 id="listbox-option-0"
                 role="option"
@@ -78,7 +78,7 @@
             >
                 <div class="flex items-center">
                     <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
-                    <span class="font-normal ml-3 block truncate">
+                    <span class="font-normal ml-[12px] block truncate">
                         {{ variant.title }}
                     </span>
                 </div>
@@ -89,13 +89,13 @@
           Highlighted: "text-white", Not Highlighted: "text-indigo-600"
         -->
                 <span
-                    class="absolute inset-y-0 right-0 flex items-center pr-4"
+                    class="absolute inset-y-0 right-0 flex items-center pr-[16px]"
                     :style="{ color: setting.primary_color }"
                     v-if="variant.id == selectedVariantId"
                 >
                     <!-- Heroicon name: solid/check -->
                     <svg
-                        class="h-5 w-5"
+                        class="h-[20px] w-[20px]"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="currentColor"

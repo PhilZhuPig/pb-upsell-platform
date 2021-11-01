@@ -1,12 +1,12 @@
 <template>
     <div
         id="ant-modal-panel"
-        class="relative rounded ease-out duration-300 opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95 inline-block align-bottom bg-white text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl w-full"
+        class="relative rounded ease-out duration-300 opacity-0 translate-y-[16px] sm:translate-y-0 sm:scale-95 inline-block align-bottom bg-white text-left overflow-hidden shadow-xl transform transition-all sm:my-[32px] sm:align-middle sm:max-w-[896px] w-full"
     >
-        <div class="absolute top-3 right-3 ant-cancel-btn cursor-pointer">
+        <div class="absolute top-[12px] right-[12px] ant-cancel-btn cursor-pointer">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6 text-gray-500 hover:text-gray-800"
+                class="h-[24px] w-[24px] text-gray-500 hover:text-gray-800"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -19,47 +19,42 @@
                 />
             </svg>
         </div>
-        <div class="bg-white pt-5">
+        <div class="bg-white pt-[20px]">
             <div class="sm:flex sm:items-start">
                 <div
-                    class="mt-3 border-b border-gray-200 flex-1 sm:mt-0 sm:text-left"
+                    class="mt-[12px] border-b border-gray-200 flex-1 sm:mt-0 sm:text-left"
                 >
                     <div
-                        class="px-4 pb-8 sm:pb-6 sm:px-6 text-xl leading-6 text-center font-bold text-gray-900"
+                        class="px-[16px] pb-[32px] sm:pb-[24px] sm:px-[24px] text-[20px] leading-[24px] text-center font-bold text-gray-900"
                         id="modal-title"
                     >
                         {{ setting.title }}
                     </div>
                 </div>
             </div>
-            <div class="overflow-y-scroll h-auto pb-4" style="max-height:45vh">
+            <div class="overflow-y-scroll h-auto pb-[16px]" style="max-height:45vh">
                 <div
-                    class="flex items-center py-4 px-4 sm:px-6"
+                    class="flex items-center py-[16px] px-[16px] sm:px-[24px]"
                     :style="{
                         backgroundColor: setting.primary_color + '05'
                     }"
-                    v-if="
-                        Object.keys(currentProduct).length > 0 &&
-                            Object.keys(cart).length > 0 &&
-                            Object.keys(currencies).length > 0
-                    "
                 >
-                    <div class="relative h-14 w-14 rounded bg-white shadow">
+                    <div class="relative h-[56px] w-[56px] rounded bg-white shadow" v-if="Object.keys(currentProduct).length > 0">
                         <img
-                            class="object-cover h-14 w-14 overflow-hidden"
+                            class="object-cover h-[56px] w-[56px] overflow-hidden"
                             :src="currentProduct.featured_image"
                             alt=""
                         />
-                        <span class="flex h-4 w-4 absolute -right-2 -top-2">
+                        <span class="flex h-[16px] w-[16px] absolute -right-[8px] -top-[8px]">
                             <span
                                 class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"
                             ></span>
                             <span
-                                class="relative flex justify-center items-center rounded-full h-4 w-4 bg-green-600 text-white "
+                                class="relative flex justify-center items-center rounded-full h-[16px] w-[16px] bg-green-600 text-white "
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    class="h-3 w-3"
+                                    class="h-[12px] w-[12px]"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
@@ -74,13 +69,13 @@
                             </span>
                         </span>
                     </div>
-                    <div class="ml-4 flex flex-col justify-evenly flex-1">
+                    <div class="ml-[16px] flex flex-col justify-evenly flex-1" v-if="Object.keys(currentProduct).length > 0">
                         <div class="text-gray-900 font-bold">
                             {{ currentProduct.title }}
                         </div>
                         <div class="text-gray-800 flex items-center">
                             <div
-                                class="text-gray-500 line-through mr-1 money anti-money"
+                                class="text-gray-500 line-through mr-[4px] money anti-money"
                                 :data-amount="
                                     currentVariant.compare_at_price / 100
                                 "
@@ -98,27 +93,29 @@
                             </div>
                         </div>
                     </div>
-                    <div class="ml-2 font-mono font-bold">
+                    <div class="ml-[8px] font-mono font-bold">
                         <!-- 这里是当前产品价格 -->
                     </div>
                 </div>
-                <div v-for="(upsell, index) in upsells" :key="index">
-                    <ant-rack-upsell
-                        :upsell="upsell"
-                        v-if="
-                            upsell.type == 'product' ||
-                                upsell.type == 'custom-service'
-                        "
-                    ></ant-rack-upsell>
-                    <ant-rack-smart
-                        :upsell="upsell"
-                        v-if="upsell.type == 'smart-auto'"
-                    ></ant-rack-smart>
+                <div v-if="upsells.length>0">
+                    <div v-for="(upsell, index) in upsells" :key="index">
+                        <ant-rack-upsell
+                            :upsell="upsell"
+                            v-if="
+                                upsell.type == 'product' ||
+                                    upsell.type == 'custom-service'
+                            "
+                        ></ant-rack-upsell>
+                        <ant-rack-smart
+                            :upsell="upsell"
+                            v-if="upsell.type == 'smart-auto'"
+                        ></ant-rack-smart>
+                    </div>
                 </div>
             </div>
         </div>
         <div
-            class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse sticky bottom-0 left-0 w-full"
+            class="bg-gray-50 px-[16px] py-[12px] sm:px-[24px] sm:flex sm:flex-row-reverse sticky bottom-0 left-0 w-full"
         >
             <button
                 type="button"
@@ -126,12 +123,12 @@
                 :style="{ backgroundColor: setting.primary_color }"
                 @click="addToCart"
                 v-if="!adding"
-                class="ant-act-btn w-full flex justify-center items-center  border border-transparent shadow pl-4 pr-2 py-2 leading-6 text-base font-bold text-white sm:ml-3 sm:w-auto sm:text-sm"
+                class="ant-act-btn w-full flex justify-center items-center  border border-transparent shadow pl-[16px] pr-[8px] py-[8px] leading-[24px] text-base font-bold text-white sm:ml-[12px] sm:w-auto sm:text-sm"
             >
-                <div class="leading-6 mr-1">{{ setting.proceed_to_cart }}</div>
+                <div class="leading-[24px] mr-[4px]">{{ setting.proceed_to_cart }}</div>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5 leading-6"
+                    class="h-[20px] w-[20px]"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                 >
@@ -146,11 +143,11 @@
                 type="button"
                 :style="{ backgroundColor: setting.primary_color }"
                 v-if="adding"
-                class="w-full inline-flex justify-center items-center border border-transparent shadow pl-4 pr-2 py-2 leading-6 text-base font-bold text-white sm:ml-3 sm:w-auto sm:text-sm"
+                class="w-full inline-flex justify-center items-center border border-transparent shadow pl-[16px] pr-[8px] py-[8px] leading-[24px] text-base font-bold text-white sm:ml-[12px] sm:w-auto sm:text-sm"
             >
                 <div class="leading-6 mr-1">{{ setting.proceed_to_cart }}</div>
                 <svg
-                    class="animate-spin h-5 w-5 text-white"
+                    class="animate-spin h-[20px] w-[20px] text-white"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -173,11 +170,11 @@
             <button
                 id="ant-cancel-btn"
                 type="button"
-                class="ant-cancel-btn mt-3 w-full rounded-full inline-flex justify-center px-4 py-2 text-base text-gray-400 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm sm:hidden"
+                class="ant-cancel-btn mt-[12px] w-full rounded-full inline-flex justify-center px-[16px] py-[8px] text-base text-gray-400 sm:mt-0 sm:ml-[12px] sm:w-auto sm:text-sm sm:hidden"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="h-6 w-6"
+                    class="h-[24px] w-[24px]"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -291,6 +288,23 @@ export default {
         }
         this.currentProduct = JSON.parse(
             document.getElementById("current-product").innerText
+        );
+        // get variant_id
+        let addToCartForm = document.querySelector(
+            'form[action="/cart/add"]'
+        );
+        let formData = new FormData(addToCartForm);
+        let variant_id = 0;
+        formData.forEach((v, k) => {
+            if (k == "id") {
+                variant_id = v;
+            }
+        });
+        this.currentVariant = this.currentProduct.variants.find(
+            v => v.id == variant_id
+        );
+        this.currency = this.currencies.find(
+            c => c.currency == this.cart.currency
         );
         console.log("upsells", this.upsells);
     },

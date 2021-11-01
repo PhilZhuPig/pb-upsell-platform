@@ -4,42 +4,42 @@
         style="margin:0"
         v-if="selectedVariant && Object.keys(selectedVariant).length > 0"
     >
-        <div class="col-span-1 flex p-4 sm:p-6">
+        <div class="col-span-1 flex p-[16px] sm:p-[24px]">
             <div
-                class="product-image relative w-14 h-14 mr-4 border border-gray-100"
+                class="product-image relative w-[56px] h-[56px] mr-[16px] border border-gray-100"
                 :style="{ backgroundColor: setting.primary_color + '11' }"
             >
                 <img
-                    class="w-14 h-14"
+                    class="w-[56px] h-[56px]"
                     :src="product.image.src"
                     alt=""
                     v-if="from == 'ant'"
                 />
                 <img
-                    class="w-14 h-14"
+                    class="w-[56px] h-[56px]"
                     :src="product.featured_image"
                     alt=""
                     v-if="from == 'shopify'"
                 />
                 <div
                     v-if="upsell.upsell_quantity > 1"
-                    class="absolute -top-2 -left-2 rounded-full w-4 h-4 bg-green-600 text-white flex justify-center items-center shadow text-xs font-medium"
+                    class="absolute -top-[8px] -left-[8px] rounded-full w-[16px] h-[16px] bg-green-600 text-white flex justify-center items-center shadow text-[12px] leading-[16px] font-medium"
                 >
                     {{ upsell.upsell_quantity }}
                 </div>
                 <span
-                    class="flex h-4 w-4 absolute -right-2 -top-2"
+                    class="flex h-[16px] w-[16px] absolute -right-[8px] -top-[8px]"
                     v-if="added"
                 >
                     <span
                         class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"
                     ></span>
                     <span
-                        class="relative flex justify-center items-center rounded-full h-4 w-4 bg-green-600 text-white "
+                        class="relative flex justify-center items-center rounded-full h-[16px] w-[16px] bg-green-600 text-white"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            class="h-3 w-3"
+                            class="h-[12px] w-[12px]"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -57,11 +57,11 @@
 
             <div class="flex flex-col justify-evenly flex-1">
                 <div class="first-line flex">
-                    <div class="text-gray-900 font-bold mr-2">
+                    <div class="text-gray-900 font-bold mr-[8px]">
                         {{ product.title }}
                     </div>
                     <div
-                        class="text-gray-500 line-through mr-2 money anti-money"
+                        class="text-gray-500 line-through mr-[8px] money anti-money"
                         :data-amount="noConversionOriginalPrice"
                         :data-currency="currency.currency"
                         v-if="upsell.apply_discount"
@@ -85,21 +85,21 @@
                         {{ originalPrice }}
                     </div>
                 </div>
-                <div class="second-line flex my-1 text-gray-600 font-light">
+                <div class="second-line flex my-[4px] text-gray-600 font-light">
                     {{ upsell.short_description + "" }}
                 </div>
-                <div class="mb-1 hidden sm:flex" v-if="upsell.show_note_field">
+                <div class="mb-[4px] hidden sm:flex" v-if="upsell.show_note_field">
                     <input
                         type="text"
                         name="note"
                         autocomplete="given-name"
                         v-model="note"
                         :disabled="disableOptions"
-                        class=" disabled:bg-gray-50 disabled:text-gray-600 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-sm"
+                        class=" disabled:bg-gray-50 disabled:text-gray-600 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-[14px] sm:leading-[20px] border-gray-300 rounded-sm"
                     />
                 </div>
                 <div
-                    class="w-auto hidden sm:flex justify-start items-center mr-0 mb-0 sm:mr-4"
+                    class="w-auto hidden sm:flex justify-start items-center mr-0 mb-0 sm:mr-[16px]"
                     v-if="variants.length > 1"
                 >
                     <option-selector
@@ -114,10 +114,10 @@
         </div>
 
         <div
-            class="col-span-1 p-4 sm:p-6 pt-0 sm:pt-4 flex flex-col sm:flex-row justify-end items-center"
+            class="col-span-1 p-[16px] sm:p-[24px] pt-0 sm:pt-[16px] flex flex-col sm:flex-row justify-end items-center"
         >
             <div
-                class="mb-4 flex w-full sm:hidden"
+                class="mb-[16px] flex w-full sm:hidden"
                 v-if="upsell.show_note_field"
             >
                 <input
@@ -126,11 +126,11 @@
                     autocomplete="given-name"
                     v-model="note"
                     :disabled="disableOptions"
-                    class=" disabled:bg-gray-50 disabled:text-gray-600 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-sm"
+                    class=" disabled:bg-gray-50 disabled:text-gray-600 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-[14px] sm:leading-[20px] border-gray-300 rounded-sm"
                 />
             </div>
             <div
-                class="w-full flex sm:hidden sm:w-auto justify-end items-center mr-0 mb-4 sm:mb-0 sm:mr-4"
+                class="w-full flex sm:hidden sm:w-auto justify-end items-center mr-0 mb-[16px] sm:mb-0 sm:mr-[16px]"
                 v-if="variants.length > 1"
             >
                 <option-selector
@@ -142,7 +142,7 @@
                 ></option-selector>
             </div>
             <div
-                class="flex w-full sm:w-28 justify-end items-center mr-0 mb-4 sm:mb-0 sm:mr-4"
+                class="flex w-full sm:w-[112px] justify-end items-center mr-0 mb-[16px] sm:mb-0 sm:mr-[16px]"
                 v-if="upsell.enable_quantity_selector"
             >
                 <vue-number-input
@@ -160,14 +160,14 @@
                 v-if="upsell.remove_parent_product_when_upsell_product_is_added"
             >
                 <div
-                    class="add-btn rounded-sm shadow-sm w-full flex justify-center items-center font-mono font-bold pl-2 pr-4 h-9 sm:text-sm text-white cursor-pointer"
+                    class="add-btn rounded-sm shadow-sm w-full flex justify-center items-center font-mono font-bold pl-[8px] pr-[16px] h-[36px] sm:text-[14px] sm:leading-[20px] text-white cursor-pointer"
                     v-if="!adding && !added"
                     @click="addToCart"
                     :style="{ backgroundColor: setting.primary_color }"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-4 w-4 mr-2"
+                        class="h-[16px] w-[16px] mr-[8px]"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -182,12 +182,12 @@
                     {{ setting.upgrade }}
                 </div>
                 <div
-                    class="add-btn rounded-sm shadow-sm w-full flex justify-center items-center font-mono font-bold pl-2 pr-4 h-9 sm:text-sm text-white cursor-pointer"
+                    class="add-btn rounded-sm shadow-sm w-full flex justify-center items-center font-mono font-bold pl-[8px] pr-[16px] h-[36px] sm:text-[14px] sm:leading-[20px] text-white cursor-pointer"
                     v-if="adding && !added"
                     :style="{ backgroundColor: setting.primary_color }"
                 >
                     <svg
-                        class="animate-spin mr-2 h-4 w-4 text-white"
+                        class="animate-spin mr-[8px] h-[16px] w-[16px] text-white"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -210,18 +210,18 @@
                 </div>
                 <div
                     v-if="added"
-                    class="added-btn rounded-sm shadow-sm w-full flex justify-center items-center font-mono font-bold px-3 h-9 sm:text-sm text-gray-600 bg-gray-100 cursor-pointer mr-2"
+                    class="added-btn rounded-sm shadow-sm w-full flex justify-center items-center font-mono font-bold px-[12px] h-[36px] sm:text-[14px] sm:leading-[20px] text-gray-600 bg-gray-100 cursor-pointer mr-[8px]"
                 >
                     {{ setting.upgraded }}
                 </div>
                 <div
-                    class="remove-btn flex justify-center h-9 items-center cursor-pointer"
+                    class="remove-btn flex justify-center h-[36px] items-center cursor-pointer"
                     @click="removeFromCart"
                     v-if="added && !deleting"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6"
+                        class="h-[24px] w-[24px]"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -235,11 +235,11 @@
                     </svg>
                 </div>
                 <div
-                    class="remove-btn flex justify-center items-center h-9 cursor-pointer"
+                    class="remove-btn flex justify-center items-center h-[36px] cursor-pointer"
                     v-if="added && deleting"
                 >
                     <svg
-                        class="animate-spin h-6 w-6"
+                        class="animate-spin h-[24px] w-[24px]"
                         :style="{ color: setting.primary_color }"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -268,14 +268,14 @@
                 "
             >
                 <div
-                    class="add-btn rounded-sm shadow-sm w-full flex justify-center items-center font-mono font-bold pl-2 pr-4 h-9 sm:text-sm text-white cursor-pointer"
+                    class="add-btn rounded-sm shadow-sm w-full flex justify-center items-center font-mono font-bold pl-[8px] pr-[16px] h-[36px] sm:text-[14px] sm:leading-[20px] text-white cursor-pointer"
                     v-if="!adding && !added"
                     @click="addToCart"
                     :style="{ backgroundColor: setting.primary_color }"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-4 w-4 mr-2"
+                        class="h-[16px] w-[16px] mr-[8px]"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -290,12 +290,12 @@
                     {{ setting.add_to_cart }}
                 </div>
                 <div
-                    class="add-btn rounded-sm shadow-sm w-full flex justify-center items-center font-mono font-bold pl-2 pr-4 h-9 sm:text-sm text-white cursor-pointer"
+                    class="add-btn rounded-sm shadow-sm w-full flex justify-center items-center font-mono font-bold pl-[8px] pr-[16px] h-[36px] sm:text-[14px] sm:leading-[20px] text-white cursor-pointer"
                     v-if="adding && !added"
                     :style="{ backgroundColor: setting.primary_color }"
                 >
                     <svg
-                        class="animate-spin mr-2 h-4 w-4 text-white"
+                        class="animate-spin mr-[8px] h-[16px] w-[16px] text-white"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -318,18 +318,18 @@
                 </div>
                 <div
                     v-if="added"
-                    class="added-btn rounded-sm shadow-sm w-full flex justify-center items-center font-mono font-bold px-3 h-9 sm:text-sm text-gray-600 bg-gray-100 cursor-pointer mr-2"
+                    class="added-btn rounded-sm shadow-sm w-full flex justify-center items-center font-mono font-bold px-[12px] h-[36px] sm:text-[14px] sm:leading-[20px] text-gray-600 bg-gray-100 cursor-pointer mr-[8px]"
                 >
                     {{ setting.added_to_cart }}
                 </div>
                 <div
-                    class="remove-btn flex justify-center h-9 items-center cursor-pointer"
+                    class="remove-btn flex justify-center h-[36px] items-center cursor-pointer"
                     @click="removeFromCart"
                     v-if="added && !deleting"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6"
+                        class="h-[24px] w-[24px]"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -343,11 +343,11 @@
                     </svg>
                 </div>
                 <div
-                    class="remove-btn flex justify-center items-center h-9 cursor-pointer"
+                    class="remove-btn flex justify-center items-center h-[36px] cursor-pointer"
                     v-if="added && deleting"
                 >
                     <svg
-                        class="animate-spin h-6 w-6"
+                        class="animate-spin h-[24px] w-[24px]"
                         :style="{ color: setting.primary_color }"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
